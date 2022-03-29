@@ -1,20 +1,18 @@
 import smtplib
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
 
-ad_from = "POST@gmail.com"  # почта с которой отправляем (нужно включить возможно авторизации таким способом иначе не прокатит)
-ad_to = "POST"  # почта на каоторую отправляем
-password = "PASSWORD"  # пароль от почты
-# создание наполнения письма
-msg = MIMEMultipart()
-msg['From'] = ad_from
-msg['To'] = ad_to
-msg['Subject'] = 'Тема'
-body = 'Текст письма'
-msg.attach(MIMEText(body, 'plain'))
-# подключение к серверу, авторизация, отправка письма
-server = smtplib.SMTP('smtp.gmail.com', 587)
-server.starttls()
-server.login(ad_from, password)
-server.send_message(msg)
-server.quit()
+
+def mail(msg, to, topic='No temes'):
+    email_server = "smtp.yandex.ru"
+    sender = "moonadiary@yandex.ru"
+    headers = "From: %s\r\nTo: %s\r\nSubject: %s\r\n\r\n" % (sender, to, topic)
+    text = msg
+    message = headers + text
+    mailServer = smtplib.SMTP(email_server)
+    mailServer.set_debuglevel(1)
+    mailServer.ehlo()
+    mailServer.starttls()
+    mailServer.ehlo()
+    mailServer.login('moonadiary', 'fiX-2Vb-6a2-kCi')
+    mailServer.ehlo()
+    mailServer.sendmail(sender, to, message)
+    mailServer.quit()

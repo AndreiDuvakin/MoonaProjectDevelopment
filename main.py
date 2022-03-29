@@ -1,8 +1,14 @@
-from flask import Flask
+from flask import Flask, render_template
+
 from data import db_session
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'moona_secret_key'
+
+
+@app.route('/')
+def main_page():
+    return render_template('base.html', title='moona')
 
 
 def main():
