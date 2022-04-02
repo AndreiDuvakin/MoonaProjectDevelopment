@@ -1,5 +1,7 @@
-import sqlalchemy
 from datetime import date
+
+import sqlalchemy
+from werkzeug.security import check_password_hash, generate_password_hash
 from .db_session import SqlAlchemyBase
 
 
@@ -21,3 +23,9 @@ class User(SqlAlchemyBase):
                                  default=date.today())
     role = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     activity = sqlalchemy.Column(sqlalchemy.Date, nullable=True)
+
+    def check_password(self, password):
+        return check_password_hash(self.hashed_password, password)
+
+    def set_password(self, password):
+        self.password = generate_password_hash(password)

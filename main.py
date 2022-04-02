@@ -1,7 +1,7 @@
 from random import randint
 
 from PIL import Image
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from werkzeug.utils import redirect
 
 from data import db_session
@@ -12,6 +12,8 @@ from post import mail
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'moona_secret_key'
 help_arg = None
+send_msg = False
+secret_code = None
 
 
 def save_photo(photo, login):
@@ -34,27 +36,45 @@ def main_page():
 @app.route('/confirmation', methods=['GET', 'POST'])
 def confirmation():
     global help_arg
+    global send_msg
+    global secret_code
     form = help_arg
     session = db_session.create_session()
     conf = Confirmation()
-    secret_code = secret_key()
-    mail(f'Ваш секретный код: {secret_code}', form.email.data, 'Moona Код')
+    if not send_msg:
+        secret_code = secret_key()
+        mail(f'Ваш секретный код: {secret_code}', form.email.data, 'Moona Код')
+        send_msg = True
     if conf.validate_on_submit():
         if str(conf.code_key.data).strip() == str(secret_code).strip():
-            user = User(
-                name=form.name.data,
-                surname=form.surname.data,
-                login=form.login.data,
-                age=form.age.data,
-                about=form.about.data,
-                photo=save_photo(form.photo.data, form.login.data)
-            )
+            if form.photo.data:
+                user = User(
+                    name=form.name.data,
+                    surname=form.surname.data,
+                    login=form.login.data,
+                    age=form.age.data,
+                    about=form.about.data,
+                    email=form.email.data,
+                    photo=save_photo(request.files['file'], form.login.data),
+                    role='user'
+                )
+            else:
+                user = User(
+                    name=form.name.data,
+                    surname=form.surname.data,
+                    login=form.login.data,
+                    age=form.age.data,
+                    about=form.about.data,
+                    email=form.email.data,
+                    role='user'
+                )
             user.set_password(form.password.data)
             session.add(user)
             session.commit()
+            send_msg = False
             return redirect('/login')
         else:
-            return render_template('confirmation_reg.html', title='Подтверждение', form=form,
+            return render_template('confirmation_reg.html', title='Подтверждение', form=conf,
                                    message='Коды не совпадают')
     return render_template('confirmation_reg.html', title='Подтверждение', form=conf)
 
