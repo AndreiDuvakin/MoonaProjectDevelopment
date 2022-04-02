@@ -19,3 +19,5 @@ class User(SqlAlchemyBase):
     password = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     data_reg = sqlalchemy.Column(sqlalchemy.Date,
                                  default=date.today())
+    role = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    activity = sqlalchemy.Column(sqlalchemy.Date, nullable=True)
