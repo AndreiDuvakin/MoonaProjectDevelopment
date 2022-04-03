@@ -1,9 +1,9 @@
 from random import randint
 
-from PIL import Image
-from flask import Flask, render_template, request
+from flask import Flask, render_template
 from werkzeug.utils import redirect
 
+from PIL import Image
 from data import db_session
 from data.users import User
 from forms.register import RegisterForm, Confirmation
@@ -14,14 +14,13 @@ app.config['SECRET_KEY'] = 'moona_secret_key'
 help_arg = None
 send_msg = False
 secret_code = None
+photo = None
 
 
 def save_photo(photo, login):
-    size = (250, 250)
-    im = Image.open(photo)
-    im.thumbnail(size)
-    im.save(f'static/img/user_photo/{login}.png')
-    return f'static/img/user_photo/{login}.png'
+    with open(f'static/img/user_photo/{login}_logo.png', 'wb') as f:
+        photo.save(f)
+    return f'static/img/user_photo/{login}_logo.png'
 
 
 def secret_key():
@@ -38,6 +37,7 @@ def confirmation():
     global help_arg
     global send_msg
     global secret_code
+    global photo
     form = help_arg
     session = db_session.create_session()
     conf = Confirmation()
@@ -55,7 +55,7 @@ def confirmation():
                     age=form.age.data,
                     about=form.about.data,
                     email=form.email.data,
-                    photo=save_photo(request.files['file'], form.login.data),
+                    photo=photo,
                     role='user'
                 )
             else:
@@ -82,6 +82,7 @@ def confirmation():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     global help_arg
+    global photo
     form = RegisterForm()
     if form.validate_on_submit():
         if form.password.data != form.password2.data:
@@ -94,6 +95,8 @@ def register():
                                    form=form,
                                    message="Такой пользователь уже есть")
         help_arg = form
+        if form.photo.data:
+            photo = save_photo(form.photo.data, form.login.data)
         return redirect('/confirmation')
     return render_template('register.html', title='Регистрация', form=form, message='')
 
