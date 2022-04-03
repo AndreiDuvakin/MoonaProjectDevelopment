@@ -1,8 +1,9 @@
 <meta charset="UTF-8">
+<link rel="stylesheet" href="../static/css/register.css">
 {% extends "base.html" %}
 {% block content %}
-<h1 class="title">Register Form</h1>
 <div class="divlog">
+    <h1 class="title">Регистрация</h1>
     <form action="" method="post">
         {{ form.hidden_tag() }}
         {{ form.csrf_token }}
@@ -17,7 +18,7 @@
         </p>
         <p>
             {{ form.name.label }}<br>
-            {{ form.name(class="form-control", type="password") }}<br>
+            {{ form.name(class="form-control") }}<br>
             {% for error in form.name.errors %}
         <div class="alert alert-danger" role="alert">
             {{ error }}
@@ -26,7 +27,7 @@
         </p>
         <p>
             {{ form.surname.label }}<br>
-            {{ form.surname(class="form-control", type="password") }}<br>
+            {{ form.surname(class="form-control") }}<br>
             {% for error in form.surname.errors %}
         <div class="alert alert-danger" role="alert">
             {{ error }}
@@ -60,15 +61,15 @@
         </div>
         {% endfor %}
         </p>
-        <p>
+        <div>
             {{ form.photo.label }}<br>
             {{ form.photo(class="form-control") }}<br>
             {% for error in form.photo.errors %}
-        <div class="alert alert-danger" role="alert">
-            {{ error }}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-        </p>
         <p>
             {{ form.password.label }}<br>
             {{ form.password(class="form-control") }}<br>
@@ -88,7 +89,9 @@
         {% endfor %}
         </p>
         <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
-        {{message}}
+        {% if message != '' %}
+        <div class="alert alert-danger" role="alert">{{ message }}</div>
+        {% endif %}
     </form>
 </div>
 {% endblock %}

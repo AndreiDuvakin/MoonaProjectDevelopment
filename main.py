@@ -76,7 +76,7 @@ def confirmation():
         else:
             return render_template('confirmation_reg.html', title='Подтверждение', form=conf,
                                    message='Коды не совпадают')
-    return render_template('confirmation_reg.html', title='Подтверждение', form=conf)
+    return render_template('confirmation_reg.html', title='Подтверждение', form=conf, message='')
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -95,7 +95,7 @@ def register():
                                    message="Такой пользователь уже есть")
         help_arg = form
         return redirect('/confirmation')
-    return render_template('register.html', title='Регистрация', form=form)
+    return render_template('register.html', title='Регистрация', form=form, message='')
 
 
 def main():
