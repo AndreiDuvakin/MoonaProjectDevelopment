@@ -1,7 +1,7 @@
 from random import randint
 
 from flask import Flask, render_template
-from flask_login import LoginManager, login_user
+from flask_login import LoginManager, login_user, logout_user, login_required
 from werkzeug.utils import redirect
 
 from data import db_session
@@ -39,6 +39,13 @@ def load_user(user_id):
 @app.route('/')
 def main_page():
     return render_template('base.html', title='moona')
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect("/")
 
 
 @app.route('/login', methods=['GET', 'POST'])
