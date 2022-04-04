@@ -1,0 +1,19 @@
+.bad_user {
+margin-left: auto;
+    margin-right: auto;
+background-color: #1daff0;
+color: #ffffff;
+width: 50%;
+height: 55%;
+-webkit-border-radius:22px;
+-moz-border-radius: 22px;
+border-radius: 22px;
+border:2px solid #FFFFFF;
+margin-top: 20px;
+}
+.bad_centre {
+text-align: center;
+}
+#image {
+width: 70%;
+}

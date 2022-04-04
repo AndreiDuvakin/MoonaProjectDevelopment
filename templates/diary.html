@@ -1,0 +1,62 @@
+<link rel="stylesheet" href="../static/css/diary.css">
+{% extends "base.html" %}
+
+{% block content %}
+{% if current_user.is_authenticated %}
+<div>
+    {% for item in post %}
+    <div>
+        <h2>{{item.name}}</h2>
+        <strong>{{item.text}}</strong>
+        <div class="pos_emot">
+            {% for item2 in item.pos_emot.split('%$%') %}
+            <strong>{{item2}}</strong>
+            {% endfor %}
+        </div>
+        <div class="nig_emot">
+            {% for item2 in item.nig_emot.split('%$%') %}
+            <strong>{{item2}}</strong>
+            {% endfor %}
+        </div>
+        <div class="case">
+            {% for item2 in item.case.split('%$%') %}
+            <strong>{{item2}}</strong>
+            {% endfor %}
+        </div>
+        {% if item.photo != '' %}
+        <div class="photo">
+            <img width="100" height="100" src="../{{ item.photo }}">
+        </div>
+        {% endif %}
+        {% if item.link != '' %}
+        {% for item2 in item.link %}
+        <div class="link">
+            <a href="{{ item2 }}">Ссылка {{ loop.index }}</a>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% if item.public == 1 %}
+        <div class="public_true">Запись опубликована</div>
+        {% else %}
+        <div class="public_false">Запись приватная</div>
+        {% endif %}
+        <div style="style=position:absolute; width:148px; height:44px; left:255px; -webkit-border-radius:
+             22px;-moz-border-radius: 22px;border-radius: 22px; border:2px solid #FFFFFF; background-color:#1daff0; top:
+             98px;"><img src="../{{ current_user.photo }}" width="40" height="40" style="border-radius: 50%">
+            <strong style="color: #ffffff">{{ current_user.name }}</strong>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="bad_user">
+    <div class="bad_centre">
+        <h1 id="hz1">Вы не авторизованы в системе</h1>
+        <h2 id="hz2">Поэтому вам не доступна страница личного дневника</h2><strong id="sz1">Но вы можете посмотреть
+        публикации других пользователей в разделе <a href="/" style="color:#a9e4ff">Главная</a> или <a
+                href="/publications" style="color:#a9e4ff">Публикации</a></strong>
+        <p></p>
+        <img id="image" src="../static/img/Надпись Moona без фона.png"></div>
+</div>
+{% endif %}
+{% endblock %}

@@ -3,6 +3,7 @@ from datetime import date
 import sqlalchemy
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
+
 from .db_session import SqlAlchemyBase
 
 
@@ -13,10 +14,10 @@ class User(SqlAlchemyBase, UserMixin):
                            primary_key=True, autoincrement=True)
     name = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     surname = sqlalchemy.Column(sqlalchemy.String, nullable=True)
-    login = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    login = sqlalchemy.Column(sqlalchemy.String, nullable=True, unique=True)
     age = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
     email = sqlalchemy.Column(sqlalchemy.String,
-                              index=True, unique=True, nullable=True)
+                              index=True, nullable=True)
     about = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     photo = sqlalchemy.Column(sqlalchemy.Text)
     password = sqlalchemy.Column(sqlalchemy.String, nullable=True)

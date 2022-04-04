@@ -1,10 +1,11 @@
 from random import randint
 
 from flask import Flask, render_template
-from flask_login import LoginManager, login_user, logout_user, login_required
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.utils import redirect
 
 from data import db_session
+from data.diary_post import DiaryPost
 from data.users import User
 from forms.login import LoginForm
 from forms.register import RegisterForm, Confirmation
@@ -39,6 +40,13 @@ def load_user(user_id):
 @app.route('/')
 def main_page():
     return render_template('base.html', title='moona')
+
+
+@app.route('/diary', methods=['GET', 'POST'])
+def diary():
+    db_sess = db_session.create_session()
+    posts = db_sess.query(DiaryPost).filter(DiaryPost.author == current_user.id).all()
+    return render_template('diary.html', title='moona', item=posts)
 
 
 @app.route('/logout')
