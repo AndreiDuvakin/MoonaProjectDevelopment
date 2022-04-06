@@ -18,5 +18,4 @@ class DiaryPost(SqlAlchemyBase, UserMixin):
     public = sqlalchemy.Column(sqlalchemy.Boolean, nullable=True)
     pos_emot = sqlalchemy.Column(sqlalchemy.Text, nullable=True)
     nig_emot = sqlalchemy.Column(sqlalchemy.Text, nullable=True)
-    case = sqlalchemy.Column(sqlalchemy.Text, nullable=True)
     link = sqlalchemy.Column(sqlalchemy.Text, nullable=True)

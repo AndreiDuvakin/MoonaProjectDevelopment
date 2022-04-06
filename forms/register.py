@@ -9,7 +9,7 @@ class RegisterForm(FlaskForm):
     name = StringField('Имя', validators=[DataRequired()])
     surname = StringField('Фамилия', validators=[DataRequired()])
     login = StringField('Логин', validators=[DataRequired()])
-    age = IntegerField('Age', validators=[DataRequired()])
+    age = IntegerField('Возраст', validators=[DataRequired()])
     about = TextAreaField('Расскажите о себе', default='')
     photo = FileField('Фото', validators=[FileAllowed(['jpg', 'png'])])
     password = PasswordField('Пароль', validators=[DataRequired()])

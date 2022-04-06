@@ -1,3 +1,5 @@
 #1daff0
 #a9e4ff
 #42e6ec
+#c5f1ff
+#7fc3ff

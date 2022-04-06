@@ -17,3 +17,32 @@ text-align: center;
 #image {
 width: 70%;
 }
+#all_my_post {
+width: 30%;
+margin-left: auto;
+    margin-right: auto;
+}
+#my_post {
+text-align: center;
+margin-left: auto;
+    margin-right: auto;
+    margin-top: 25px;
+    background-color: #7fc3ff;
+    border-radius: 22px;
+}
+.my_author, .my_post_zag {
+text-align: center;
+margin-left: auto;
+    margin-right: auto;
+    margin-top: 25px;
+}
+#pub, #private {
+width: 60%;
+height: 10%;
+margin-left: auto;
+    margin-right: auto;
+}
+#add_post {
+margin-top: 20px;
+margin-left: 85%;
+}

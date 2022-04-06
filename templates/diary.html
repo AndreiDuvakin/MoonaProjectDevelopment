@@ -4,47 +4,58 @@
 {% block content %}
 {% if current_user.is_authenticated %}
 <div>
+    <a href="/add_post" id="add_post" class="btn btn-primary" style="background-color:#1daff0"><strong>Добавить
+        запись</strong></a>
+</div><h1 class="my_post_zag">Мои записи</h1>
+<div class="card" style="width: 18rem;" id="all_my_post">
     {% for item in post %}
-    <div>
-        <h2>{{item.name}}</h2>
-        <strong>{{item.text}}</strong>
+    <div class="card-body" id="my_post">
+        <h2 class="card-title" id="my_post_zag" style="color:#c5f1ff">{{item.name}}</h2>
+        <strong class="card-text" id="my_text" style="color:#ffffff">{{item.text}}</strong>
+        {% if item.pos_emot != None %}
         <div class="pos_emot">
-            {% for item2 in item.pos_emot.split('%$%') %}
+            {% for item2 in item.pos_emot %}
             <strong>{{item2}}</strong>
             {% endfor %}
-        </div>
-        <div class="nig_emot">
-            {% for item2 in item.nig_emot.split('%$%') %}
-            <strong>{{item2}}</strong>
-            {% endfor %}
-        </div>
-        <div class="case">
-            {% for item2 in item.case.split('%$%') %}
-            <strong>{{item2}}</strong>
-            {% endfor %}
-        </div>
-        {% if item.photo != '' %}
-        <div class="photo">
-            <img width="100" height="100" src="../{{ item.photo }}">
         </div>
         {% endif %}
-        {% if item.link != '' %}
+        {% if item.nig_emot != None %}
+        <div class="nig_emot">
+            {% for item2 in item.nig_emot %}
+            <strong>{{item2}}</strong>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% if item.case != None %}
+        <div class="case">
+            {% for item2 in item.case %}
+            <strong>{{item2}}</strong>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% if item.photo != None %}
+        <div class="photo">
+            <img width="100" height="100" src="{{ item.photo }}">
+        </div>
+        {% endif %}
+        {% if item.link != None %}
         {% for item2 in item.link %}
         <div class="link">
             <a href="{{ item2 }}">Ссылка {{ loop.index }}</a>
         </div>
         {% endfor %}
         {% endif %}
-        {% if item.public == 1 %}
-        <div class="public_true">Запись опубликована</div>
+        {% if item.public == 1 or item.public == 'True' %}
+        <div class="alert alert-success" role="alert" id="pub">Запись опубликована {{item.public}}</div>
         {% else %}
-        <div class="public_false">Запись приватная</div>
+        <div class="alert alert-danger" role="alert" id="ptivate">Запись приватная</div>
         {% endif %}
-        <div style="style=position:absolute; width:148px; height:44px; left:255px; -webkit-border-radius:
+        <div class="my_author" style="style=position:absolute; width:148px; height:44px; left:255px; -webkit-border-radius:
              22px;-moz-border-radius: 22px;border-radius: 22px; border:2px solid #FFFFFF; background-color:#1daff0; top:
              98px;"><img src="../{{ current_user.photo }}" width="40" height="40" style="border-radius: 50%">
             <strong style="color: #ffffff">{{ current_user.name }}</strong>
         </div>
+        <strong style="color:#ffffff">{{item.date}}</strong>
     </div>
     {% endfor %}
 </div>

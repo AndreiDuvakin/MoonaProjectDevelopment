@@ -42,11 +42,19 @@ def main_page():
     return render_template('base.html', title='moona')
 
 
+@app.route('/add_post', methods=['GET', 'POST'])
+def add_post():
+    return render_template('post.html')
+
+
 @app.route('/diary', methods=['GET', 'POST'])
 def diary():
     db_sess = db_session.create_session()
-    posts = db_sess.query(DiaryPost).filter(DiaryPost.author == current_user.id).all()
-    return render_template('diary.html', title='moona', item=posts)
+    if current_user.is_authenticated:
+        posts = db_sess.query(DiaryPost).filter(DiaryPost.author == current_user.id).all()
+    else:
+        posts = None
+    return render_template('diary.html', title='moona', post=posts)
 
 
 @app.route('/logout')
@@ -83,6 +91,7 @@ def confirmation():
     if not send_msg:
         secret_code = secret_key()
         mail(f'Ваш секретный код: {secret_code}', form.email.data, 'Moona Код')
+        print(secret_code)
         send_msg = True
     if conf.validate_on_submit():
         if str(conf.code_key.data).strip() == str(secret_code).strip():
