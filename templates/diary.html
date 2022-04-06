@@ -10,8 +10,12 @@
 <div class="card" style="width: 18rem;" id="all_my_post">
     {% for item in post %}
     <div class="card-body" id="my_post">
+        {% if item.name != None %}
         <h2 class="card-title" id="my_post_zag" style="color:#c5f1ff">{{item.name}}</h2>
+        {% endif %}
+        {% if item.text != None %}
         <strong class="card-text" id="my_text" style="color:#ffffff">{{item.text}}</strong>
+        {% endif %}
         {% if item.pos_emot != None %}
         <div class="pos_emot">
             {% for item2 in item.pos_emot %}
@@ -46,7 +50,7 @@
         {% endfor %}
         {% endif %}
         {% if item.public == 1 or item.public == 'True' %}
-        <div class="alert alert-success" role="alert" id="pub">Запись опубликована {{item.public}}</div>
+        <div class="alert alert-success" role="alert" id="pub">Запись опубликована</div>
         {% else %}
         <div class="alert alert-danger" role="alert" id="ptivate">Запись приватная</div>
         {% endif %}

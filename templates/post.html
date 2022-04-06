@@ -3,7 +3,83 @@
 
 {% block content %}
 {% if current_user.is_authenticated %}
-
+<div class="post_form">
+    <div class="hello_user">
+        <h1>Привет, {{current_user.name}}!</h1>
+        <h2>Расскажите, что у вас нового?</h2>
+    </div>
+    <form action="" method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        {{ form.csrf_token }}
+        <p>
+            {{ form.name.label }}<br>
+            {{ form.name(class="form-control") }}<br>
+            {% for error in form.name.errors %}
+        <div class="alert alert-danger" role="alert">
+            {{ error }}
+        </div>
+        {% endfor %}
+        </p>
+        <p>
+            {{ form.text.label }}<br>
+            {{ form.text(class="form-control") }}<br>
+            {% for error in form.text.errors %}
+        <div class="alert alert-danger" role="alert">
+            {{ error }}
+        </div>
+        {% endfor %}
+        </p>
+        <p>
+            {{ form.photo.label }}<br>
+            {{ form.photo(class="form-control") }}<br>
+            {% for error in form.photo.errors %}
+        <div class="alert alert-danger" role="alert">
+            {{ error }}
+        </div>
+        {% endfor %}
+        </p>
+        <p>
+            {{ form.public.label }}<br>
+            {{ form.public(class="form-control") }}<br>
+            {% for error in form.public.errors %}
+        <div class="alert alert-danger" role="alert">
+            {{ error }}
+        </div>
+        {% endfor %}
+        </p>
+        <p>
+            {{ form.pos_emot.label }}<br>
+            {{ form.pos_emot(class="form-control") }}<br>
+            {% for error in form.pos_emot.errors %}
+        <div class="alert alert-danger" role="alert">
+            {{ error }}
+        </div>
+        {% endfor %}
+        </p>
+        <p>
+            {{ form.nig_emot.label }}<br>
+            {{ form.nig_emot(class="form-control") }}<br>
+            {% for error in form.nig_emot.errors %}
+        <div class="alert alert-danger" role="alert">
+            {{ error }}
+        </div>
+        {% endfor %}
+        </p>
+        <p>
+            {{ form.link.label }}<br>
+            {{ form.link(class="form-control") }}<br>
+            {% for error in form.link.errors %}
+        <div class="alert alert-danger" role="alert">
+            {{ error }}
+        </div>
+        {% endfor %}
+        </p>
+        <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+        {% if message != '' %}
+        <div class="alert alert-danger" role="alert">{{ message }}</div>
+        {% endif %}
+    </form>
+</div>
 {% else %}
 <div class="bad_user">
     <div class="bad_centre">

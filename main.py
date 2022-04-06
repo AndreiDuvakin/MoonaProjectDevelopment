@@ -1,3 +1,4 @@
+import datetime
 from random import randint
 
 from flask import Flask, render_template
@@ -8,8 +9,9 @@ from data import db_session
 from data.diary_post import DiaryPost
 from data.users import User
 from forms.login import LoginForm
-from forms.register import RegisterForm, Confirmation
+from forms.post import AddPost
 from forms.recovery import RecoveryForm, Conf, Finish
+from forms.register import RegisterForm, Confirmation
 from post import mail
 
 app = Flask(__name__)
@@ -23,10 +25,28 @@ photo = None
 user_email = ""
 
 
-def save_photo(photo, login):
-    with open(f'static/img/user_photo/{login}_logo.png', 'wb') as f:
-        photo.save(f)
-    return f'static/img/user_photo/{login}_logo.png'
+def norm_data(datatime, date_or_time, r=False):
+    if date_or_time == 'date':
+        return '.'.join(str(datatime).split()[0].split('-')[::-1])
+    elif date_or_time == 'time':
+        return ':'.join(str(datatime).split()[1].split(':')[0:2])
+    elif date_or_time == 'datetime':
+        date = '.'.join(str(datatime).split()[0].split('-')[::-1])
+        times = ':'.join(str(datatime).split()[1].split(':')[0:2])
+        datatimes = date + ' ' + times if r else times + ' ' + date
+        datatimes = datetime
+        return datatimes
+
+
+def save_photo(photo, login, post=False, id_post=None):
+    if not post:
+        with open(f'static/app_image/users_photo/{login}_logo.png', 'wb') as f:
+            photo.save(f)
+        return f'../static/app_image/users_photo/{login}_logo.png'
+    elif post and id_post != None:
+        with open(f'static/app_image/post_photo/{login}_post_{id_post}.png', 'wb') as f:
+            photo.save(f)
+        return f'../static/app_image/post_photo/{login}_post_{id_post}.png'
 
 
 def secret_key():
@@ -46,7 +66,40 @@ def main_page():
 
 @app.route('/add_post', methods=['GET', 'POST'])
 def add_post():
-    return render_template('post.html')
+    pos = AddPost()
+    session = db_session.create_session()
+    if pos.validate_on_submit():
+        id = session.query(DiaryPost).order_by(DiaryPost.id)[-1].id
+        if id:
+            id += 1
+        else:
+            id = -1
+        if pos.photo.data:
+            diart_pos = DiaryPost(name=pos.name.data,
+                                  text=pos.text.data,
+                                  author=current_user.id,
+                                  date=datetime.datetime.now(),
+                                  photo=save_photo(pos.photo.data, current_user.login, post=True, id_post=id),
+                                  public=pos.public.data,
+                                  pos_emot=pos.pos_emot.data,
+                                  nig_emot=pos.nig_emot.data,
+                                  link=pos.link.data)
+            session.add(diart_pos)
+            session.commit()
+            return redirect("/diary")
+        else:
+            diart_pos = DiaryPost(name=pos.name.data,
+                                  text=pos.text.data,
+                                  author=current_user.id,
+                                  date=datetime.datetime.now(),
+                                  public=pos.public.data,
+                                  pos_emot=pos.pos_emot.data,
+                                  nig_emot=pos.nig_emot.data,
+                                  link=pos.link.data)
+            session.add(diart_pos)
+            session.commit()
+            return redirect("/diary")
+    return render_template('post.html', form=pos)
 
 
 @app.route('/diary', methods=['GET', 'POST'])

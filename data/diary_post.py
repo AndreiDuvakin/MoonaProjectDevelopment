@@ -9,13 +9,13 @@ class DiaryPost(SqlAlchemyBase, UserMixin):
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)
-    name = sqlalchemy.Column(sqlalchemy.String, nullable=True)
-    text = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    name = sqlalchemy.Column(sqlalchemy.String, nullable=True, default=None)
+    text = sqlalchemy.Column(sqlalchemy.String, nullable=True, default=None)
     author = sqlalchemy.Column(sqlalchemy.Integer,
-                               sqlalchemy.ForeignKey("users.id"), nullable=True)
-    date = sqlalchemy.Column(sqlalchemy.DateTime, nullable=True)
-    photo = sqlalchemy.Column(sqlalchemy.Text)
-    public = sqlalchemy.Column(sqlalchemy.Boolean, nullable=True)
-    pos_emot = sqlalchemy.Column(sqlalchemy.Text, nullable=True)
-    nig_emot = sqlalchemy.Column(sqlalchemy.Text, nullable=True)
-    link = sqlalchemy.Column(sqlalchemy.Text, nullable=True)
+                               sqlalchemy.ForeignKey("users.id"), nullable=True, default=None)
+    date = sqlalchemy.Column(sqlalchemy.DateTime, nullable=True, default=None)
+    photo = sqlalchemy.Column(sqlalchemy.Text, default=None)
+    public = sqlalchemy.Column(sqlalchemy.Boolean, nullable=True, default=None)
+    pos_emot = sqlalchemy.Column(sqlalchemy.Text, nullable=True, default=None)
+    nig_emot = sqlalchemy.Column(sqlalchemy.Text, nullable=True, default=None)
+    link = sqlalchemy.Column(sqlalchemy.Text, nullable=True, default=None)
