@@ -1,0 +1,63 @@
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../static/css/register.css">
+{% extends "base.html" %}
+{% block content %}
+<div class="divlog">
+    <h1 class="title">Восстановление пароля</h1>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        {{ form.csrf_token }}
+        {% if s == '1' %}
+            <h3>Для восстановления пароля введите свою почту</h3>
+            <p>
+                {{ form.email.label }}<br>
+                {{ form.email(class="form-control") }}<br>
+                {% for error in form.email.errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+            {% endfor %}
+            </p>
+            <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+        {% endif %}
+        {% if s == '2' %}
+            <h3>Введите код</h3>
+            <p>
+                {{ form.code_key.label }}<br>
+                {{ form.code_key(class="form-control") }}<br>
+                {% for error in form.code_key.errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+            {% endfor %}
+            </p>
+            <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+        {% endif %}
+        {% if s == '3' %}
+        <h3>Введите новый пароль и подтвердите его</h3>
+        <p>
+            {{ form.password.label }}<br>
+            {{ form.password(class="form-control") }}<br>
+            {% for error in form.password.errors %}
+        <div class="alert alert-danger" role="alert">
+            {{ error }}
+        </div>
+        {% endfor %}
+        </p>
+        <p>
+            {{ form.password2.label }}<br>
+            {{ form.password2(class="form-control") }}<br>
+            {% for error in form.password2.errors %}
+        <div class="alert alert-danger" role="alert">
+            {{ error }}
+        </div>
+        {% endfor %}
+        </p>
+        <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+        {% endif %}
+        {% if message != '' %}
+        <div class="alert alert-danger" role="alert">{{ message }}</div>
+        {% endif %}
+    </form>
+</div>
+{% endblock %}
