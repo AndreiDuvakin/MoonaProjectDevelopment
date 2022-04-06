@@ -9,16 +9,18 @@ from data.diary_post import DiaryPost
 from data.users import User
 from forms.login import LoginForm
 from forms.register import RegisterForm, Confirmation
+from forms.recovery import RecoveryForm, Conf, Finish
 from post import mail
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'moona_secret_key'
 login_manager = LoginManager()
 login_manager.init_app(app)
-help_arg = None
+help_arg = False
 send_msg = False
 secret_code = None
 photo = None
+user_email = ""
 
 
 def save_photo(photo, login):
@@ -95,6 +97,7 @@ def confirmation():
         send_msg = True
     if conf.validate_on_submit():
         if str(conf.code_key.data).strip() == str(secret_code).strip():
+            print(secret_code)
             if form.photo.data:
                 user = User(
                     name=form.name.data,
@@ -147,6 +150,50 @@ def register():
             photo = save_photo(form.photo.data, form.login.data)
         return redirect('/confirmation')
     return render_template('register.html', title='Регистрация', form=form, message='')
+
+
+@app.route('/recovery', methods=['GET', 'POST'])
+def recovery():
+    global send_msg
+    global secret_code
+    global help_arg
+    global user_email
+    form = RecoveryForm()
+    conf = Conf()
+    finish = Finish()
+    session = db_session.create_session()
+    if form.validate_on_submit() and form.email.data:
+        user_email = form.email.data
+        if not send_msg:
+            secret_code = secret_key()
+            mail(f'Ваш секретный код: {secret_code}', form.email.data, 'Moona Код')
+            send_msg = True
+            print(secret_code)
+            return render_template('recovery.html', title='Восстановление пароля', form=conf, message='', s='2')
+    if conf.validate_on_submit():
+        if str(conf.code_key.data).strip() == str(secret_code).strip():
+            help_arg = True
+            return render_template('recovery.html', title='Восстановление пароля', form=finish, message='', s='3')
+    if help_arg:
+        if finish.validate_on_submit():
+            db_sess = db_session.create_session()
+            user = db_sess.query(User).filter(User.email == user_email).first()
+            # user2 = User(
+            #     name=user.name,
+            #     surname=user.surname,
+            #     login=user.login,
+            #     age=user.age,
+            #     about=user.about,
+            #     email=user_email,
+            #     photo=user.photo,
+            #     role='user')
+            user.set_password(finish.password.data)
+            user2 = session.merge(user)
+            session.add(user2)
+            session.commit()
+            send_msg = False
+            return redirect('/login')
+    return render_template('recovery.html', title='Восстановление пароля', form=form, message='', s='1')
 
 
 def main():
