@@ -1,13 +1,17 @@
 import datetime
+import os
 from random import randint
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from flask_restful import abort
 from werkzeug.utils import redirect
 
 from data import db_session
 from data.diary_post import DiaryPost
+from data.questions import Quest
 from data.users import User
+from forms.add_question import AddQuest
 from forms.login import LoginForm
 from forms.post import AddPost
 from forms.recovery import RecoveryForm, Conf, Finish
@@ -64,6 +68,80 @@ def main_page():
     return render_template('base.html', title='moona')
 
 
+@app.route('/add_question', methods=['GET', 'POST'])
+def add_question():
+    que = AddQuest()
+    if que.validate_on_submit():
+        session = db_session.create_session()
+        if que.quest.data in list(map(lambda x: x.quest, session.query(Quest).all())):
+            return render_template('add_question.html', message='Такой вопрос уже есть!', title='Добавить вопрос',
+                                   form=que)
+        new_que = Quest()
+        new_que.quest = que.quest.data.strip()
+        session.add(new_que)
+        session.commit()
+        que.quest.data = ''
+    return render_template('add_question.html', message='', title='Добавить вопрос', form=que)
+
+
+@app.route('/post/<int:id>', methods=['GET', 'POST'])
+def post_edit(id):
+    global photo
+    post_ed = AddPost()
+    if request.method == "GET":
+        session = db_session.create_session()
+        post_exc = session.query(DiaryPost).filter(DiaryPost.id == id,
+                                                   DiaryPost.author == current_user.id).first()
+        if post_exc:
+            post_ed.name.data = post_exc.name
+            post_ed.text.data = post_exc.text
+            post_ed.public.data = post_exc.public
+            post_ed.pos_emot.data = post_exc.pos_emot
+            post_ed.nig_emot.data = post_exc.nig_emot
+            post_ed.link.data = post_exc.link
+            if post_exc.photo:
+                photo = post_exc.photo
+            else:
+                photo = None
+        else:
+            abort(404)
+    if post_ed.validate_on_submit():
+        session = db_session.create_session()
+        post_exc = session.query(DiaryPost).filter(DiaryPost.id == id,
+                                                   DiaryPost.author == current_user.id).first()
+        if post_exc:
+            post_exc.name = post_ed.name.data
+            post_exc.text = post_ed.text.data
+            post_exc.public = post_ed.public.data
+            post_exc.pos_emot = post_ed.pos_emot.data
+            post_exc.nig_emot = post_ed.nig_emot.data
+            post_exc.link = post_ed.link.data
+            if post_ed.photo.data:
+                post_exc.photo = save_photo(post_ed.photo, current_user.login, post=True, id_post=post_exc.id)
+            else:
+                post_exc.photo = photo
+            session.commit()
+            return redirect('/diary')
+        else:
+            abort(404)
+    return render_template('post.html', form=post_ed, message='', title='Изменить запись')
+
+
+@app.route('/post_deleted/<int:id>', methods=['GET', 'POST'])
+def post_deleted(id):
+    session = db_session.create_session()
+    pos = session.query(DiaryPost).filter(DiaryPost.id == id,
+                                          DiaryPost.author == current_user.id).first()
+    if pos:
+        if pos.photo:
+            os.remove(pos.photo[3:])
+        session.delete(pos)
+        session.commit()
+    else:
+        abort(404)
+    return redirect('/diary')
+
+
 @app.route('/add_post', methods=['GET', 'POST'])
 def add_post():
     pos = AddPost()
@@ -99,7 +177,7 @@ def add_post():
             session.add(diart_pos)
             session.commit()
             return redirect("/diary")
-    return render_template('post.html', form=pos)
+    return render_template('post.html', form=pos, title='Новый пост', message='')
 
 
 @app.route('/diary', methods=['GET', 'POST'])
@@ -109,7 +187,7 @@ def diary():
         posts = db_sess.query(DiaryPost).filter(DiaryPost.author == current_user.id).all()
     else:
         posts = None
-    return render_template('diary.html', title='moona', post=posts)
+    return render_template('diary.html', title='moona', my_post=posts, message='')
 
 
 @app.route('/logout')

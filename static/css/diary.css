@@ -18,7 +18,7 @@ text-align: center;
 width: 70%;
 }
 #all_my_post {
-width: 30%;
+width: 35%;
 margin-left: auto;
     margin-right: auto;
 }
@@ -45,4 +45,7 @@ margin-left: auto;
 #add_post {
 margin-top: 20px;
 margin-left: 85%;
+}
+#edit_btn {
+background-color: #c5f1ff;
 }

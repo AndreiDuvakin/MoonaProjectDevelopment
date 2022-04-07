@@ -1,0 +1,35 @@
+<link rel="stylesheet" href="../static/css/diary.css">
+{% extends "base.html" %}
+
+{% block content %}
+{% if current_user.is_authenticated and (current_user.role == 'admin' or current_user.role == 'moder') %}
+<div>
+    <h1>Введите новый вопрос</h1>
+    <form action="" method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        {{ form.csrf_token }}
+        <p>
+            {{ form.quest.label }}<br>
+            {{ form.quest(class="form-control") }}<br>
+            {% for error in form.quest.errors %}
+        <div class="alert alert-danger" role="alert">
+            {{ error }}
+        </div>
+        {% endfor %}
+        </p>
+        <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+        {% if message != '' %}
+        <div class="alert alert-danger" role="alert">{{ message }}</div>
+        {% endif %}
+    </form>
+</div>
+{% else %}
+<div class="bad_user">
+    <div class="bad_centre">
+        <h1 id="hz1">У вас нет прав доступа!</h1>
+        <h2 id="hz2">Эта страница предназначена только для руководства сайта!</h2>
+        <p></p>
+        <img id="image" src="../static/img/Надпись Moona без фона.png"></div>
+</div>
+{% endif %}
+{% endblock %}

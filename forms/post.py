@@ -12,4 +12,4 @@ class AddPost(FlaskForm):
     pos_emot = TextAreaField('Какие позитивные эмоции вы испытываете?')
     nig_emot = TextAreaField('Какие негативные эмоции вы испытываете?')
     link = TextAreaField('Вы можете оставить тут ссылки через пробел')
-    submit = SubmitField('Добавить')
+    submit = SubmitField('Сохранить')
