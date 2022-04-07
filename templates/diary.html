@@ -8,14 +8,18 @@
         запись</strong></a>
 </div><h1 class="my_post_zag">Мои мысли</h1>
 <div id="all_my_post">
+    {% if my_post != [] %}
     {% for item in my_post %}
     <div class="card-body" id="my_post">
-        {% if item.name != None %}
-        <h2 class="card-title" id="my_post_zag" style="color:#c5f1ff">{{item.name}}</h2>
-        {% endif %}
-        {% if item.text != None %}
-        <strong class="card-text" id="my_text" style="color:#ffffff">{{item.text}}</strong>
-        {% endif %}
+        <details>
+            <summary style="color:#ffffff">{% if item.name != None %}
+                <h2 class="card-title" id="my_post_zag" style="color:#c5f1ff">{{item.name}}</h2>
+                {% endif %}
+            </summary>
+            {% if item.text != None %}
+            <strong class="card-text" id="my_text" style="color:#ffffff">{{item.text}}</strong>
+            {% endif %}
+        </details>
         {% if item.pos_emot != None %}
         <div class="pos_emot">
             {% for item2 in item.pos_emot %}
@@ -70,6 +74,18 @@
                 Удалить
             </a>
         </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="bad_centre" style="background-color:#1daff0; border-radius: 22px;color:#ffffff">
+        <h1 class="hz1">Ничего не нашлось :с</h1>
+    </div>
+    {% endif %}
+</div>
+<div class="all_my_question">
+    {% for item in question %}
+    <div class="alert alert-primary" role="alert">
+        <strong>{{item.quest}}</strong>
     </div>
     {% endfor %}
 </div>

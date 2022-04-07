@@ -1,27 +1,43 @@
 <link rel="stylesheet" href="../static/css/diary.css">
+<link rel="stylesheet" href="../static/css/add_question.css">
 {% extends "base.html" %}
 
 {% block content %}
 {% if current_user.is_authenticated and (current_user.role == 'admin' or current_user.role == 'moder') %}
-<div>
-    <h1>Введите новый вопрос</h1>
-    <form action="" method="POST" enctype="multipart/form-data">
-        {{ form.hidden_tag() }}
-        {{ form.csrf_token }}
-        <p>
-            {{ form.quest.label }}<br>
-            {{ form.quest(class="form-control") }}<br>
-            {% for error in form.quest.errors %}
-        <div class="alert alert-danger" role="alert">
-            {{ error }}
-        </div>
-        {% endfor %}
-        </p>
-        <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
-        {% if message != '' %}
-        <div class="alert alert-danger" role="alert">{{ message }}</div>
-        {% endif %}
-    </form>
+<div class="all_div">
+    <div class="add_q">
+        <h1 class="h_q">Введите новый вопрос</h1>
+        <form action="" method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            {{ form.csrf_token }}
+            <p>
+                {{ form.quest.label }}<br>
+                {{ form.quest(class="form-control") }}<br>
+                {% for error in form.quest.errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+            {% endfor %}
+            </p>
+            <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+            {% if message != '' %}
+            <div class="alert alert-danger" role="alert">{{ message }}</div>
+            {% endif %}
+        </form>
+    </div>
+    <div class="edit_q">
+        <details>
+            <summary>
+                Все вопросы
+            </summary>
+            {% for item in question %}
+            <div class="alert alert-primary" role="alert">
+                <strong>{{item.quest}}</strong>
+                <a href="/delete_quest/{{item.id}}" class="alert alert-danger" role="alert"><strong>Удалить</strong></a>
+            </div>
+            {% endfor %}
+        </details>
+    </div>
 </div>
 {% else %}
 <div class="bad_user">

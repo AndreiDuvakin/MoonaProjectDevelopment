@@ -8,6 +8,7 @@ from flask_restful import abort
 from werkzeug.utils import redirect
 
 from data import db_session
+from data.answer_quest import Answer
 from data.diary_post import DiaryPost
 from data.questions import Quest
 from data.users import User
@@ -68,11 +69,23 @@ def main_page():
     return render_template('base.html', title='moona')
 
 
+@app.route('/delete_quest/<int:id>', methods=['GET', 'POST'])
+def delete_quest(id):
+    session = db_session.create_session()
+    pos = session.query(Quest).filter(Quest.id == id).first()
+    if pos:
+        session.delete(pos)
+        session.commit()
+    else:
+        abort(404)
+    return redirect('/add_question')
+
+
 @app.route('/add_question', methods=['GET', 'POST'])
 def add_question():
     que = AddQuest()
+    session = db_session.create_session()
     if que.validate_on_submit():
-        session = db_session.create_session()
         if que.quest.data in list(map(lambda x: x.quest, session.query(Quest).all())):
             return render_template('add_question.html', message='Такой вопрос уже есть!', title='Добавить вопрос',
                                    form=que)
@@ -81,7 +94,8 @@ def add_question():
         session.add(new_que)
         session.commit()
         que.quest.data = ''
-    return render_template('add_question.html', message='', title='Добавить вопрос', form=que)
+    return render_template('add_question.html', message='', title='Добавить вопрос', form=que,
+                           question=session.query(Quest).all())
 
 
 @app.route('/post/<int:id>', methods=['GET', 'POST'])
@@ -147,10 +161,13 @@ def add_post():
     pos = AddPost()
     session = db_session.create_session()
     if pos.validate_on_submit():
-        id = session.query(DiaryPost).order_by(DiaryPost.id)[-1].id
-        if id:
-            id += 1
-        else:
+        try:
+            id = session.query(DiaryPost).order_by(DiaryPost.id)[-1].id
+            if id:
+                id += 1
+            else:
+                id = -1
+        except Exception:
             id = -1
         if pos.photo.data:
             diart_pos = DiaryPost(name=pos.name.data,
@@ -185,9 +202,19 @@ def diary():
     db_sess = db_session.create_session()
     if current_user.is_authenticated:
         posts = db_sess.query(DiaryPost).filter(DiaryPost.author == current_user.id).all()
+        quest = db_sess.query(Answer).filter(Answer.user == current_user.id).all()
+        days_reg = current_user.data_reg - datetime.date.today()
+        days_reg = abs(days_reg.days) + 1
+        if quest:
+            post_quest = db_sess.query(Quest).filter(Quest.id.in_([i.id_question for i in quest])).all()
+        else:
+            post_quest = []
+        while len(post_quest) < days_reg:
+            post_quest.append(
+                db_sess.query(Quest).filter(Quest.id.notin_([i.id for i in post_quest])).first())
     else:
         posts = None
-    return render_template('diary.html', title='moona', my_post=posts, message='')
+    return render_template('diary.html', title='moona', my_post=posts, message='', question=post_quest)
 
 
 @app.route('/logout')
