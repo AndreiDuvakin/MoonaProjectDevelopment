@@ -10,3 +10,18 @@ text-align: center;
 #buttons {
 margin-left: -4%;
 }
+input[type=text], input[type=email], input[type=password], input[type=file], input[type=number]{
+  padding:10px;
+  border:10;
+  box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+  border-radius:10px;
+}
+textarea {
+  width:100%;
+  resize: vertical;
+  padding:10px;
+  border-radius:10px;
+  border:10;
+  box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+  height:150px;
+}
