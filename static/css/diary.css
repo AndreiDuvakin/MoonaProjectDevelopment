@@ -18,7 +18,6 @@ text-align: center;
 width: 70%;
 }
 #all_my_post {
-width: 35%;
 margin-left: auto;
     margin-right: auto;
 }
@@ -48,4 +47,24 @@ margin-left: 85%;
 }
 #edit_btn {
 background-color: #c5f1ff;
+}
+#row2 {
+width: 35%;
+}
+#all_my_question {
+width: 30%;
+}
+#row1 {
+width: 35%;
+}
+.question, .my_post {
+background-color:#7fc3ff;
+border-radius: 22px;
+width: 90%;
+margin-left: 5%;
+}
+.is_ans {
+background-color:#ddefff;
+border:2px solid #FFFFFF;
+border-radius: 25px;
 }

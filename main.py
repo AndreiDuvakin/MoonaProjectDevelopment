@@ -13,6 +13,7 @@ from data.diary_post import DiaryPost
 from data.questions import Quest
 from data.users import User
 from forms.add_question import AddQuest
+from forms.answer_quest import AnswerQuest
 from forms.login import LoginForm
 from forms.post import AddPost
 from forms.recovery import RecoveryForm, Conf, Finish
@@ -67,6 +68,35 @@ def load_user(user_id):
 @app.route('/')
 def main_page():
     return render_template('base.html', title='moona')
+
+
+@app.route('/answer_quest/<int:id>', methods=['GET', 'POST'])
+def answer_quest(id):
+    session = db_session.create_session()
+    answer = AnswerQuest()
+    quest = session.query(Quest).filter(Quest.id == id).first()
+    if request.method == 'GET':
+        if session.query(Answer).filter(Answer.id_question == id).first():
+            ans_quest = session.query(Answer).filter(Answer.id_question == id).first()
+            answer.answer.data = ans_quest.answer
+    if answer.validate_on_submit():
+        if not session.query(Answer).filter(Answer.id_question == id).first():
+            answer_user = Answer(id_question=id,
+                                 answer=answer.answer.data,
+                                 user=current_user.id,
+                                 date=datetime.date.today())
+            quest.one_used = True
+            if len(session.query(Answer).filter(Answer.id_question == id).all()) == len(session.query(User).all()):
+                quest.all_used = True
+            session.add(answer_user)
+            session.commit()
+            return redirect('/diary')
+        else:
+            ans_quest = session.query(Answer).filter(Answer.id_question == id).first()
+            ans_quest.answer = answer.answer.data
+            session.commit()
+            return redirect('/diary')
+    return render_template('answer_quest.html', tetle='Ответ на вопрос', form=answer, message='', quest=quest)
 
 
 @app.route('/delete_quest/<int:id>', methods=['GET', 'POST'])
@@ -212,9 +242,18 @@ def diary():
         while len(post_quest) < days_reg:
             post_quest.append(
                 db_sess.query(Quest).filter(Quest.id.notin_([i.id for i in post_quest])).first())
+
+        ans = []
+        for i in post_quest:
+            ans_id = db_sess.query(Answer).filter(Answer.id_question == i.id and Answer.user == current_user.id).first()
+            if ans_id:
+                ans.append(ans_id)
+        if ans:
+            ls = [i.id_question for i in ans]
     else:
         posts = None
-    return render_template('diary.html', title='moona', my_post=posts, message='', question=post_quest)
+    return render_template('diary.html', title='moona', my_post=posts, message='', question=post_quest[::-1],
+                           ans=ans[::-1], ls=ls, ln=len(ans))
 
 
 @app.route('/logout')
@@ -255,7 +294,6 @@ def confirmation():
         send_msg = True
     if conf.validate_on_submit():
         if str(conf.code_key.data).strip() == str(secret_code).strip():
-            print(secret_code)
             if form.photo.data:
                 user = User(
                     name=form.name.data,
@@ -275,7 +313,8 @@ def confirmation():
                     age=form.age.data,
                     about=form.about.data,
                     email=form.email.data,
-                    role='user'
+                    role='user',
+                    photo='../static/img/Икона.png'
                 )
             user.set_password(form.password.data)
             session.add(user)

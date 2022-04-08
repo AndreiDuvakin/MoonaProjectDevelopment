@@ -1,0 +1,43 @@
+<link rel="stylesheet" href="../static/css/diary.css">
+<link rel="stylesheet" href="../static/css/question.css">
+{% extends "base.html" %}
+
+{% block content %}
+{% if current_user.is_authenticated %}
+<div class="add_q">
+    <h1 class="h_q">Ответьте на вопрос</h1>
+    <div class="alert alert-primary" role="alert"
+         style="background-color:#ddefff; border:2px solid #FFFFFF; border-radius: 25px;width: 60%;text-align:
+          center;margin-left: auto;
+    margin-right: auto;">
+
+        <h2 class="h_q">{{quest.quest}}</h2>
+    </div>
+    <form action="" method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        {{ form.csrf_token }}
+        <p>
+            {{ form.answer.label }}<br>
+            {{ form.answer(class="form-control") }}<br>
+            {% for error in form.answer.errors %}
+        <div class="alert alert-danger" role="alert">
+            {{ error }}
+        </div>
+        {% endfor %}
+        </p>
+        <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+        {% if message != '' %}
+        <div class="alert alert-danger" role="alert">{{ message }}</div>
+        {% endif %}
+    </form>
+</div>
+{% else %}
+<div class="bad_user">
+    <div class="bad_centre">
+        <h1 id="hz1">Вы не авторизованы в системе</h1>
+        <h2 id="hz2">Поэтому вам не доступна эта страница</h2>
+        <p></p>
+        <img id="image" src="../static/img/Надпись Moona без фона.png"></div>
+</div>
+{% endif %}
+{% endblock %}

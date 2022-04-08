@@ -2,7 +2,15 @@
 margin-left: auto;
     margin-right: auto;
     width: 50%;
+.add_q{
+    width: 50%;
+}
 }
 .h_q {
 text-align: center;
+}
+form {
+width: 60%;
+margin-left: auto;
+    margin-right: auto;
 }
