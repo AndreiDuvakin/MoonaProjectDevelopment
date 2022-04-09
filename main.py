@@ -232,6 +232,41 @@ def diary():
     db_sess = db_session.create_session()
     if current_user.is_authenticated:
         posts = db_sess.query(DiaryPost).filter(DiaryPost.author == current_user.id).all()
+        posts = posts[::-1]
+        pub_post = db_sess.query(DiaryPost).filter(DiaryPost.author == current_user.id, DiaryPost.public == 1).all()
+        pub_post = pub_post[::-1]
+        emotion_pub = []
+        for i in pub_post:
+            emotion = {id: i.id,'pos_emot': [], 'nig_emot': [], 'link': []}
+            if i.pos_emot:
+                emotion['pos_emot'] = i.pos_emot.split()
+            else:
+                emotion['pos_emot'] = None
+            if i.nig_emot:
+                emotion['nig_emot'] = i.nig_emot.split()
+            else:
+                emotion['nig_emot'] = None
+            if i.link:
+                emotion['link'] = i.link.split()
+            else:
+                emotion['link'] = None
+            emotion_pub.append(emotion)
+        lis_emotion = []
+        for i in posts:
+            emotion = {id: i.id,'pos_emot': [], 'nig_emot': [], 'link': []}
+            if i.pos_emot:
+                emotion['pos_emot'] = i.pos_emot.split()
+            else:
+                emotion['pos_emot'] = None
+            if i.nig_emot:
+                emotion['nig_emot'] = i.nig_emot.split()
+            else:
+                emotion['nig_emot'] = None
+            if i.link:
+                emotion['link'] = i.link.split()
+            else:
+                emotion['link'] = None
+            lis_emotion.append(emotion)
         quest = db_sess.query(Answer).filter(Answer.user == current_user.id).all()
         days_reg = current_user.data_reg - datetime.date.today()
         days_reg = abs(days_reg.days) + 1
@@ -242,18 +277,25 @@ def diary():
         while len(post_quest) < days_reg:
             post_quest.append(
                 db_sess.query(Quest).filter(Quest.id.notin_([i.id for i in post_quest])).first())
-
         ans = []
         for i in post_quest:
             ans_id = db_sess.query(Answer).filter(Answer.id_question == i.id and Answer.user == current_user.id).first()
             if ans_id:
                 ans.append(ans_id)
-        if ans:
-            ls = [i.id_question for i in ans]
+        post_quest = post_quest[::-1]
+        ans = ans[::-1]
+        ans2 = {}
+        for i in ans:
+            ans2[i.id_question] = i
     else:
         posts = None
-    return render_template('diary.html', title='moona', my_post=posts, message='', question=post_quest[::-1],
-                           ans=ans[::-1], ls=ls, ln=len(ans))
+        post_quest = None
+        ans2 = None
+        lis_emotion = None
+        emotion_pub = None
+        pub_post = None
+    return render_template('diary.html', title='moona', my_post=posts, message='', question=post_quest,
+                           ans=ans2, emotion=lis_emotion, emotion_pub=emotion_pub, pub_post=pub_post)
 
 
 @app.route('/logout')

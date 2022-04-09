@@ -17,11 +17,11 @@ text-align: center;
 #image {
 width: 70%;
 }
-#all_my_post {
+#all_my_post, #all_my_post1 {
 margin-left: auto;
     margin-right: auto;
 }
-#my_post {
+#my_post, #my_post1 {
 text-align: center;
 margin-left: auto;
     margin-right: auto;
@@ -35,7 +35,7 @@ margin-left: auto;
     margin-right: auto;
     margin-top: 25px;
 }
-#pub, #private {
+.pub, .private {
 width: 60%;
 height: 10%;
 margin-left: auto;
@@ -45,17 +45,19 @@ margin-left: auto;
 margin-top: 20px;
 margin-left: 85%;
 }
-#edit_btn {
+#edit_btn, #edit_btn1 {
 background-color: #c5f1ff;
 }
-#row2 {
-width: 35%;
+#row2, #row1 {
+width: 30%;
+}
+#row1, #row2, #all_my_question {
+display:inline-block;
+vertical-align: top;
 }
 #all_my_question {
 width: 30%;
-}
-#row1 {
-width: 35%;
+height: -100%;
 }
 .question, .my_post {
 background-color:#7fc3ff;
@@ -67,4 +69,12 @@ margin-left: 5%;
 background-color:#ddefff;
 border:2px solid #FFFFFF;
 border-radius: 25px;
+}
+.emot_block {
+color: #ffffff;
+font-weight: bolder;
+}
+table {
+margin-left: 5%;
+width: 100%;
 }
