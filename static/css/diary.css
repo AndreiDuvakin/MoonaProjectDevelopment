@@ -87,7 +87,7 @@ height: -100%;
 background-color:#7fc3ff;
 border-radius: 22px;
 width: 90%;
-margin-left: 5%;
+margin-left: 10px;
 }
 .is_ans {
 background-color:#ddefff;
@@ -100,5 +100,5 @@ font-weight: bolder;
 }
 table {
 margin-left: 5%;
-width: 100%;
+width: 90%;
 }

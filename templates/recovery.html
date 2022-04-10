@@ -18,7 +18,7 @@
             </div>
             {% endfor %}
             </p>
-            <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+            <p>{{ form.submit(type="submit", class="btn btn-primary", style="background-color:#38aaff") }}</p>
         {% endif %}
         {% if s == '2' %}
             <h3>Введите код</h3>
@@ -31,7 +31,7 @@
             </div>
             {% endfor %}
             </p>
-            <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+            <p>{{ form.submit(type="submit", class="btn btn-primary", style="background-color:#38aaff") }}</p>
         {% endif %}
         {% if s == '3' %}
         <h3>Введите новый пароль и подтвердите его</h3>
@@ -53,7 +53,7 @@
         </div>
         {% endfor %}
         </p>
-        <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+        <p>{{ form.submit(type="submit", class="btn btn-primary", style="background-color:#38aaff") }}</p>
         {% endif %}
         {% if message != '' %}
         <div class="alert alert-danger" role="alert">{{ message }}</div>
