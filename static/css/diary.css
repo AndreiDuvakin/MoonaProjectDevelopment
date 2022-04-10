@@ -48,6 +48,30 @@ margin-left: 85%;
 #edit_btn, #edit_btn1 {
 background-color: #c5f1ff;
 }
+input[type=text], input[type=email], input[type=password], input[type=file], input[type=number]{
+  padding:10px;
+  border:5;
+  box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+  border-radius:10px;
+}
+textarea {
+  width:100%;
+  resize: vertical;
+  padding:10px;
+  border-radius:10px;
+  border:5;
+  box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+  height:150px;
+}
+.post_form {
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  height: 50%
+}
+.box {
+    margin-left: 20px;
+}
 #row2, #row1 {
 width: 30%;
 }

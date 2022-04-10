@@ -1,8 +1,8 @@
 .divlog {
   margin-left: auto;
-    margin-right: auto;
-   width: 80%;
-   height: 50%
+  margin-right: auto;
+  width: 80%;
+  height: 50%
 }
 .title {
 text-align: center;
@@ -24,4 +24,10 @@ textarea {
   border:10;
   box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
   height:150px;
+}
+.but {
+  margin: 40px;
+}
+.box {
+    margin-left: 20px;
 }

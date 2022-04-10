@@ -39,15 +39,6 @@
         {% endfor %}
         </p>
         <p>
-            {{ form.public.label }}<br>
-            {{ form.public(class="form-control") }}<br>
-            {% for error in form.public.errors %}
-        <div class="alert alert-danger" role="alert">
-            {{ error }}
-        </div>
-        {% endfor %}
-        </p>
-        <p>
             {{ form.pos_emot.label }}<br>
             {{ form.pos_emot(class="form-control") }}<br>
             {% for error in form.pos_emot.errors %}
@@ -69,6 +60,14 @@
             {{ form.link.label }}<br>
             {{ form.link(class="form-control") }}<br>
             {% for error in form.link.errors %}
+        <div class="alert alert-danger" role="alert">
+            {{ error }}
+        </div>
+        {% endfor %}
+        </p>
+        <p>
+            <div class="box">{{ form.public(class="form-check-input")}} {{ form.public.label }}<br></div>
+            {% for error in form.public.errors %}
         <div class="alert alert-danger" role="alert">
             {{ error }}
         </div>
