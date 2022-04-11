@@ -48,7 +48,7 @@ def save_photo(photo, login, post=False, id_post=None):
     if not post:
         with open(f'static/app_image/users_photo/{login}_logo.png', 'wb') as f:
             photo.save(f)
-        return f'../static/app_image/users_photo/{login}_logo.png'
+        return f'static/app_image/users_photo/{login}_logo.png'
     elif post and id_post != None:
         with open(f'static/app_image/post_photo/{login}_post_{id_post}.png', 'wb') as f:
             photo.save(f)
@@ -68,6 +68,30 @@ def load_user(user_id):
 @app.route('/')
 def main_page():
     return render_template('base.html', title='moona')
+
+
+@app.route('/publications', methods=['GET', 'POST'])
+def publications():
+    session = db_session.create_session()
+    fresh_posts = session.query(DiaryPost).filter(DiaryPost.public == 1).all()[::-1]
+    emotion_fresh = []
+    for i in fresh_posts:
+        emotion = {id: i.id, 'pos_emot': [], 'nig_emot': [], 'link': [],
+                   'author': session.query(User).filter(User.id == i.author).first()}
+        if i.pos_emot:
+            emotion['pos_emot'] = i.pos_emot.split()
+        else:
+            emotion['pos_emot'] = None
+        if i.nig_emot:
+            emotion['nig_emot'] = i.nig_emot.split()
+        else:
+            emotion['nig_emot'] = None
+        if i.link:
+            emotion['link'] = i.link.split()
+        else:
+            emotion['link'] = None
+        emotion_fresh.append(emotion)
+    return render_template('publications.html', fresh_post=fresh_posts, emotion_fresh=emotion_fresh, title='moona')
 
 
 @app.route('/answer_quest/<int:id>', methods=['GET', 'POST'])
@@ -237,7 +261,7 @@ def diary():
         pub_post = pub_post[::-1]
         emotion_pub = []
         for i in pub_post:
-            emotion = {id: i.id,'pos_emot': [], 'nig_emot': [], 'link': []}
+            emotion = {id: i.id, 'pos_emot': [], 'nig_emot': [], 'link': []}
             if i.pos_emot:
                 emotion['pos_emot'] = i.pos_emot.split()
             else:
@@ -253,7 +277,7 @@ def diary():
             emotion_pub.append(emotion)
         lis_emotion = []
         for i in posts:
-            emotion = {id: i.id,'pos_emot': [], 'nig_emot': [], 'link': []}
+            emotion = {id: i.id, 'pos_emot': [], 'nig_emot': [], 'link': []}
             if i.pos_emot:
                 emotion['pos_emot'] = i.pos_emot.split()
             else:
@@ -279,7 +303,8 @@ def diary():
                 db_sess.query(Quest).filter(Quest.id.notin_([i.id for i in post_quest])).first())
         ans = []
         for i in post_quest:
-            ans_id = db_sess.query(Answer).filter(Answer.id_question == i.id and Answer.user == current_user.id).first()
+            ans_id = db_sess.query(Answer).filter(
+                Answer.id_question == i.id and Answer.user.id == current_user.id).first()
             if ans_id:
                 ans.append(ans_id)
         post_quest = post_quest[::-1]

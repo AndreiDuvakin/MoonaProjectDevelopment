@@ -1,0 +1,24 @@
+table {
+width: 90%;
+margin-left: auto;
+  margin-right: auto;
+}
+#row1, #row2, #row3 {
+width: 30%;
+}
+.post_zag, .card-text, .card-body, .post_zag, .author {
+width: 90%;
+margin-left: auto;
+  margin-right: auto;
+text-align: center;
+}
+.post {
+background-color: #7fc3ff;
+border-radius: 22px;
+width: 90%;
+height: 95%;
+margin-bottom: 20px;
+}
+details {
+color: #ffffff;
+}
