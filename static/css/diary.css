@@ -1,52 +1,76 @@
 .bad_user {
-margin-left: auto;
+    margin-left: auto;
     margin-right: auto;
-background-color: #1daff0;
-color: #ffffff;
-width: 50%;
-height: 55%;
--webkit-border-radius:22px;
--moz-border-radius: 22px;
-border-radius: 22px;
-border:2px solid #FFFFFF;
-margin-top: 20px;
+    background-color: #1daff0;
+    color: #ffffff;
+    width: 50%;
+    height: 55%;
+    -webkit-border-radius:22px;
+    -moz-border-radius: 22px;
+    border-radius: 22px;
+    border:2px solid #ffffff;
+    margin-top: 20px;
 }
 .bad_centre {
-text-align: center;
+    text-align: center;
+}
+summary {
+    margin-bottom: 10px;
+}
+.pos_emot {
+    margin-bottom: 10px;
+}
+.nig_emot {
+    margin-bottom: 10px;
+}
+.my_author {
+    width:148px;
+    height:44px;
+    left:255px;
+    -webkit-border-radius: 22px;
+    -moz-border-radius: 22px;
+    border-radius: 22px;
+    border:2px;
+    solid #ffffff;
+    background-color:#1daff0;
+    top: 98px;
+}
+.emot {
+    margin-bottom: 30px;
 }
 #image {
-width: 70%;
+    width: 70%;
 }
 #all_my_post, #all_my_post1 {
-margin-left: auto;
+    margin-left: auto;
     margin-right: auto;
 }
 #my_post, #my_post1 {
-text-align: center;
-margin-left: auto;
+    text-align: center;
+    margin-left: auto;
     margin-right: auto;
     margin-top: 25px;
     background-color: #7fc3ff;
     border-radius: 22px;
 }
 .my_author, .my_post_zag {
-text-align: center;
-margin-left: auto;
+    text-align: center;
+    margin-left: auto;
     margin-right: auto;
     margin-top: 25px;
 }
 .pub, .private {
-width: 60%;
-height: 10%;
-margin-left: auto;
+    width: 60%;
+    height: 10%;
+    margin-left: auto;
     margin-right: auto;
 }
 #add_post {
-margin-top: 20px;
-margin-left: 85%;
+    margin-top: 20px;
+    margin-left: 85%;
 }
 #edit_btn, #edit_btn1 {
-background-color: #c5f1ff;
+    background-color: #c5f1ff;
 }
 input[type=text], input[type=email], input[type=password], input[type=file], input[type=number]{
   padding:10px;
@@ -73,32 +97,32 @@ textarea {
     margin-left: 20px;
 }
 #row2, #row1 {
-width: 30%;
+    width: 30%;
 }
 #row1, #row2, #all_my_question {
-display:inline-block;
-vertical-align: top;
+    display:inline-block;
+    vertical-align: top;
 }
 #all_my_question {
-width: 30%;
-height: -100%;
+    width: 30%;
+    height: -100%;
 }
 .question, .my_post {
-background-color:#7fc3ff;
-border-radius: 22px;
-width: 90%;
-margin-left: 10px;
+    background-color:#7fc3ff;
+    border-radius: 22px;
+    width: 90%;
+    margin-left: 10px;
 }
 .is_ans {
-background-color:#ddefff;
-border:2px solid #FFFFFF;
-border-radius: 25px;
+    background-color:#ddefff;
+    border:2px solid #ffffff;
+    border-radius: 25px;
 }
 .emot_block {
-color: #ffffff;
-font-weight: bolder;
+    color: #ffffff;
+    font-weight: bolder;
 }
 table {
-margin-left: 5%;
-width: 90%;
+    margin-left: 5%;
+    width: 90%;
 }

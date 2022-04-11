@@ -418,15 +418,6 @@ def recovery():
         if finish.validate_on_submit():
             db_sess = db_session.create_session()
             user = db_sess.query(User).filter(User.email == user_email).first()
-            # user2 = User(
-            #     name=user.name,
-            #     surname=user.surname,
-            #     login=user.login,
-            #     age=user.age,
-            #     about=user.about,
-            #     email=user_email,
-            #     photo=user.photo,
-            #     role='user')
             user.set_password(finish.password.data)
             user2 = session.merge(user)
             session.add(user2)
@@ -434,6 +425,11 @@ def recovery():
             send_msg = False
             return redirect('/login')
     return render_template('recovery.html', title='Восстановление пароля', form=form, message='', s='1')
+
+
+@app.route('/about_us')
+def about():
+    return render_template('about.html', title='О нас')
 
 
 def main():
