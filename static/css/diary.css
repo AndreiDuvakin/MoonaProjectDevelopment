@@ -126,3 +126,25 @@ table {
     margin-left: 5%;
     width: 90%;
 }
+.like {
+width: 50%;
+margin-left: auto;
+  margin-right: auto;
+}
+.like_block, .dislike_block {
+border-radius: 22px;
+width: 40px;
+height: 40px;
+}
+.div_like {
+background-color: #95e9ff;
+width: 50px;
+height: 50px;
+border-radius: 20px;
+}
+.div_dislike {
+background-color: #df3c43;
+width: 50px;
+height: 50px;
+border-radius: 20px;
+}

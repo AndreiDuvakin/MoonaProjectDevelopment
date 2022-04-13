@@ -78,12 +78,34 @@
                     приватная
                 </div>
                 {% endif %}
-                <div class="my_author"><img src="../{{ current_user.photo }}" width="40" height="40" style="border-radius: 22px">
+                <form>
+                    <table class="like">
+                        <th class="like_block">
+                            <div class="div_like">
+                                <a type="button"
+                                   href="/new_like/{{current_user.id}}/{{item.id}}/diary">
+                                    <img src="../static/img/like.png" width="50" height="50"
+                                         style="margin-left: auto;margin-right: auto;">
+                                </a></div>
+                        </th>
+                        <th class="dislike_block">
+                            <div class="div_dislike">
+                                <a type="button" class="dislike"
+                                   href="/new_dislike/{{current_user.id}}/{{item.id}}/diary">
+                                    <img src="../static/img/dislike.png" width="50" height="50"
+                                         style="margin-left: auto;margin-right: auto;">
+                                </a>
+                            </div>
+                        </th>
+                    </table>
+                </form>
+                <div class="my_author"><img src="../{{ current_user.photo }}" width="40" height="40"
+                                            style="border-radius: 22px">
                     <strong style="color: #ffffff">{{ current_user.name }}</strong>
                 </div>
                 <strong style="color:#ffffff">{{item.date}}</strong>
                 <div>
-                    <a style="border-radius: 15px;" href="/post/{{ item.id }}" class="btn", id="edit_btn">
+                    <a style="border-radius: 15px;" href="/post/{{ item.id }}" class="btn" , id="edit_btn">
                         Изменить
                     </a>
                     <a style="border-radius: 15px;" href="/post_deleted/{{ item.id }}" class="btn btn-danger">
@@ -120,11 +142,14 @@
                         <summary class="emot_block">
                             <strong class="emot_block">Позитивные эмоции</strong>
                         </summary>
-                            <ul style="list-style-type: none">
+                        <ul style="list-style-type: none">
                             {% for item2 in emotion[loop.index0]['pos_emot'] %}
-                            <li><div class="emot"><strong class="alert alert-success" role="alert" style="border-radius: 22px;">{{item2}}</strong></div></li>
+                            <li>
+                                <div class="emot"><strong class="alert alert-success" role="alert"
+                                                          style="border-radius: 22px;">{{item2}}</strong></div>
+                            </li>
                             {% endfor %}
-                            </ul>
+                        </ul>
                     </details>
                 </div>
                 {% endif %}
@@ -136,7 +161,10 @@
                         </summary>
                         <ul style="list-style-type: none">
                             {% for item2 in emotion[loop.index0]['nig_emot'] %}
-                            <li><div class="emot"><strong class="alert alert-danger" role="alert" style="border-radius: 22px;">{{item2}}</strong></div></li>
+                            <li>
+                                <div class="emot"><strong class="alert alert-danger" role="alert"
+                                                          style="border-radius: 22px;">{{item2}}</strong></div>
+                            </li>
                             {% endfor %}
                         </ul>
                     </details>

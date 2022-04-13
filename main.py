@@ -10,6 +10,8 @@ from werkzeug.utils import redirect
 from data import db_session
 from data.answer_quest import Answer
 from data.diary_post import DiaryPost
+from data.like import Like
+from data.dislike import Dislike
 from data.questions import Quest
 from data.users import User
 from forms.add_question import AddQuest
@@ -68,6 +70,30 @@ def load_user(user_id):
 @app.route('/')
 def main_page():
     return render_template('base.html', title='moona')
+
+
+@app.route('/new_dislike/<int:user_id>/<int:post_id>/<string:ret_href>')
+def new_dislike(user_id, post_id, ret_href):
+    session = db_session.create_session()
+    dislike = Dislike()
+    dislike.user = user_id
+    dislike.post = post_id
+    dislike.date = datetime.datetime.now()
+    session.add(dislike)
+    session.commit()
+    return redirect(f"/{ret_href}")
+
+
+@app.route('/new_like/<int:user_id>/<int:post_id>/<string:ret_href>')
+def new_like(user_id, post_id, ret_href):
+    session = db_session.create_session()
+    like = Like()
+    like.user = user_id
+    like.post = post_id
+    like.date = datetime.datetime.now()
+    session.add(like)
+    session.commit()
+    return redirect(f"/{ret_href}")
 
 
 @app.route('/publications', methods=['GET', 'POST'])
@@ -261,7 +287,7 @@ def diary():
         pub_post = pub_post[::-1]
         emotion_pub = []
         for i in pub_post:
-            emotion = {id: i.id, 'pos_emot': [], 'nig_emot': [], 'link': []}
+            emotion = {id: i.id, 'pos_emot': [], 'nig_emot': [], 'link': [], 'like': None, 'dislike': None}
             if i.pos_emot:
                 emotion['pos_emot'] = i.pos_emot.split()
             else:
@@ -274,6 +300,12 @@ def diary():
                 emotion['link'] = i.link.split()
             else:
                 emotion['link'] = None
+            like = db_sess.query(Like).filter(Like.post == i.id).all()
+            if like:
+                emotion['like'] = like
+            dislike = db_sess.query(Like).filter(Like.post == i.id).all()
+            if like:
+                emotion['dislike'] = dislike
             emotion_pub.append(emotion)
         lis_emotion = []
         for i in posts:
@@ -303,10 +335,11 @@ def diary():
                 db_sess.query(Quest).filter(Quest.id.notin_([i.id for i in post_quest])).first())
         ans = []
         for i in post_quest:
-            ans_id = db_sess.query(Answer).filter(
-                Answer.id_question == i.id and Answer.user.id == current_user.id).first()
-            if ans_id:
-                ans.append(ans_id)
+            if i is not None:
+                ans_id = db_sess.query(Answer).filter(
+                    Answer.id_question == i.id and Answer.user.id == current_user.id).first()
+                if ans_id is not None:
+                    ans.append(ans_id)
         post_quest = post_quest[::-1]
         ans = ans[::-1]
         ans2 = {}
