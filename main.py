@@ -92,7 +92,20 @@ def new_like(user_id, post_id, ret_href):
 @app.route('/publications', methods=['GET', 'POST'])
 def publications():
     session = db_session.create_session()
-    fresh_posts = session.query(DiaryPost).filter(DiaryPost.public == 1).all()[::-1]
+    fresh_posts_betta = session.query(DiaryPost).filter(DiaryPost.public == 1).all()[::-1]
+    day, posts = 7, 20
+    fresh_posts = []
+    for i in fresh_posts_betta:
+        copy_pos = fresh_posts_betta[::]
+        if abs((i.date - datetime.datetime.now()).days) <= day:
+            fresh_posts.append(copy_pos.pop(copy_pos.index(i)))
+    while len(fresh_posts) < posts < len(fresh_posts) + len(fresh_posts_betta):
+        copy_pos = fresh_posts_betta[::]
+        day += 1
+        posts -= 5
+        for i in fresh_posts_betta:
+            if abs((i.date - datetime.datetime.now()).days) <= day:
+                fresh_posts.append(copy_pos.pop(copy_pos.index(i)))
     emotion_fresh = []
     for i in fresh_posts:
         emotion = {id: i.id, 'pos_emot': [], 'nig_emot': [], 'link': [],
