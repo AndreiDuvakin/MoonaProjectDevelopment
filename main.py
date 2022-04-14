@@ -181,6 +181,13 @@ def add_question():
 def post_edit(id):
     global photo
     post_ed = AddPost()
+    ph_f = False
+    if post_ed.del_photo.data:
+        session = db_session.create_session()
+        post_exc = session.query(DiaryPost).filter(DiaryPost.id == id,
+                                                   DiaryPost.author == current_user.id).first()
+        post_exc.photo = None
+        session.commit()
     if request.method == "GET":
         session = db_session.create_session()
         post_exc = session.query(DiaryPost).filter(DiaryPost.id == id,
@@ -194,11 +201,12 @@ def post_edit(id):
             post_ed.link.data = post_exc.link
             if post_exc.photo:
                 photo = post_exc.photo
+                ph_f = True
             else:
                 photo = None
         else:
             abort(404)
-    if post_ed.validate_on_submit():
+    if post_ed.validate_on_submit() and not post_ed.del_photo.data:
         session = db_session.create_session()
         post_exc = session.query(DiaryPost).filter(DiaryPost.id == id,
                                                    DiaryPost.author == current_user.id).first()
@@ -210,14 +218,14 @@ def post_edit(id):
             post_exc.nig_emot = post_ed.nig_emot.data
             post_exc.link = post_ed.link.data
             if post_ed.photo.data:
-                post_exc.photo = save_photo(post_ed.photo, current_user.login, post=True, id_post=post_exc.id)
+                post_exc.photo = save_photo(post_ed.photo.data, current_user.login, post=True, id_post=post_exc.id)
             else:
                 post_exc.photo = photo
             session.commit()
             return redirect('/diary')
         else:
             abort(404)
-    return render_template('post.html', form=post_ed, message='', title='Изменить запись')
+    return render_template('post.html', form=post_ed, message='', title='Изменить запись', pht=ph_f)
 
 
 @app.route('/post_deleted/<int:id>', methods=['GET', 'POST'])

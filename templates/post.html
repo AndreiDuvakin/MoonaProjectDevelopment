@@ -29,6 +29,9 @@
         </div>
         {% endfor %}
         </p>
+        {% if pht %}
+        {{ form.del_photo(type="submit", class="btn btn-primary") }}
+        {% else %}
         <p>
             {{ form.photo.label }}<br>
             {{ form.photo(class="form-control") }}<br>
@@ -38,6 +41,7 @@
         </div>
         {% endfor %}
         </p>
+        {% endif %}
         <p>
             {{ form.pos_emot.label }}<br>
             {{ form.pos_emot(class="form-control") }}<br>
@@ -66,8 +70,8 @@
         {% endfor %}
         </p>
         <p>
-            <div class="box">{{ form.public(class="form-check-input")}} {{ form.public.label }}<br></div>
-            {% for error in form.public.errors %}
+        <div class="box">{{ form.public(class="form-check-input")}} {{ form.public.label }}<br></div>
+        {% for error in form.public.errors %}
         <div class="alert alert-danger" role="alert">
             {{ error }}
         </div>

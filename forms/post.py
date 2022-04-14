@@ -13,3 +13,4 @@ class AddPost(FlaskForm):
     link = TextAreaField('Вы можете оставить тут ссылки через пробел')
     public = BooleanField('Опубликовать?')
     submit = SubmitField('Сохранить')
+    del_photo = SubmitField('Удалить фотографию')
