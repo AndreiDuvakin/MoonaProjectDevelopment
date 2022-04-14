@@ -11,7 +11,6 @@ from data import db_session
 from data.answer_quest import Answer
 from data.diary_post import DiaryPost
 from data.like import Like
-from data.dislike import Dislike
 from data.questions import Quest
 from data.users import User
 from forms.add_question import AddQuest
@@ -72,28 +71,22 @@ def main_page():
     return render_template('base.html', title='moona')
 
 
-@app.route('/new_dislike/<int:user_id>/<int:post_id>/<string:ret_href>')
-def new_dislike(user_id, post_id, ret_href):
-    session = db_session.create_session()
-    dislike = Dislike()
-    dislike.user = user_id
-    dislike.post = post_id
-    dislike.date = datetime.datetime.now()
-    session.add(dislike)
-    session.commit()
-    return redirect(f"/{ret_href}")
-
-
 @app.route('/new_like/<int:user_id>/<int:post_id>/<string:ret_href>')
 def new_like(user_id, post_id, ret_href):
     session = db_session.create_session()
-    like = Like()
-    like.user = user_id
-    like.post = post_id
-    like.date = datetime.datetime.now()
-    session.add(like)
-    session.commit()
-    return redirect(f"/{ret_href}")
+    find = session.query(Like).filter(Like.post == post_id, Like.user == user_id).first()
+    if find:
+        session.delete(find)
+        session.commit()
+        return redirect(f"/{ret_href}")
+    else:
+        like = Like()
+        like.user = user_id
+        like.post = post_id
+        like.date = datetime.datetime.now()
+        session.add(like)
+        session.commit()
+        return redirect(f"/{ret_href}")
 
 
 @app.route('/publications', methods=['GET', 'POST'])
@@ -103,7 +96,7 @@ def publications():
     emotion_fresh = []
     for i in fresh_posts:
         emotion = {id: i.id, 'pos_emot': [], 'nig_emot': [], 'link': [],
-                   'author': session.query(User).filter(User.id == i.author).first()}
+                   'author': session.query(User).filter(User.id == i.author).first(), 'like': None, 'is_like': 0}
         if i.pos_emot:
             emotion['pos_emot'] = i.pos_emot.split()
         else:
@@ -116,6 +109,11 @@ def publications():
             emotion['link'] = i.link.split()
         else:
             emotion['link'] = None
+        like = session.query(Like).filter(Like.post == i.id).all()
+        if like:
+            emotion['like'] = len(like)
+        if session.query(Like).filter(Like.post == i.id, Like.user == current_user.id).first():
+            emotion['is_like'] = 1
         emotion_fresh.append(emotion)
     return render_template('publications.html', fresh_post=fresh_posts, emotion_fresh=emotion_fresh, title='moona')
 
@@ -287,7 +285,7 @@ def diary():
         pub_post = pub_post[::-1]
         emotion_pub = []
         for i in pub_post:
-            emotion = {id: i.id, 'pos_emot': [], 'nig_emot': [], 'link': [], 'like': None, 'dislike': None}
+            emotion = {id: i.id, 'pos_emot': [], 'nig_emot': [], 'link': [], 'like': None, 'is_like': 0}
             if i.pos_emot:
                 emotion['pos_emot'] = i.pos_emot.split()
             else:
@@ -302,10 +300,9 @@ def diary():
                 emotion['link'] = None
             like = db_sess.query(Like).filter(Like.post == i.id).all()
             if like:
-                emotion['like'] = like
-            dislike = db_sess.query(Like).filter(Like.post == i.id).all()
-            if like:
-                emotion['dislike'] = dislike
+                emotion['like'] = len(like)
+            if db_sess.query(Like).filter(Like.post == i.id, Like.user == current_user.id).first():
+                emotion['is_like'] = 1
             emotion_pub.append(emotion)
         lis_emotion = []
         for i in posts:

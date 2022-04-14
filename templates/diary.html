@@ -78,27 +78,19 @@
                     приватная
                 </div>
                 {% endif %}
-                <form>
-                    <table class="like">
-                        <th class="like_block">
-                            <div class="div_like">
-                                <a type="button"
-                                   href="/new_like/{{current_user.id}}/{{item.id}}/diary">
-                                    <img src="../static/img/like.png" width="50" height="50"
-                                         style="margin-left: auto;margin-right: auto;">
-                                </a></div>
-                        </th>
-                        <th class="dislike_block">
-                            <div class="div_dislike">
-                                <a type="button" class="dislike"
-                                   href="/new_dislike/{{current_user.id}}/{{item.id}}/diary">
-                                    <img src="../static/img/dislike.png" width="50" height="50"
-                                         style="margin-left: auto;margin-right: auto;">
-                                </a>
-                            </div>
-                        </th>
-                    </table>
-                </form>
+                <div class="like">
+                    <a type="button"
+                       href="/new_like/{{current_user.id}}/{{item.id}}/diary">
+                        {% if emotion_pub[loop.index0]['is_like'] %}
+                        <img src="../static/img/like_add.png" width="117" height="100">
+                        {% else %}
+                        <img src="../static/img/like.png" width="94" height="80">
+                        {% endif %}
+                    </a>
+                    {% if emotion_pub[loop.index0]['like'] != None %}
+                    <p style="color:#ffffff">{{emotion_pub[loop.index0]['like']}}</p>
+                    {% endif %}
+                </div>
                 <div class="my_author"><img src="../{{ current_user.photo }}" width="40" height="40"
                                             style="border-radius: 22px">
                     <strong style="color: #ffffff">{{ current_user.name }}</strong>
@@ -198,9 +190,8 @@
                     приватная
                 </div>
                 {% endif %}
-                <div class="my_author" style="style=position:absolute; width:148px; height:44px; left:255px; -webkit-border-radius:
-             22px;-moz-border-radius: 22px;border-radius: 22px; border:2px solid #FFFFFF; background-color:#1daff0; top:
-             98px;"><img src="../{{ current_user.photo }}" width="40" height="40" style="border-radius: 22px">
+                <div class="my_author"><img src="../{{ current_user.photo }}" width="40" height="40"
+                                            style="border-radius: 22px">
                     <strong style="color: #ffffff">{{ current_user.name }}</strong>
                 </div>
                 <strong style="color:#ffffff">{{item.date}}</strong>
