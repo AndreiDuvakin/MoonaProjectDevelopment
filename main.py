@@ -112,8 +112,9 @@ def publications():
         like = session.query(Like).filter(Like.post == i.id).all()
         if like:
             emotion['like'] = len(like)
-        if session.query(Like).filter(Like.post == i.id, Like.user == current_user.id).first():
-            emotion['is_like'] = 1
+        if current_user.is_authenticated:
+            if session.query(Like).filter(Like.post == i.id, Like.user == current_user.id).first():
+                emotion['is_like'] = 1
         emotion_fresh.append(emotion)
     return render_template('publications.html', fresh_post=fresh_posts, emotion_fresh=emotion_fresh, title='moona')
 

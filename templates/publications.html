@@ -56,6 +56,7 @@
                 </div>
                 <p></p>
                 {% endif %}
+                {% if current_user.is_authenticated %}
                 <div class="like">
                     <a type="button"
                        href="/new_like/{{current_user.id}}/{{item.id}}/publications">
@@ -69,6 +70,7 @@
                     <p style="color:#ffffff">{{emotion_fresh[loop.index0]['like']}}</p>
                     {% endif %}
                 </div>
+                {% endif %}
                 {% if emotion_fresh[loop.index0]['link'] != None %}
                 <details>
                     <summary class="emot_block">
