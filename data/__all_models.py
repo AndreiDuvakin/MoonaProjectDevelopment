@@ -1,1 +1,1 @@
-from . import users, diary_post, questions, answer_quest, like
+from . import users, diary_post, questions, answer_quest, like, popularity

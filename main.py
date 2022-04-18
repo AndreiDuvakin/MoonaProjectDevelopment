@@ -11,6 +11,7 @@ from data import db_session
 from data.answer_quest import Answer
 from data.diary_post import DiaryPost
 from data.like import Like
+from data.popularity import Popularity
 from data.questions import Quest
 from data.users import User
 from forms.add_question import AddQuest
@@ -76,10 +77,28 @@ def new_like(user_id, post_id, ret_href):
     session = db_session.create_session()
     find = session.query(Like).filter(Like.post == post_id, Like.user == user_id).first()
     if find:
+        if (find.date - datetime.datetime.now()).days <= 30:
+            pop = session.query(Popularity).filter(Popularity.post == post_id).first()
+            pop.popularity = 10 * sum(1 if (i.date - datetime.datetime.now()).days <= 30 else 0 for i in
+                                      session.query(Like).filter(Like.post == post_id).all()) - 10
+            if not pop.popularity:
+                session.delete(pop)
         session.delete(find)
         session.commit()
         return redirect(f"/{ret_href}")
     else:
+        popular = session.query(Popularity).filter(Popularity.post == post_id).first()
+        if not popular:
+            pop = Popularity()
+            pop.post = post_id
+            pop.popularity = 10
+            pop.edit_date = datetime.datetime.now()
+            session.add(pop)
+        else:
+            if (find.date - datetime.datetime.now()).day <= 30:
+                pop = session.query(Popularity).filter(Popularity.post == post_id).first()
+                pop.popularity = 10 * sum(1 if (i.date - datetime.datetime.now()).day <= 30 else 0 for i in
+                                          session.query(Like).filter(Like.post == post_id).all()) + 10
         like = Like()
         like.user = user_id
         like.post = post_id
@@ -107,29 +126,62 @@ def publications():
             if abs((i.date - datetime.datetime.now()).days) <= day:
                 fresh_posts.append(copy_pos.pop(copy_pos.index(i)))
     emotion_fresh = []
-    for i in fresh_posts:
-        emotion = {id: i.id, 'pos_emot': [], 'nig_emot': [], 'link': [],
-                   'author': session.query(User).filter(User.id == i.author).first(), 'like': None, 'is_like': 0}
-        if i.pos_emot:
-            emotion['pos_emot'] = i.pos_emot.split()
-        else:
-            emotion['pos_emot'] = None
-        if i.nig_emot:
-            emotion['nig_emot'] = i.nig_emot.split()
-        else:
-            emotion['nig_emot'] = None
-        if i.link:
-            emotion['link'] = i.link.split()
-        else:
-            emotion['link'] = None
-        like = session.query(Like).filter(Like.post == i.id).all()
-        if like:
-            emotion['like'] = len(like)
-        if current_user.is_authenticated:
-            if session.query(Like).filter(Like.post == i.id, Like.user == current_user.id).first():
-                emotion['is_like'] = 1
-        emotion_fresh.append(emotion)
-    return render_template('publications.html', fresh_post=fresh_posts, emotion_fresh=emotion_fresh, title='moona')
+    if fresh_posts:
+        for i in fresh_posts:
+            emotion = {id: i.id, 'pos_emot': [], 'nig_emot': [], 'link': [],
+                       'author': session.query(User).filter(User.id == i.author).first(), 'like': None, 'is_like': 0}
+            if i.pos_emot:
+                emotion['pos_emot'] = i.pos_emot.split()
+            else:
+                emotion['pos_emot'] = None
+            if i.nig_emot:
+                emotion['nig_emot'] = i.nig_emot.split()
+            else:
+                emotion['nig_emot'] = None
+            if i.link:
+                emotion['link'] = i.link.split()
+            else:
+                emotion['link'] = None
+            like = session.query(Like).filter(Like.post == i.id).all()
+            if like:
+                emotion['like'] = len(like)
+            if current_user.is_authenticated:
+                if session.query(Like).filter(Like.post == i.id, Like.user == current_user.id).first():
+                    emotion['is_like'] = 1
+            emotion_fresh.append(emotion)
+    pop = sorted(session.query(Popularity).all(), key=lambda x: x.popularity, reverse=True)
+    if pop:
+        if len(pop) > 50:
+            pop = pop[:50]
+        pop_post = [session.query(DiaryPost).filter(DiaryPost.public == 1, DiaryPost.id == i.post).first() for i in pop]
+        emotion_pop = []
+        for i in pop_post:
+            emotion = {id: i.id, 'pos_emot': [], 'nig_emot': [], 'link': [],
+                       'author': session.query(User).filter(User.id == i.author).first(), 'like': None, 'is_like': 0}
+            if i.pos_emot:
+                emotion['pos_emot'] = i.pos_emot.split()
+            else:
+                emotion['pos_emot'] = None
+            if i.nig_emot:
+                emotion['nig_emot'] = i.nig_emot.split()
+            else:
+                emotion['nig_emot'] = None
+            if i.link:
+                emotion['link'] = i.link.split()
+            else:
+                emotion['link'] = None
+            like = session.query(Like).filter(Like.post == i.id).all()
+            if like:
+                emotion['like'] = len(like)
+            if current_user.is_authenticated:
+                if session.query(Like).filter(Like.post == i.id, Like.user == current_user.id).first():
+                    emotion['is_like'] = 1
+            emotion_pop.append(emotion)
+    else:
+        pop_post = []
+        emotion_pop = []
+    return render_template('publications.html', fresh_post=fresh_posts, emotion_fresh=emotion_fresh, title='moona',
+                           pop_post=pop_post, emotion_pop=emotion_pop)
 
 
 @app.route('/answer_quest/<int:id>', methods=['GET', 'POST'])
