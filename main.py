@@ -1,6 +1,6 @@
 import datetime
 import os
-from random import randint
+from random import randint, choices
 
 from flask import Flask, render_template, request
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
@@ -180,8 +180,38 @@ def publications():
     else:
         pop_post = []
         emotion_pop = []
+    for_you = sorted(session.query(DiaryPost).filter(DiaryPost.public == 1).all(),
+                     key=lambda x: (len(x.text), 1 if x.photo else 0, -(x.date - datetime.datetime.now()).days))
+    if len(for_you) > 50:
+        for_you_post = choices(for_you, k=50)
+    else:
+        for_you_post = set(for_you)
+    emotion_for_you = []
+    for i in for_you_post:
+        emotion = {id: i.id, 'pos_emot': [], 'nig_emot': [], 'link': [],
+                   'author': session.query(User).filter(User.id == i.author).first(), 'like': None, 'is_like': 0}
+        if i.pos_emot:
+            emotion['pos_emot'] = i.pos_emot.split()
+        else:
+            emotion['pos_emot'] = None
+        if i.nig_emot:
+            emotion['nig_emot'] = i.nig_emot.split()
+        else:
+            emotion['nig_emot'] = None
+        if i.link:
+            emotion['link'] = i.link.split()
+        else:
+            emotion['link'] = None
+        like = session.query(Like).filter(Like.post == i.id).all()
+        if like:
+            emotion['like'] = len(like)
+        if current_user.is_authenticated:
+            if session.query(Like).filter(Like.post == i.id, Like.user == current_user.id).first():
+                emotion['is_like'] = 1
+        emotion_for_you.append(emotion)
     return render_template('publications.html', fresh_post=fresh_posts, emotion_fresh=emotion_fresh, title='moona',
-                           pop_post=pop_post, emotion_pop=emotion_pop)
+                           pop_post=pop_post, emotion_pop=emotion_pop, for_you_post=for_you_post,
+                           emotion_for_you=emotion_for_you)
 
 
 @app.route('/answer_quest/<int:id>', methods=['GET', 'POST'])
