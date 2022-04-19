@@ -123,10 +123,12 @@ textarea {
 }
 table {
     margin-left: 5%;
-    width: 90%;
 }
 .like {
 width: 50%;
 margin-left: auto;
   margin-right: auto;
+}
+#row1_div, #row2_div, #row3_div {
+width: 90%;
 }
