@@ -95,27 +95,19 @@ textarea {
 .box {
     margin-left: 20px;
 }
-#row2, #row1 {
+#row2, #row1, #all_my_question {
     width: 30%;
-}
-#row1, #row2, #all_my_question {
     display:inline-block;
     vertical-align: top;
-}
-#all_my_question {
-    width: 30%;
-    height: -100%;
-}
-.question, .my_post {
     background-color:#7fc3ff;
     border-radius: 22px;
-    width: 90%;
     margin-left: 10px;
 }
 .is_ans {
     background-color:#ddefff;
     border:2px solid #ffffff;
     border-radius: 25px;
+    width: 380px;
 }
 .emot_block {
     color: #ffffff;
@@ -126,7 +118,10 @@ table {
     width: 90%;
 }
 .like {
-width: 50%;
-margin-left: auto;
-  margin-right: auto;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+td {
+    margin: 20px;
 }
