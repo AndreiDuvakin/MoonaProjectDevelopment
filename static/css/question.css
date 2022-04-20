@@ -4,7 +4,9 @@
     width: 50%;
 }
 .add_q {
-    width: 50%;
+    width: 80%;
+    margin-left: 10%;
+    margin-right: auto;
 }
 .h_q {
     text-align: center;
@@ -13,4 +15,8 @@ form {
     width: 60%;
     margin-left: auto;
     margin-right: auto;
+}
+.btn_sm {
+text-align: center;
+border-radius: 25px;
 }

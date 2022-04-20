@@ -209,7 +209,7 @@ def publications():
             if session.query(Like).filter(Like.post == i.id, Like.user == current_user.id).first():
                 emotion['is_like'] = 1
         emotion_for_you.append(emotion)
-    return render_template('publications.html', fresh_post=fresh_posts, emotion_fresh=emotion_fresh, title='moona',
+    return render_template('publications.html', fresh_post=fresh_posts, emotion_fresh=emotion_fresh, title='Публикации',
                            pop_post=pop_post, emotion_pop=emotion_pop, for_you_post=for_you_post,
                            emotion_for_you=emotion_for_you)
 
@@ -453,7 +453,7 @@ def diary():
         lis_emotion = None
         emotion_pub = None
         pub_post = None
-    return render_template('diary.html', title='moona', my_post=posts, message='', question=post_quest,
+    return render_template('diary.html', title='Дневник', my_post=posts, message='', question=post_quest,
                            ans=ans2, emotion=lis_emotion, emotion_pub=emotion_pub, pub_post=pub_post)
 
 
@@ -590,9 +590,11 @@ def recovery():
 def about():
     return render_template('about.html', title='О нас')
 
-@app.route('/profil')
-def profil():
+
+@app.route('/profile')
+def profile():
     return render_template('profil.html', title='Профиль')
+
 
 def main():
     db_session.global_init("db/moona_data.db")

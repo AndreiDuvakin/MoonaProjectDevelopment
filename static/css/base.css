@@ -4,3 +4,9 @@
 body {
   font-family: 'Comfortaa', cursive;
 }
+.upp_zag {
+margin-left: auto;
+  margin-right: auto;
+text-align: center;
+margin-top: 50px;
+}

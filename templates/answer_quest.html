@@ -25,7 +25,7 @@
         </div>
         {% endfor %}
         </p>
-        <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+        <p class="btn_sm">{{ form.submit(type="submit", class="btn btn-primary btn_sm") }}</p>
         {% if message != '' %}
         <div class="alert alert-danger" role="alert">{{ message }}</div>
         {% endif %}
