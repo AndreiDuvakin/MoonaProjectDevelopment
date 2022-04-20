@@ -11,7 +11,7 @@ class RegisterForm(FlaskForm):
     login = StringField('Логин', validators=[DataRequired()])
     age = IntegerField('Возраст', validators=[DataRequired()])
     about = TextAreaField('Расскажите о себе', default='')
-    photo = FileField('Фото', validators=[FileAllowed(['jpg', 'png'])])
+    photo = FileField('Фото', validators=[FileAllowed(['jpg', 'png'], 'Images only!')])
     password = PasswordField('Пароль', validators=[DataRequired()])
     password2 = PasswordField('Повторите пароль', validators=[DataRequired()])
     submit = SubmitField('Регистрация')

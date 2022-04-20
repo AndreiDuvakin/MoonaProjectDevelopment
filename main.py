@@ -275,14 +275,12 @@ def add_question():
 @app.route('/post/<int:id>', methods=['GET', 'POST'])
 def post_edit(id):
     global photo
+    global help_arg
     post_ed = AddPost()
     ph_f = False
     if post_ed.del_photo.data:
-        session = db_session.create_session()
-        post_exc = session.query(DiaryPost).filter(DiaryPost.id == id,
-                                                   DiaryPost.author == current_user.id).first()
-        post_exc.photo = None
-        session.commit()
+        help_arg = photo
+        photo = None
     if request.method == "GET":
         session = db_session.create_session()
         post_exc = session.query(DiaryPost).filter(DiaryPost.id == id,
@@ -312,6 +310,9 @@ def post_edit(id):
             post_exc.pos_emot = post_ed.pos_emot.data
             post_exc.nig_emot = post_ed.nig_emot.data
             post_exc.link = post_ed.link.data
+            if help_arg:
+                os.remove(help_arg[3:])
+                help_arg = False
             if post_ed.photo.data:
                 post_exc.photo = save_photo(post_ed.photo.data, current_user.login, post=True, id_post=post_exc.id)
             else:
