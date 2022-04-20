@@ -590,6 +590,9 @@ def recovery():
 def about():
     return render_template('about.html', title='О нас')
 
+@app.route('/profil')
+def profil():
+    return render_template('profil.html', title='Профиль')
 
 def main():
     db_session.global_init("db/moona_data.db")

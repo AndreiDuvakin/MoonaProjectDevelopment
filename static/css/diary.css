@@ -116,6 +116,7 @@ textarea {
     background-color:#ddefff;
     border:2px solid #ffffff;
     border-radius: 25px;
+    width: 380px;
 }
 .emot_block {
     color: #ffffff;
@@ -123,12 +124,16 @@ textarea {
 }
 table {
     margin-left: 5%;
+    width: 90%;
 }
 .like {
-width: 50%;
-margin-left: auto;
-  margin-right: auto;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
 }
 #row1_div, #row2_div, #row3_div {
 width: 90%;
+}
+td {
+    margin: 20px;
 }
