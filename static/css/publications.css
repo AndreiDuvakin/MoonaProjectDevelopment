@@ -1,6 +1,7 @@
 table {
-margin-left: 20px;
+margin-left: 10%;
   margin-right: auto;
+  width: 90%;
 }
 #row1, #row2, #row3 {
 width: 32%;

@@ -224,7 +224,7 @@
             <div class="my_post">
                 <div class="question">
                     {% for item in question %}
-                    <a href="/answer_quest/{{item.id}}" class="btn">
+                    <a href="/answer_quest/{{item.id}}" class="btn quest_block">
                         {% if item.id in ans %}
                         <div class="is_ans">
                             <strong>{{item.quest}}</strong>
