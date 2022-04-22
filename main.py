@@ -72,6 +72,36 @@ def main_page():
     return render_template('base.html', title='moona')
 
 
+@app.route('/profile')
+def profile():
+    db_sess = db_session.create_session()
+    pub_post = db_sess.query(DiaryPost).filter(DiaryPost.author == current_user.id, DiaryPost.public == 1).all()
+    pub_post = pub_post[::-1]
+    emotion_pub = []
+    for i in pub_post:
+        emotion = {id: i.id, 'pos_emot': [], 'nig_emot': [], 'link': [], 'like': None, 'is_like': 0,
+                   'author': current_user}
+        if i.pos_emot:
+            emotion['pos_emot'] = i.pos_emot.split()
+        else:
+            emotion['pos_emot'] = None
+        if i.nig_emot:
+            emotion['nig_emot'] = i.nig_emot.split()
+        else:
+            emotion['nig_emot'] = None
+        if i.link:
+            emotion['link'] = i.link.split()
+        else:
+            emotion['link'] = None
+        like = db_sess.query(Like).filter(Like.post == i.id).all()
+        if like:
+            emotion['like'] = len(like)
+        if db_sess.query(Like).filter(Like.post == i.id, Like.user == current_user.id).first():
+            emotion['is_like'] = 1
+        emotion_pub.append(emotion)
+    return render_template('profile.html', title='Профиль', pub_post=pub_post, emotion_pub=emotion_pub)
+
+
 @app.route('/new_like/<int:user_id>/<int:post_id>/<string:ret_href>')
 def new_like(user_id, post_id, ret_href):
     session = db_session.create_session()
@@ -590,11 +620,6 @@ def recovery():
 @app.route('/about_us')
 def about():
     return render_template('about.html', title='О нас')
-
-
-@app.route('/profile')
-def profile():
-    return render_template('profil.html', title='Профиль')
 
 
 def main():
