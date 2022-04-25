@@ -14,8 +14,11 @@
                 </h5>
                 {% endif %}
                 <div>
-                    <a href="/edit_profile/{{current_user.id}}" type="submit" class="btn btn-primary"
+                    <a href="/edit_profile/{{current_user.login}}" type="submit" class="btn btn-primary"
                        style="background-color:#38aaff">Редактировать профиль</a>
+                    <a style="border-radius: 15px;" href="/logout" class="btn btn-danger logout_btn">
+                        Выйти
+                    </a>
                 </div>
             </th>
             <th class="row_centre">

@@ -44,3 +44,8 @@ table {
     margin-right: auto;
     margin-left: auto;
 }
+.logout_btn {
+    width: 96%;
+    margin-right: 2%;
+    margin-left: 2%;
+}

@@ -72,6 +72,48 @@ def main_page():
     return render_template('base.html', title='moona')
 
 
+@app.route('/edit_profile/<string:logins>', methods=['GET', 'POST'])
+def edit_profile(logins):
+    global photo
+    global help_arg
+    form = RegisterForm()
+    session = db_session.create_session()
+    ph_f = False
+    if form.del_photo.data:
+        help_arg = photo
+        photo = '../static/img/None_logo.png'
+    if form.submit2.data:
+        user = session.query(User).filter(User.login == logins).first()
+        user.name = form.name.data
+        user.surname = form.surname.data
+        user.age = form.age.data
+        user.about = form.about.data
+        if not ph_f and form.photo.data:
+            photo = save_photo(form.photo.data, logins)
+        if help_arg:
+            os.remove(help_arg)
+            help_arg = False
+        user.photo = photo
+        session.commit()
+        return redirect('/profile')
+    if request.method == "GET":
+        if current_user.login == logins:
+            form.email.data = current_user.email
+            form.name.data = current_user.name
+            form.surname.data = current_user.surname
+            form.login.data = logins
+            form.age.data = current_user.age
+            form.about.data = current_user.about
+            form.password.data = None
+            form.password2.data = None
+            if current_user.photo != '../static/img/None_logo.png':
+                photo = current_user.photo
+                ph_f = True
+            else:
+                photo = None
+    return render_template('edit_profile.html', title='Редактирование профиля', form=form, message='', ph_f=ph_f)
+
+
 @app.route('/profile')
 def profile():
     db_sess = db_session.create_session()
@@ -523,7 +565,6 @@ def confirmation():
     if not send_msg:
         secret_code = secret_key()
         mail(f'Ваш секретный код: {secret_code}', form.email.data, 'Moona Код')
-        print(secret_code)
         send_msg = True
     if conf.validate_on_submit():
         if str(conf.code_key.data).strip() == str(secret_code).strip():
@@ -575,6 +616,10 @@ def register():
             return render_template('register.html', title='Регистрация',
                                    form=form,
                                    message="Такой пользователь уже есть")
+        if session.query(User).filter(User.email == form.email.data).first():
+            return render_template('register.html', title='Регистрация',
+                                   form=form,
+                                   message="Такая почта уже есть")
         help_arg = form
         if form.photo.data:
             photo = save_photo(form.photo.data, form.login.data)
@@ -596,7 +641,7 @@ def recovery():
         user_email = form.email.data
         if not send_msg:
             secret_code = secret_key()
-            mail(f'Ваш секретный код: {secret_code}', form.email.data, 'Moona Код')
+            mail(f'Ваш секретный код: {secret_code}', form.email.data, 'Восстановление пароля')
             send_msg = True
             print(secret_code)
             return render_template('recovery.html', title='Восстановление пароля', form=conf, message='', s='2')

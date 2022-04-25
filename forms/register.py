@@ -15,6 +15,8 @@ class RegisterForm(FlaskForm):
     password = PasswordField('Пароль', validators=[DataRequired()])
     password2 = PasswordField('Повторите пароль', validators=[DataRequired()])
     submit = SubmitField('Регистрация')
+    del_photo = SubmitField('Удалить фотографию')
+    submit2 = SubmitField('Сохранить')
 
 
 class Confirmation(FlaskForm):
