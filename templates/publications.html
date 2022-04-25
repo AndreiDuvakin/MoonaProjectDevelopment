@@ -3,17 +3,23 @@
 
 {% block content %}
 {% if current_user.is_authenticated %}
-<h1 class="upp_zag">Публикации</h1>
-<div>
-    <a href="/add_post" id="add_post" class="btn btn-primary"
-       style="background-color:#1daff0;border-radius: 15px;"><strong>Добавить
-        запись</strong></a>
-</div>
+<table class="but">
+    <tr>
+        <td style="width: 110%;">
+            <h1 class="upp_zag">Публикации</h1>
+        </td>
+        <td>
+            <a href="/add_post" id="add_post" class="btn btn-primary"
+               style="background-color:#1daff0;border-radius: 15px;"><strong>Добавить
+                запись</strong></a>
+        </td>
+    </tr>
+</table>
 {% endif %}
 <table>
     <td id="row1">
         <div id="row1_div">
-            <h1 class="post_zag">Популярное</h1>
+            <h2 class="post_zag">Популярное</h2>
             <div class="fresh_block" id="pop">
                 {% if pop_post != [] %}
                 {% for item in pop_post %}
@@ -21,7 +27,7 @@
                     <details>
                         <summary>
                             {% if item.name != None %}
-                            <h2 class="card-title post_zag" style="color:#c5f1ff">{{item.name}}</h2>
+                            <h3 class="card-title post_zag" style="color:#c5f1ff">{{item.name}}</h3>
                             {% endif %}
                         </summary>
                         {% if item.text != None %}
@@ -108,14 +114,14 @@
             </div>
             {% else %}
             <div class="bad_centre" style="background-color:#1daff0; border-radius: 22px;color:#ffffff">
-                <h1 class="hz1">Ничего не нашлось :с</h1>
+                <p class="hz1">Ничего не нашлось :с</p>
             </div>
             {% endif %}
         </div>
     </td>
     <td id="row2">
         <div id="row2_div">
-            <h1 class="post_zag">Свежее</h1>
+            <h2 class="post_zag">Свежее</h2>
             <div class="fresh_block" id="fresh">
                 {% if fresh_post != [] %}
                 {% for item in fresh_post %}
@@ -123,7 +129,7 @@
                     <details>
                         <summary>
                             {% if item.name != None %}
-                            <h2 class="card-title post_zag" style="color:#c5f1ff">{{item.name}}</h2>
+                            <h3 class="card-title post_zag" style="color:#c5f1ff">{{item.name}}</h3>
                             {% endif %}
                         </summary>
                         {% if item.text != None %}
@@ -210,21 +216,21 @@
             </div>
             {% else %}
             <div class="bad_centre" style="background-color:#1daff0; border-radius: 22px;color:#ffffff">
-                <h1 class="hz1">Ничего не нашлось :с</h1>
+                <p class="hz1">Ничего не нашлось :с</p>
             </div>
             {% endif %}
         </div>
     </td>
     <td id="row3">
         <div id="row3_div">
-            <h1 class="post_zag">Для вас</h1>
+            <h2 class="post_zag">Для вас</h2>
             {% if for_me_post != [] %}
             {% for item in for_you_post %}
             <div class="card-body post">
                 <details>
                     <summary>
                         {% if item.name != None %}
-                        <h2 class="card-title post_zag" style="color:#c5f1ff">{{item.name}}</h2>
+                        <h3 class="card-title post_zag" style="color:#c5f1ff">{{item.name}}</h3>
                         {% endif %}
                     </summary>
                     {% if item.text != None %}
@@ -311,7 +317,7 @@
         </div>
         {% else %}
         <div class="bad_centre" style="background-color:#1daff0; border-radius: 22px;color:#ffffff">
-            <h1 class="hz1">Ничего не нашлось :с</h1>
+            <p class="hz1">Ничего не нашлось :с</p>
         </div>
         {% endif %}
         </div>

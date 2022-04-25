@@ -1,34 +1,41 @@
+.but {
+    width: 80%;
+}
 table {
-margin-left: 10%;
-  margin-right: auto;
-  width: 90%;
+    margin-left: 10%;
+    margin-right: auto;
+    width: 90%;
 }
 #row1, #row2, #row3 {
-width: 32%;
-display:inline-block;
+    width: 33%;
+    display:inline-block;
     vertical-align: top;
     margin-top: 39px;
 }
 #row1_div, #row2_div, #row3_div {
-width: 90%;
+    width: 95%;
 }
 .post_zag, .card-text, .card-body, .post_zag, .author {
-width: 90%;
-margin-left: auto;
-  margin-right: auto;
-text-align: center;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
 }
 .post {
-background-color: #7fc3ff;
-border-radius: 22px;
-width: 90%;
-height: 95%;
-margin-bottom: 20px;
+    background-color: #7fc3ff;
+    border-radius: 22px;
+    width: 90%;
+    height: 95%;
+    margin-bottom: 20px;
 }
 details {
-color: #ffffff;
+    color: #ffffff;
 }
 #add_post {
     margin-top: 20px;
     margin-left: 83%;
+}
+.hz1 {
+    margin: 5%;
+    font-size: 160%;
 }

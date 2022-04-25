@@ -3,35 +3,43 @@
 
 {% block content %}
 <div>
-    <h1 class="upp_zag">Контакты</h1>
-    <div class="contact">
-        <div class="contact_content">
-            <strong>Вы можете связаться с нами:</strong>
-            <p>По этой <a href="mailto:andreiduvakin@mail.ru">andreiduvakin@mail.ru</a>
-                <wbr>
-                или этой электронной почте <a href="mailto:moonadiary@yandex.ru">moonadiary@yandex.ru</a></p>
-            <p>Также вы можете написать нам в VK: <a href="https://vk.com/s_plombir19">Дарья</a>
-                <wbr>и
-                <a href="https://vk.com/andreiduvakin">Андрей</a></p>
-        </div>
-    </div>
-    <h1 class="upp_zag">О нас</h1>
-    <div class="obout_block">
-        <h4 class="about_text">
-            В наше время существует много личных дневников
-            для телефонов или планшетов, где вы можете изложить свои мысли, эмоции, посмотреть статистику,
-            но мы решили пойти дальше, как непосредственные пользователи таких дневников мы решили, что было бы
-            круто если бы можно было поделится частью своих мыслей, проблем, переживаний или побед.
-            <wbr>
-            moona - это такой-же личный дневник, как и остальные, но у нас есть кое, что особенное. Здесь вы можете
-            опубликовать свои записи для других пользователей, поделится своими переживаниями или личными свершениями.
-            Здесь вас всегда поймут и поддержат.
-            <wbr>
-            Мы не являемся психологами и не оказываем услуг, мы вообще не коммерческая организация, moona - это проект
-            созданный друзьями, которые верят в то, что мир можно сделать лучше, если каждый человек сможет получить
-            поддержку :з
-        </h4>
-        <img src="..\static\img\НадписьMoona.png" id="moona_img">
-    </div>
+    <table>
+        <tr>
+            <td>
+            <div class="dop">
+                <h1 class="upp_zag">О нас</h1>
+                    <div class="about_block">
+                        <p class="about_text" style="font-size: 23px">
+                            moona - это такой-же личный дневник, как и остальные, но у нас есть кое, что особенное.</p>
+                        <ul>
+                            <li><p class="about_text" style="font-size: 23px">Здесь вы можете опубликовать свои записи для других пользователей, поделится своими переживаниями или личными свершениями.</p></li>
+                            <li><p class="about_text" style="font-size: 23px">Здесь вас всегда поймут и поддержат.</p></li>
+                        </ul>
+                        <p class="about_text" style="font-size: 23px">
+                            Мы не являемся психологами и не оказываем услуг, мы вообще не коммерческая организация, moona - это проект
+                            созданный друзьями, которые верят в то, что мир можно сделать лучше, если каждый человек сможет получить
+                            поддержку :з
+                        </p>
+                    </div>
+            </div>
+        </td>
+        <td>
+            <div class="dop2">
+                <h1 class="upp_zag">Контакты</h1>
+                <div class="contact">
+                    <div class="contact_content">
+                        <strong>Вы можете связаться с нами:</strong>
+                        <p>По этой <a href="mailto:andreiduvakin@mail.ru">andreiduvakin@mail.ru</a>
+                            <wbr>
+                            или этой электронной почте <a href="mailto:moonadiary@yandex.ru">moonadiary@yandex.ru</a></p>
+                        <p>Также вы можете написать нам в VK: <a href="https://vk.com/s_plombir19">Дарья</a>
+                            <wbr>и
+                            <a href="https://vk.com/andreiduvakin">Андрей</a></p>
+                    </div>
+                </div>
+            </div>
+        </td>
+        </tr>
+    </table>
 </div>
 {% endblock %}
