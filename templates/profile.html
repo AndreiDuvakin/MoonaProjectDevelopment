@@ -30,19 +30,21 @@
         </table>
     </div>
 </div>
+{% if message != '' %}
+<div class="alert alert-danger" role="alert">{{ message }}</div>
+{% endif %}
 <div class="user_posts">
     <h1 class="post_zag">Опубликованные посты</h1>
     {% if pub_post != [] %}
     {% for item in pub_post %}
-    <div class="card-body post">
+    <div class="card-body" id="my_post1">
         <details>
-            <summary>
-                {% if item.name != None %}
-                <h2 class="card-title post_zag" style="color:#c5f1ff">{{item.name}}</h2>
+            <summary style="color:#ffffff">{% if item.name != None %}
+                <h2 class="card-title" id="my_post_zag1" style="color:#c5f1ff">{{item.name}}</h2>
                 {% endif %}
             </summary>
             {% if item.text != None %}
-            <strong class="card-text" style="color:#ffffff">{{item.text}}</strong>
+            <strong class="card-text" id="my_text1" style="color:#ffffff">{{item.text}}</strong>
             {% endif %}
         </details>
         {% if emotion_pub[loop.index0]['pos_emot'] != None %}
@@ -51,14 +53,12 @@
                 <summary class="emot_block">
                     <strong class="emot_block">Позитивные эмоции</strong>
                 </summary>
-                <p></p>
                 {% for item2 in emotion_pub[loop.index0]['pos_emot'] %}
                 <strong class="alert alert-success" role="alert"
                         style="border-radius: 22px;">{{item2}}</strong>
                 {% endfor %}
             </details>
         </div>
-        <p></p>
         {% endif %}
         {% if emotion_pub[loop.index0]['nig_emot'] != None %}
         <div class="nig_emot">
@@ -73,20 +73,29 @@
                 {% endfor %}
             </details>
         </div>
-        <p></p>
         {% endif %}
         {% if item.photo != None %}
-        <p></p>
         <div class="photo">
             <img width="90%" src="{{ item.photo }}"
                  style="border-radius: 22px;">
         </div>
-        <p></p>
         {% endif %}
-        {% if current_user.is_authenticated %}
+        {% if emotion_pub[loop.index0]['link'] != None %}
+        <details>
+            <summary class="emot_block">
+                <strong class="emot_block">Ссылки</strong>
+            </summary>
+            {% for item2 in emotion_pub[loop.index0]['link'] %}
+            <div class="link">
+                <a class="alert alert-light" role="alert" href="{{ item2 }}" style="border-radius: 22px;">Ссылка
+                    {{ loop.index }}</a>
+            </div>
+            {% endfor %}
+        </details>
+        {% endif %}
         <div class="like">
             <a type="button"
-               href="/new_like/{{current_user.id}}/{{item.id}}/profile">
+               href="/new_like/{{current_user.id}}/{{item.id}}/diary">
                 {% if emotion_pub[loop.index0]['is_like'] %}
                 <img src="../static/img/like_add.png" width="117" height="100">
                 {% else %}
@@ -97,27 +106,9 @@
             <p style="color:#ffffff">{{emotion_pub[loop.index0]['like']}}</p>
             {% endif %}
         </div>
-        {% endif %}
-        {% if emotion_pub[loop.index0]['link'] != None %}
-        <details>
-            <summary class="emot_block">
-                <strong class="emot_block">Ссылки</strong>
-            </summary>
-            <p></p>
-            {% for item2 in emotion_pub[loop.index0]['link'] %}
-            <div class="link">
-                <a class="alert alert-light" role="alert" href="{{ item2 }}" style="border-radius: 22px;">Ссылка
-                    {{ loop.index }}</a>
-            </div>
-            <p></p>
-            {% endfor %}
-        </details>
-        {% endif %}
-        <div class="author" style="style=position:absolute; width:148px; height:44px; left:255px; -webkit-border-radius:
-             22px;-moz-border-radius: 22px;border-radius: 22px; border:2px solid #FFFFFF; background-color:#1daff0; top:
-             98px;"><img src="../{{ emotion_pub[loop.index0]['author'].photo }}" width="40" height="40"
-                         style="border-radius: 22px">
-            <strong style="color: #ffffff">{{ emotion_pub[loop.index0]['author'].name }}</strong>
+        <div class="my_author"><img src="../{{ current_user.photo }}" width="40" height="40"
+                                    style="border-radius: 22px">
+            <strong style="color: #ffffff">{{ current_user.name }}</strong>
         </div>
         <strong style="color:#ffffff">{{item.date}}</strong>
     </div>

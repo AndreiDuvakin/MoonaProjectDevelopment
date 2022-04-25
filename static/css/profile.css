@@ -37,15 +37,18 @@ table {
     width: 20%;
 }
 .user_posts {
-    margin-top: 50px;
-}
-.user_posts {
     width: 35%;
     margin-right: auto;
     margin-left: auto;
+    margin-top: 50px;
 }
 .logout_btn {
     width: 96%;
     margin-right: 2%;
     margin-left: 2%;
+}
+#my_post1 {
+    background-color: #7fc3ff;
+    border-radius: 50px;
+    margin-bottom: 20px;
 }

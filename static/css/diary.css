@@ -48,9 +48,9 @@ summary {
     text-align: center;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 25px;
     background-color: #7fc3ff;
-    border-radius: 22px;
+    border-radius: 50px;
+    margin-bottom: 20px;
 }
 .my_author, .my_post_zag {
     text-align: center;
