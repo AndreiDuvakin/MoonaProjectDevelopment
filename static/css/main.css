@@ -27,7 +27,7 @@
 details {
     color: #ffffff;
 }
-table {
+#main_table {
     margin-left: 10%;
     margin-right: auto;
     width: 90%;
@@ -43,4 +43,7 @@ table {
     border:2px solid #ffffff;
     border-radius: 25px;
     width: 95%;
+}
+.but {
+    width: 80%;
 }

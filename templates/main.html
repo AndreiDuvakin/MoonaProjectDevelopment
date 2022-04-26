@@ -2,13 +2,19 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 class="upp_zag">Главная</h1>
-<div>
-    <a href="/add_post" id="add_post" class="btn btn-primary"
-       style="background-color:#1daff0;border-radius: 15px;"><strong>Добавить
-        запись</strong></a>
-</div>
-<table>
+<table class="but">
+    <tr>
+        <td style="width: 110%;">
+            <h1 class="upp_zag">Главная</h1>
+        </td>
+        <td>
+            <a href="/add_post" id="add_post" class="btn btn-primary"
+               style="background-color:#1daff0;border-radius: 15px;"><strong>Добавить
+                запись</strong></a>
+        </td>
+    </tr>
+</table>
+<table id="main_table">
     <th class="row1">
         <div class="rowdiv1">
             <h1 class="my_post_zag">Вопросы дня</h1>
