@@ -1,18 +1,14 @@
-.but {
-    width: 80%;
+#add_post {
+    margin-top: 20px;
+    margin-left: 83%;
 }
-table {
-    margin-left: 10%;
-    margin-right: auto;
-    width: 90%;
-}
-#row1, #row2, #row3 {
+.row1, .row2, .row3 {
     width: 33%;
     display:inline-block;
     vertical-align: top;
     margin-top: 39px;
 }
-#row1_div, #row2_div, #row3_div {
+.rowdiv1, .rowdiv2, .rowdiv3 {
     width: 95%;
 }
 .post_zag, .card-text, .card-body, .post_zag, .author {
@@ -31,10 +27,20 @@ table {
 details {
     color: #ffffff;
 }
-#add_post {
-    margin-top: 20px;
-    margin-left: 83%;
+table {
+    margin-left: 10%;
+    margin-right: auto;
+    width: 90%;
 }
-.hz1 {
-    margin: 5%;
-    font-size: 160%;
+.question {
+    background-color:#7fc3ff;
+    border-radius: 22px;
+    width: 90%;
+    margin-left: 10px;
+}
+.is_ans {
+    background-color:#ddefff;
+    border:2px solid #ffffff;
+    border-radius: 25px;
+    width: 95%;
+}

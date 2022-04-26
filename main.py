@@ -70,7 +70,89 @@ def load_user(user_id):
 
 @app.route('/')
 def main_page():
-    return render_template('base.html', title='moona')
+    session = db_session.create_session()
+    for_you = sorted(session.query(DiaryPost).filter(DiaryPost.public == 1).all(),
+                     key=lambda x: (len(x.text), 1 if x.photo else 0, -(x.date - datetime.datetime.now()).days))
+    if len(for_you) > 50:
+        for_you_post = choices(for_you, k=80)
+    else:
+        for_you_post = set(for_you)
+    emotion_for_you = []
+    for i in for_you_post:
+        emotion = {id: i.id, 'pos_emot': [], 'nig_emot': [], 'link': [],
+                   'author': session.query(User).filter(User.id == i.author).first(), 'like': None, 'is_like': 0}
+        if i.pos_emot:
+            emotion['pos_emot'] = i.pos_emot.split()
+        else:
+            emotion['pos_emot'] = None
+        if i.nig_emot:
+            emotion['nig_emot'] = i.nig_emot.split()
+        else:
+            emotion['nig_emot'] = None
+        if i.link:
+            emotion['link'] = i.link.split()
+        else:
+            emotion['link'] = None
+        like = session.query(Like).filter(Like.post == i.id).all()
+        if like:
+            emotion['like'] = len(like)
+        if current_user.is_authenticated:
+            if session.query(Like).filter(Like.post == i.id, Like.user == current_user.id).first():
+                emotion['is_like'] = 1
+        emotion_for_you.append(emotion)
+    you_like_that = sorted(list(map(lambda x: session.query(DiaryPost).filter(DiaryPost.id == x).first(),
+                                    map(lambda x: x.post,
+                                        session.query(Like).filter(Like.user == current_user.id).all()))),
+                           key=lambda x: (len(x.text), 1 if x.photo else 0, -(x.date - datetime.datetime.now()).days))
+    emotion_you_like_that = []
+    for i in you_like_that:
+        emotion = {id: i.id, 'pos_emot': [], 'nig_emot': [], 'link': [],
+                   'author': session.query(User).filter(User.id == i.author).first(), 'like': None, 'is_like': 0}
+        if i.pos_emot:
+            emotion['pos_emot'] = i.pos_emot.split()
+        else:
+            emotion['pos_emot'] = None
+        if i.nig_emot:
+            emotion['nig_emot'] = i.nig_emot.split()
+        else:
+            emotion['nig_emot'] = None
+        if i.link:
+            emotion['link'] = i.link.split()
+        else:
+            emotion['link'] = None
+        like = session.query(Like).filter(Like.post == i.id).all()
+        if like:
+            emotion['like'] = len(like)
+        if current_user.is_authenticated:
+            if session.query(Like).filter(Like.post == i.id, Like.user == current_user.id).first():
+                emotion['is_like'] = 1
+        emotion_you_like_that.append(emotion)
+    quest = session.query(Answer).filter(Answer.user == current_user.id).all()
+    days_reg = current_user.data_reg - datetime.date.today()
+    days_reg = abs(days_reg.days) + 1
+    if quest:
+        post_quest = session.query(Quest).filter(Quest.id.in_([i.id_question for i in quest])).all()
+    else:
+        post_quest = []
+    while len(post_quest) < days_reg:
+        post_quest.append(
+            session.query(Quest).filter(Quest.id.notin_([i.id for i in post_quest])).first())
+    ans = []
+    for i in post_quest:
+        if i is not None:
+            ans_id = session.query(Answer).filter(
+                Answer.id_question == i.id and Answer.user.id == current_user.id).first()
+            if ans_id is not None:
+                ans.append(ans_id)
+    post_quest = post_quest[::-1]
+    ans = ans[::-1]
+    ans2 = {}
+    for i in ans:
+        ans2[i.id_question] = i
+    return render_template('main.html', title='moona', for_me_post=for_you_post, emotion_for_you=emotion_for_you,
+                           you_like_that=you_like_that, emotion_you_like_that=emotion_you_like_that,
+                           question=post_quest,
+                           ans=ans2)
 
 
 @app.route('/edit_profile/<string:logins>', methods=['GET', 'POST'])
@@ -170,7 +252,10 @@ def new_like(user_id, post_id, ret_href):
                 session.delete(pop)
         session.delete(find)
         session.commit()
-        return redirect(f"/{ret_href}")
+        if ret_href != 'main':
+            return redirect(f"/{ret_href}")
+        else:
+            return redirect('/')
     else:
         popular = session.query(Popularity).filter(Popularity.post == post_id).first()
         if not popular:
@@ -190,7 +275,10 @@ def new_like(user_id, post_id, ret_href):
         like.date = datetime.datetime.now()
         session.add(like)
         session.commit()
-        return redirect(f"/{ret_href}")
+        if ret_href != 'main':
+            return redirect(f"/{ret_href}")
+        else:
+            return redirect('/')
 
 
 @app.route('/publications', methods=['GET', 'POST'])
@@ -620,7 +708,6 @@ def confirmation():
             secret_code = secret_key()
             mail(f'Ваш секретный код: {secret_code}', help_arg_2, 'Moona Код')
             send_msg = True
-            print(secret_code)
         if conf.validate_on_submit():
             if str(conf.code_key.data).strip() == str(secret_code).strip():
                 user = session.query(User).filter(User.id == current_user.id).first()
