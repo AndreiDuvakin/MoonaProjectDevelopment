@@ -154,7 +154,7 @@ def main_page():
     else:
         you_like_that = []
         emotion_you_like_that = None
-        post_quest = None
+        post_quest = []
         ans2 = None
     return render_template('main.html', title='moona', for_me_post=for_you_post, emotion_for_you=emotion_for_you,
                            you_like_that=you_like_that, emotion_you_like_that=emotion_you_like_that,
