@@ -23,59 +23,74 @@
             <div class="fresh_block" id="pop">
                 {% if pop_post != [] %}
                 {% for item in pop_post %}
-                <div class="card-body post">
-                    <details>
-                        <summary>
-                            {% if item.name != None %}
-                            <h3 class="card-title post_zag" style="color:#c5f1ff">{{item.name}}</h3>
-                            {% endif %}
-                        </summary>
-                        {% if item.text != None %}
-                        <strong class="card-text" style="color:#ffffff">{{item.text}}</strong>
-                        {% endif %}
-                    </details>
-                    {% if emotion_pop[loop.index0]['pos_emot'] != None %}
-                    <div class="pos_emot">
-                        <details>
-                            <summary class="emot_block">
-                                <strong class="emot_block">Позитивные эмоции</strong>
-                            </summary>
-                            <p></p>
-                            {% for item2 in emotion_pop[loop.index0]['pos_emot'] %}
-                            <strong class="alert alert-success" role="alert"
-                                    style="border-radius: 22px;">{{item2}}</strong>
-                            {% endfor %}
-                        </details>
-                    </div>
-                    <p></p>
-                    {% endif %}
-                    {% if emotion_pop[loop.index0]['nig_emot'] != None %}
-                    <div class="nig_emot">
-                        <details>
-                            <summary class="emot_block">
-                                <strong class="emot_block">Негативные эмоции</strong>
-                            </summary>
-                            <p></p>
-                            {% for item2 in emotion_pop[loop.index0]['nig_emot'] %}
-                            <strong class="alert alert-danger" role="alert"
-                                    style="border-radius: 22px;">{{item2}}</strong>
-                            {% endfor %}
-                        </details>
-                    </div>
-                    <p></p>
-                    {% endif %}
+                 <div class="card" style="width: 25rem;">
                     {% if item.photo != None %}
-                    <p></p>
-                    <div class="photo">
-                        <img width="90%" src="{{ item.photo }}"
-                             style="border-radius: 22px;">
-                    </div>
-                    <p></p>
+                    <img src="{{ item.photo }}" class="card-img-top" alt="...">
                     {% endif %}
-                    {% if current_user.is_authenticated %}
-                    <div class="like">
+                  <div class="card-body">
+                      {% if item.name != None %}
+                      <h4 class="card-title" style="color: #c5f1ff">{{item.name}}</h4>
+                      {% endif %}
+                      <p><small>{{item.date}}</small></p>
+                      {% if item.text != None %}
+                      <p class="card-text">{{item.text}}</p>
+                      {% endif %}
+                  </div>
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item">
+                        {% if emotion_pop[loop.index0]['pos_emot'] != None %}
+                            <ul style="list-style-type: none; margin-left:-15%; margin-top:5%;">
+                                {% for item2 in emotion_pop[loop.index0]['pos_emot'] %}
+                                <li>
+                                    <div class="emot"><strong class="alert alert-success" role="alert"
+                                                              style="border-radius: 22px;">{{item2}}</strong></div>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                      </li>
+                    <li class="list-group-item">
+                        {% if emotion_pop[loop.index0]['nig_emot'] != None %}
+                        <ul style="list-style-type: none; margin-left:-15%; margin-top:5%">
+                                {% for item2 in emotion_pop[loop.index0]['nig_emot'] %}
+                                <li>
+                                    <div class="emot"><strong class="alert alert-danger" role="alert"
+                                                              style="border-radius: 22px;">{{item2}}</strong></div>
+                                </li>
+                                {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </li>
+                    <li class="list-group-item">
+                        {% if emotion_pop[loop.index0]['link'] != None %}
+                        <ul style="list-style-type: none; margin-left:-15%; margin-top:5%; margin-bottom:5%">
+                                {% for item2 in emotion_pop[loop.index0]['link'] %}
+                                <li>
+                                    <div class="emot"><a class="alert alert-light" role="alert" href="{{ item2 }}" style="border-radius: 22px;">Ссылка
+                                        {{ loop.index }}</a></div>
+                                </li>
+                                {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </li>
+                    </ul>
+                    <div class="card-body">
+                    {% if item.public == 1 or item.public == 'True' %}
+                    <div style="border-radius: 22px; margin-left:-5%; width: 50%" class="alert alert-success pub" role="alert">Запись
+                        опубликована
+                    </div>
+                    {% else %}
+                    <div style="border-radius: 22px; margin-left:-5% width: 50%" class="alert alert-danger private" role="alert">Запись
+                        приватная
+                    </div>
+                    {% endif %}
+                    <div class="my_author"><img src="../{{ current_user.photo }}" width="40" height="40"
+                                                style="border-radius: 22px">
+                        <strong style="color: #ffffff">{{ current_user.name }}</strong>
+                    </div>
+                    <div class="like" style="margin-top:5%; margin-left:1%">
                         <a type="button"
-                           href="/new_like/{{current_user.id}}/{{item.id}}/publications">
+                           href="/new_like/{{current_user.id}}/{{item.id}}/diary">
                             {% if emotion_pop[loop.index0]['is_like'] %}
                             <img src="../static/img/like_add.png" width="117" height="100">
                             {% else %}
@@ -83,32 +98,17 @@
                             {% endif %}
                         </a>
                         {% if emotion_pop[loop.index0]['like'] != None %}
-                        <p style="color:#ffffff">{{emotion_pop[loop.index0]['like']}}</p>
+                        <p style="color:#ffffff; margin-left:30%">{{emotion_pop[loop.index0]['like']}}</p>
                         {% endif %}
                     </div>
-                    {% endif %}
-                    {% if emotion_pop[loop.index0]['link'] != None %}
-                    <details>
-                        <summary class="emot_block">
-                            <strong class="emot_block">Ссылки</strong>
-                        </summary>
-                        <p></p>
-                        {% for item2 in emotion_pop[loop.index0]['link'] %}
-                        <div class="link">
-                            <a class="alert alert-light" role="alert" href="{{ item2 }}" style="border-radius: 22px;">Ссылка
-                                {{ loop.index }}</a>
-                        </div>
-                        <p></p>
-                        {% endfor %}
-                    </details>
-                    {% endif %}
-                    <div class="author" style="style=position:absolute; width:148px; height:44px; left:255px; -webkit-border-radius:
-             22px;-moz-border-radius: 22px;border-radius: 22px; border:2px solid #FFFFFF; background-color:#1daff0; top:
-             98px;"><img src="../{{ emotion_pop[loop.index0]['author'].photo }}" width="40" height="40"
-                         style="border-radius: 22px">
-                        <strong style="color: #ffffff">{{ emotion_pop[loop.index0]['author'].name }}</strong>
+                    <div>
+                        <a style="border-radius: 15px; margin-top:10%; margin-left:1%" href="/post/{{ item.id }}" class="btn" id="edit_btn">
+                            Изменить
+                        </a>
+                        <a style="border-radius: 15px; margin-top:10%" href="/post_deleted/{{ item.id }}" class="btn btn-danger">
+                            Удалить
+                        </a>
                     </div>
-                    <strong style="color:#ffffff">{{item.date}}</strong>
                 </div>
                 {% endfor %}
             </div>
@@ -120,64 +120,79 @@
         </div>
     </td>
     <td id="row2">
-        <div id="row2_div">
+        <div id="row2_div" style="margin-left:50%">
             <h2 class="post_zag">Свежее</h2>
             <div class="fresh_block" id="fresh">
                 {% if fresh_post != [] %}
                 {% for item in fresh_post %}
-                <div class="card-body post">
-                    <details>
-                        <summary>
-                            {% if item.name != None %}
-                            <h3 class="card-title post_zag" style="color:#c5f1ff">{{item.name}}</h3>
-                            {% endif %}
-                        </summary>
-                        {% if item.text != None %}
-                        <strong class="card-text" style="color:#ffffff">{{item.text}}</strong>
-                        {% endif %}
-                    </details>
-                    {% if emotion_fresh[loop.index0]['pos_emot'] != None %}
-                    <div class="pos_emot">
-                        <details>
-                            <summary class="emot_block">
-                                <strong class="emot_block">Позитивные эмоции</strong>
-                            </summary>
-                            <p></p>
-                            {% for item2 in emotion_fresh[loop.index0]['pos_emot'] %}
-                            <strong class="alert alert-success" role="alert"
-                                    style="border-radius: 22px;">{{item2}}</strong>
-                            {% endfor %}
-                        </details>
-                    </div>
-                    <p></p>
-                    {% endif %}
-                    {% if emotion_fresh[loop.index0]['nig_emot'] != None %}
-                    <div class="nig_emot">
-                        <details>
-                            <summary class="emot_block">
-                                <strong class="emot_block">Негативные эмоции</strong>
-                            </summary>
-                            <p></p>
-                            {% for item2 in emotion_fresh[loop.index0]['nig_emot'] %}
-                            <strong class="alert alert-danger" role="alert"
-                                    style="border-radius: 22px;">{{item2}}</strong>
-                            {% endfor %}
-                        </details>
-                    </div>
-                    <p></p>
-                    {% endif %}
+                 <div class="card" style="width: 25rem;">
                     {% if item.photo != None %}
-                    <p></p>
-                    <div class="photo">
-                        <img width="90%" src="{{ item.photo }}"
-                             style="border-radius: 22px;">
-                    </div>
-                    <p></p>
+                    <img src="{{ item.photo }}" class="card-img-top" alt="...">
                     {% endif %}
-                    {% if current_user.is_authenticated %}
-                    <div class="like">
+                  <div class="card-body">
+                      {% if item.name != None %}
+                      <h4 class="card-title" style="color: #c5f1ff">{{item.name}}</h4>
+                      {% endif %}
+                      <p><small>{{item.date}}</small></p>
+                      {% if item.text != None %}
+                      <p class="card-text">{{item.text}}</p>
+                      {% endif %}
+                  </div>
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item">
+                        {% if emotion_fresh[loop.index0]['pos_emot'] != None %}
+                            <ul style="list-style-type: none; margin-left:-15%; margin-top:5%;">
+                                {% for item2 in emotion_fresh[loop.index0]['pos_emot'] %}
+                                <li>
+                                    <div class="emot"><strong class="alert alert-success" role="alert"
+                                                              style="border-radius: 22px;">{{item2}}</strong></div>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                      </li>
+                    <li class="list-group-item">
+                        {% if emotion_fresh[loop.index0]['nig_emot'] != None %}
+                        <ul style="list-style-type: none; margin-left:-15%; margin-top:5%">
+                                {% for item2 in emotion_fresh[loop.index0]['nig_emot'] %}
+                                <li>
+                                    <div class="emot"><strong class="alert alert-danger" role="alert"
+                                                              style="border-radius: 22px;">{{item2}}</strong></div>
+                                </li>
+                                {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </li>
+                    <li class="list-group-item">
+                        {% if emotion_fresh[loop.index0]['link'] != None %}
+                        <ul style="list-style-type: none; margin-left:-15%; margin-top:5%; margin-bottom:5%">
+                                {% for item2 in emotion_fresh[loop.index0]['link'] %}
+                                <li>
+                                    <div class="emot"><a class="alert alert-light" role="alert" href="{{ item2 }}" style="border-radius: 22px;">Ссылка
+                                        {{ loop.index }}</a></div>
+                                </li>
+                                {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </li>
+                    </ul>
+                    <div class="card-body">
+                    {% if item.public == 1 or item.public == 'True' %}
+                    <div style="border-radius: 22px; margin-left:-5%; width: 50%" class="alert alert-success pub" role="alert">Запись
+                        опубликована
+                    </div>
+                    {% else %}
+                    <div style="border-radius: 22px; margin-left:-5% width: 50%" class="alert alert-danger private" role="alert">Запись
+                        приватная
+                    </div>
+                    {% endif %}
+                    <div class="my_author"><img src="../{{ current_user.photo }}" width="40" height="40"
+                                                style="border-radius: 22px">
+                        <strong style="color: #ffffff">{{ current_user.name }}</strong>
+                    </div>
+                    <div class="like" style="margin-top:5%; margin-left:1%">
                         <a type="button"
-                           href="/new_like/{{current_user.id}}/{{item.id}}/publications">
+                           href="/new_like/{{current_user.id}}/{{item.id}}/diary">
                             {% if emotion_fresh[loop.index0]['is_like'] %}
                             <img src="../static/img/like_add.png" width="117" height="100">
                             {% else %}
@@ -185,32 +200,17 @@
                             {% endif %}
                         </a>
                         {% if emotion_fresh[loop.index0]['like'] != None %}
-                        <p style="color:#ffffff">{{emotion_fresh[loop.index0]['like']}}</p>
+                        <p style="color:#ffffff; margin-left:30%">{{emotion_fresh[loop.index0]['like']}}</p>
                         {% endif %}
                     </div>
-                    {% endif %}
-                    {% if emotion_fresh[loop.index0]['link'] != None %}
-                    <details>
-                        <summary class="emot_block">
-                            <strong class="emot_block">Ссылки</strong>
-                        </summary>
-                        <p></p>
-                        {% for item2 in emotion_fresh[loop.index0]['link'] %}
-                        <div class="link">
-                            <a class="alert alert-light" role="alert" href="{{ item2 }}" style="border-radius: 22px;">Ссылка
-                                {{ loop.index }}</a>
-                        </div>
-                        <p></p>
-                        {% endfor %}
-                    </details>
-                    {% endif %}
-                    <div class="author" style="style=position:absolute; width:148px; height:44px; left:255px; -webkit-border-radius:
-             22px;-moz-border-radius: 22px;border-radius: 22px; border:2px solid #FFFFFF; background-color:#1daff0; top:
-             98px;"><img src="../{{ emotion_fresh[loop.index0]['author'].photo }}" width="40" height="40"
-                         style="border-radius: 22px">
-                        <strong style="color: #ffffff">{{ emotion_fresh[loop.index0]['author'].name }}</strong>
+                    <div>
+                        <a style="border-radius: 15px; margin-top:10%; margin-left:1%" href="/post/{{ item.id }}" class="btn" id="edit_btn">
+                            Изменить
+                        </a>
+                        <a style="border-radius: 15px; margin-top:10%" href="/post_deleted/{{ item.id }}" class="btn btn-danger">
+                            Удалить
+                        </a>
                     </div>
-                    <strong style="color:#ffffff">{{item.date}}</strong>
                 </div>
                 {% endfor %}
             </div>
@@ -223,103 +223,103 @@
     </td>
     <td id="row3">
         <div id="row3_div">
-            <h2 class="post_zag">Для вас</h2>
+            <h2 class="post_zag" style="margin-top:-5%; margin-left:25%">Для вас</h2>
             {% if for_me_post != [] %}
             {% for item in for_you_post %}
-            <div class="card-body post">
-                <details>
-                    <summary>
-                        {% if item.name != None %}
-                        <h3 class="card-title post_zag" style="color:#c5f1ff">{{item.name}}</h3>
-                        {% endif %}
-                    </summary>
-                    {% if item.text != None %}
-                    <strong class="card-text" style="color:#ffffff">{{item.text}}</strong>
+            <div class="card" style="width: 25rem;">
+                    {% if item.photo != None %}
+                    <img src="{{ item.photo }}" class="card-img-top" alt="...">
                     {% endif %}
-                </details>
-                {% if emotion_for_you[loop.index0]['pos_emot'] != None %}
-                <div class="pos_emot">
-                    <details>
-                        <summary class="emot_block">
-                            <strong class="emot_block">Позитивные эмоции</strong>
-                        </summary>
-                        <p></p>
-                        {% for item2 in emotion_for_you[loop.index0]['pos_emot'] %}
-                        <strong class="alert alert-success" role="alert"
-                                style="border-radius: 22px;">{{item2}}</strong>
-                        {% endfor %}
-                    </details>
-                </div>
-                <p></p>
-                {% endif %}
-                {% if emotion_for_you[loop.index0]['nig_emot'] != None %}
-                <div class="nig_emot">
-                    <details>
-                        <summary class="emot_block">
-                            <strong class="emot_block">Негативные эмоции</strong>
-                        </summary>
-                        <p></p>
-                        {% for item2 in emotion_for_you[loop.index0]['nig_emot'] %}
-                        <strong class="alert alert-danger" role="alert"
-                                style="border-radius: 22px;">{{item2}}</strong>
-                        {% endfor %}
-                    </details>
-                </div>
-                <p></p>
-                {% endif %}
-                {% if item.photo != None %}
-                <p></p>
-                <div class="photo">
-                    <img width="90%" src="{{ item.photo }}"
-                         style="border-radius: 22px;">
-                </div>
-                <p></p>
-                {% endif %}
-                {% if current_user.is_authenticated %}
-                <div class="like">
-                    <a type="button"
-                       href="/new_like/{{current_user.id}}/{{item.id}}/publications">
-                        {% if emotion_for_you[loop.index0]['is_like'] %}
-                        <img src="../static/img/like_add.png" width="117" height="100">
-                        {% else %}
-                        <img src="../static/img/like.png" width="94" height="80">
+                  <div class="card-body">
+                      {% if item.name != None %}
+                      <h4 class="card-title" style="color: #c5f1ff">{{item.name}}</h4>
+                      {% endif %}
+                      <p><small>{{item.date}}</small></p>
+                      {% if item.text != None %}
+                      <p class="card-text">{{item.text}}</p>
+                      {% endif %}
+                  </div>
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item">
+                        {% if emotion_for_you[loop.index0]['pos_emot'] != None %}
+                            <ul style="list-style-type: none; margin-left:-15%; margin-top:5%;">
+                                {% for item2 in emotion_for_you[loop.index0]['pos_emot'] %}
+                                <li>
+                                    <div class="emot"><strong class="alert alert-success" role="alert"
+                                                              style="border-radius: 22px;">{{item2}}</strong></div>
+                                </li>
+                                {% endfor %}
+                            </ul>
                         {% endif %}
-                    </a>
-                    {% if emotion_for_you[loop.index0]['like'] != None %}
-                    <p style="color:#ffffff">{{emotion_for_you[loop.index0]['like']}}</p>
-                    {% endif %}
-                </div>
-                {% endif %}
-                {% if emotion_for_you[loop.index0]['link'] != None %}
-                <details>
-                    <summary class="emot_block">
-                        <strong class="emot_block">Ссылки</strong>
-                    </summary>
-                    <p></p>
-                    {% for item2 in emotion_for_you[loop.index0]['link'] %}
-                    <div class="link">
-                        <a class="alert alert-light" role="alert" href="{{ item2 }}" style="border-radius: 22px;">Ссылка
-                            {{ loop.index }}</a>
+                      </li>
+                    <li class="list-group-item">
+                        {% if emotion_for_you[loop.index0]['nig_emot'] != None %}
+                        <ul style="list-style-type: none; margin-left:-15%; margin-top:5%">
+                                {% for item2 in emotion_for_you[loop.index0]['nig_emot'] %}
+                                <li>
+                                    <div class="emot"><strong class="alert alert-danger" role="alert"
+                                                              style="border-radius: 22px;">{{item2}}</strong></div>
+                                </li>
+                                {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </li>
+                    <li class="list-group-item">
+                        {% if emotion_for_you[loop.index0]['link'] != None %}
+                        <ul style="list-style-type: none; margin-left:-15%; margin-top:5%; margin-bottom:5%">
+                                {% for item2 in emotion_for_you[loop.index0]['link'] %}
+                                <li>
+                                    <div class="emot"><a class="alert alert-light" role="alert" href="{{ item2 }}" style="border-radius: 22px;">Ссылка
+                                        {{ loop.index }}</a></div>
+                                </li>
+                                {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </li>
+                    </ul>
+                    <div class="card-body">
+                    {% if item.public == 1 or item.public == 'True' %}
+                    <div style="border-radius: 22px; margin-left:-5%; width: 50%" class="alert alert-success pub" role="alert">Запись
+                        опубликована
                     </div>
-                    <p></p>
-                    {% endfor %}
-                </details>
-                {% endif %}
-                <div class="author" style="style=position:absolute; width:148px; height:44px; left:255px; -webkit-border-radius:
-             22px;-moz-border-radius: 22px;border-radius: 22px; border:2px solid #FFFFFF; background-color:#1daff0; top:
-             98px;"><img src="../{{ emotion_for_you[loop.index0]['author'].photo }}" width="40" height="40"
-                         style="border-radius: 22px">
-                    <strong style="color: #ffffff">{{ emotion_for_you[loop.index0]['author'].name }}</strong>
+                    {% else %}
+                    <div style="border-radius: 22px; margin-left:-5% width: 50%" class="alert alert-danger private" role="alert">Запись
+                        приватная
+                    </div>
+                    {% endif %}
+                    <div class="my_author"><img src="../{{ current_user.photo }}" width="40" height="40"
+                                                style="border-radius: 22px">
+                        <strong style="color: #ffffff">{{ current_user.name }}</strong>
+                    </div>
+                    <div class="like" style="margin-top:5%; margin-left:1%">
+                        <a type="button"
+                           href="/new_like/{{current_user.id}}/{{item.id}}/diary">
+                            {% if emotion_for_you[loop.index0]['is_like'] %}
+                            <img src="../static/img/like_add.png" width="117" height="100">
+                            {% else %}
+                            <img src="../static/img/like.png" width="94" height="80">
+                            {% endif %}
+                        </a>
+                        {% if emotion_for_you[loop.index0]['like'] != None %}
+                        <p style="color:#ffffff; margin-left:30%">{{emotion_for_you[loop.index0]['like']}}</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <a style="border-radius: 15px; margin-top:10%; margin-left:1%" href="/post/{{ item.id }}" class="btn" id="edit_btn">
+                            Изменить
+                        </a>
+                        <a style="border-radius: 15px; margin-top:10%" href="/post_deleted/{{ item.id }}" class="btn btn-danger">
+                            Удалить
+                        </a>
+                    </div>
                 </div>
-                <strong style="color:#ffffff">{{item.date}}</strong>
+                {% endfor %}
             </div>
-            {% endfor %}
-        </div>
-        {% else %}
-        <div class="bad_centre" style="background-color:#1daff0; border-radius: 22px;color:#ffffff">
-            <p class="hz1">Ничего не нашлось :с</p>
-        </div>
-        {% endif %}
+            {% else %}
+            <div class="bad_centre" style="background-color:#1daff0; border-radius: 22px;color:#ffffff">
+                <p class="hz1">Ничего не нашлось :с</p>
+            </div>
+            {% endif %}
         </div>
     </td>
 </table>

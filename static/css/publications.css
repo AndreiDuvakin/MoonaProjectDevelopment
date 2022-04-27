@@ -1,41 +1,141 @@
-.but {
-    width: 80%;
-}
-table {
-    margin-left: 10%;
-    margin-right: auto;
-    width: 90%;
-}
-#row1, #row2, #row3 {
-    width: 33%;
-    display:inline-block;
-    vertical-align: top;
-    margin-top: 39px;
-}
-#row1_div, #row2_div, #row3_div {
-    width: 95%;
-}
-.post_zag, .card-text, .card-body, .post_zag, .author {
-    width: 90%;
+.bad_user {
     margin-left: auto;
     margin-right: auto;
-    text-align: center;
+    background-color: #1daff0;
+    color: #ffffff;
+    width: 50%;
+    height: 55%;
+    -webkit-border-radius:22px;
+    -moz-border-radius: 22px;
+    border-radius: 22px;
+    border:2px solid #ffffff;
+    margin-top: 20px;
 }
-.post {
+.bad_centre {
+    text-align: center;
+    margin-left:20%;
+    margin-right: -20%
+}
+summary {
+    margin-bottom: 10px;
+}
+.pos_emot {
+    margin-bottom: 10px;
+}
+.nig_emot {
+    margin-bottom: 10px;
+}
+.my_author {
+    width:40%;
+    height:5%;
+    left:10%;
+    -webkit-border-radius: 22px;
+    -moz-border-radius: 22px;
+    border-radius: 22px;
+    border:2px solid #ffffff;
+    background-color:#1daff0;
+    top: 98px;
+}
+.emot {
+    margin-bottom: 30px;
+}
+#image {
+    width: 70%;
+}
+.card-body {
+    background-color: #7fc3ff;
+}
+#all_my_post, #all_my_post1 {
+    margin-left: auto;
+    margin-right: auto;
+}
+#my_post, #my_post1 {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
     background-color: #7fc3ff;
     border-radius: 50px;
-    width: 90%;
-    height: 95%;
     margin-bottom: 20px;
 }
-details {
-    color: #ffffff;
+.my_author, .post_zag {
+    margin-left: 50%;
+    margin-right: auto;
+    margin-top: -20%;
+}
+.pub, .private {
+    width: 60%;
+    height: 10%;
+    margin-left: auto;
+    margin-right: auto;
 }
 #add_post {
     margin-top: 20px;
     margin-left: 83%;
 }
-.hz1 {
-    margin: 5%;
-    font-size: 160%;
+#edit_btn, #edit_btn1 {
+    background-color: #c5f1ff;
+}
+input[type=text], input[type=email], input[type=password], input[type=file], input[type=number]{
+  padding:10px;
+  border:5;
+  box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+  border-radius:10px;
+}
+textarea {
+  width:100%;
+  resize: vertical;
+  padding:10px;
+  border-radius:10px;
+  border:5;
+  box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+  height:150px;
+}
+.post_form {
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  height: 50%
+}
+.box {
+    margin-left: 20px;
+}
+#row2, #row1 {
+    width: 30%;
+}
+#row1, #row2, #all_my_question {
+    display:inline-block;
+    vertical-align: top;
+}
+.but {
+    width: 80%;
+    margin-bottom:5%;
+}
+#all_my_question {
+    width: 30%;
+    height: -100%;
+}
+.question, .my_post {
+    background-color:#7fc3ff;
+    border-radius: 22px;
+    width: 100%;
+    margin-left: 10px;
+}
+.emot_block {
+    color: #ffffff;
+    font-weight: bolder;
+}
+table {
+    margin-left: 10%;
+    width: 90%;
+}
+.like {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+#row1_div, #row2_div {
+width: 98%;
+}
+td {
+    margin: 20px;
 }

@@ -24,9 +24,9 @@ summary {
     margin-bottom: 10px;
 }
 .my_author {
-    width:148px;
-    height:44px;
-    left:255px;
+    width:40%;
+    height:5%;
+    left:10%;
     -webkit-border-radius: 22px;
     -moz-border-radius: 22px;
     border-radius: 22px;
@@ -39,6 +39,9 @@ summary {
 }
 #image {
     width: 70%;
+}
+.card-body {
+    background-color: #7fc3ff;
 }
 #all_my_post, #all_my_post1 {
     margin-left: auto;
@@ -53,10 +56,9 @@ summary {
     margin-bottom: 20px;
 }
 .my_author, .my_post_zag {
-    text-align: center;
-    margin-left: auto;
+    margin-left: 50%;
     margin-right: auto;
-    margin-top: 25px;
+    margin-top: -20%;
 }
 .pub, .private {
     width: 60%;
@@ -102,6 +104,10 @@ textarea {
     display:inline-block;
     vertical-align: top;
 }
+.but {
+    width: 80%;
+    margin-bottom:5%;
+}
 #all_my_question {
     width: 30%;
     height: -100%;
@@ -109,7 +115,7 @@ textarea {
 .question, .my_post {
     background-color:#7fc3ff;
     border-radius: 22px;
-    width: 90%;
+    width: 100%;
     margin-left: 10px;
 }
 .is_ans {
