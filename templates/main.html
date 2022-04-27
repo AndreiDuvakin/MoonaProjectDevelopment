@@ -17,6 +17,7 @@
 <table id="main_table">
     <td class="row1">
         <div class="rowdiv1">
+            {% if current_user.is_authenticated %}
             <h2 class="my_post_zag" style="margin-left:15%">Вопросы дня</h2>
             <div class="my_post">
                 <div class="question">
@@ -38,6 +39,9 @@
                     {% endfor %}
                 </div>
             </div>
+            {% else %}
+            <p>Чтобы увидеть вопросы дня войдите в аккаунт</p>
+            {% endif %}
         </div>
     </td>
     <td class="row2">
@@ -225,7 +229,7 @@
                         {% endif %}
                     </div>
                     <div>
-                        <a style="border-radius: 15px; margin-top:10%; margin-left:1%" href="/post/{{ item.id }}" class="btn" id="edit_btn">
+                        <a style="border-radius: 15px; margin-top:10%; margin-left:1%" href="/post/{{ item.id }}" class="btn" id="edit_btn1">
                             Изменить
                         </a>
                         <a style="border-radius: 15px; margin-top:10%" href="/post_deleted/{{ item.id }}" class="btn btn-danger">

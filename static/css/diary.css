@@ -26,9 +26,8 @@ summary {
 .my_author {
     width:40%;
     height:5%;
-    left:10%;
-    -webkit-border-radius: 22px;
-    -moz-border-radius: 22px;
+    margin-left:30%;
+    margin-right:30%;
     border-radius: 22px;
     border:2px solid #ffffff;
     background-color:#1daff0;
@@ -43,12 +42,11 @@ summary {
 .card-body {
     background-color: #7fc3ff;
 }
-#all_my_post, #all_my_post1 {
+.all_my_post {
     margin-left: auto;
     margin-right: auto;
 }
-#my_post, #my_post1 {
-    text-align: center;
+.card {
     margin-left: auto;
     margin-right: auto;
     background-color: #7fc3ff;
@@ -56,15 +54,14 @@ summary {
     margin-bottom: 20px;
 }
 .my_author, .my_post_zag {
-    margin-left: 50%;
-    margin-right: auto;
-    margin-top: -20%;
+    text-align: center;
 }
 .pub, .private {
-    width: 60%;
+    width: 55%;
     height: 10%;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left:25%;
+    margin-right: 25%;
+    text-align: center;
 }
 #add_post {
     margin-top: 20px;
@@ -72,6 +69,9 @@ summary {
 }
 #edit_btn, #edit_btn1 {
     background-color: #c5f1ff;
+    margin-left: 10%;
+    margin-right: auto;
+    margin-top: 15px;
 }
 input[type=text], input[type=email], input[type=password], input[type=file], input[type=number]{
   padding:10px;
@@ -98,7 +98,7 @@ textarea {
     margin-left: 20px;
 }
 #row2, #row1 {
-    width: 30%;
+    width: 32%;
 }
 #row1, #row2, #all_my_question {
     display:inline-block;
@@ -114,9 +114,8 @@ textarea {
 }
 .question, .my_post {
     background-color:#7fc3ff;
-    border-radius: 22px;
-    width: 100%;
     margin-left: 10px;
+    margin-right: 10px;
 }
 .is_ans {
     background-color:#ddefff;
@@ -138,7 +137,7 @@ table {
     margin-right: auto;
 }
 #row1_div, #row2_div {
-width: 98%;
+    width: 98%;
 }
 td {
     margin: 20px;
@@ -148,4 +147,8 @@ width: 25%;
 }
 .is_ans {
 width: 95%;
+}
+.card-text {
+    color:#ffffff;
+    text-align: center;
 }
