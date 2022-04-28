@@ -2,6 +2,7 @@ import datetime
 import os
 from random import randint, choices
 from waitress import serve
+import logging
 
 from flask import Flask, render_template, request
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
@@ -25,6 +26,7 @@ from post import mail
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'moona_secret_key'
+logging.basicConfig(filename='main.log')
 login_manager = LoginManager()
 login_manager.init_app(app)
 help_arg = False
@@ -273,10 +275,7 @@ def new_like(user_id, post_id, ret_href):
             pop.edit_date = datetime.datetime.now()
             session.add(pop)
         else:
-            if (find.date - datetime.datetime.now()).day <= 30:
-                pop = session.query(Popularity).filter(Popularity.post == post_id).first()
-                pop.popularity = 10 * sum(1 if (i.date - datetime.datetime.now()).day <= 30 else 0 for i in
-                                          session.query(Like).filter(Like.post == post_id).all()) + 10
+            popular.popularity += 10
         like = Like()
         like.user = user_id
         like.post = post_id
@@ -793,7 +792,10 @@ def about():
 
 def main():
     db_session.global_init("db/moona_data.db")
-    serve(app, host='0.0.0.0', port=5000)
+    try:
+        serve(app, host='0.0.0.0', port=5000)
+    except Exception as error:
+        logging.warning(f'{datetime.datetime.now()}:{error}')
 
 
 if __name__ == '__main__':
