@@ -3,7 +3,9 @@
 {% extends "base.html" %}
 
 {% block content %}
+<h1 align="center">Профиль</h1>
 <div class="all_profile">
+
     <div class="profile_header">
         <table>
             <th class="row_left">
@@ -15,8 +17,8 @@
                 {% endif %}
                 <div>
                     <a href="/edit_profile/{{current_user.login}}" type="submit" class="btn btn-primary"
-                       style="background-color:#38aaff">Редактировать профиль</a>
-                    <a style="border-radius: 15px;" href="/logout" class="btn btn-danger logout_btn">
+                       style="background-color:#38aaff; border-radius: 15px; margin:5%; width:90%">Редактировать профиль</a>
+                    <a style="border-radius: 15px; margin:5%; width:90%" href="/logout" class="btn btn-danger logout_btn">
                         Выйти
                     </a>
                 </div>
@@ -24,7 +26,7 @@
             <th class="row_centre">
             </th>
             <th class="row_right">
-                <img src="../{{ current_user.photo }}" width="200" class="profile_header_photo_img">
+                <img src="../{{ current_user.photo }}" width="150" height="150" style="margin:1%" class="profile_header_photo_img">
                 <h1 class="profile_header_name">{{current_user.name}}</h1>
             </th>
         </table>
