@@ -1,6 +1,7 @@
 import datetime
 import os
 from random import randint, choices
+from waitress import serve
 
 from flask import Flask, render_template, request
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
@@ -648,7 +649,6 @@ def logout():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
-    print(form.validate_on_submit())
     if form.validate_on_submit():
         db_sess = db_session.create_session()
         user = db_sess.query(User).filter(User.email == form.email.data).first()
@@ -768,7 +768,6 @@ def recovery():
             secret_code = secret_key()
             mail(f'Ваш секретный код: {secret_code}', form.email.data, 'Восстановление пароля')
             send_msg = True
-            print(secret_code)
             return render_template('recovery.html', title='Восстановление пароля', form=conf, message='', s='2')
     if conf.validate_on_submit():
         if str(conf.code_key.data).strip() == str(secret_code).strip():
@@ -794,7 +793,7 @@ def about():
 
 def main():
     db_session.global_init("db/moona_data.db")
-    app.run()
+    serve(app, host='0.0.0.0', port=5000)
 
 
 if __name__ == '__main__':
