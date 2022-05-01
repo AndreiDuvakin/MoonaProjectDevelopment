@@ -181,6 +181,7 @@ def edit_profile(logins):
             photo = None
         if form.del_photo.data:
             help_arg = photo
+            ph_f = False
             photo = '../static/img/None_logo.png'
         if form.submit2.data:
             user = session.query(User).filter(User.login == logins).first()
@@ -198,6 +199,7 @@ def edit_profile(logins):
             if help_arg:
                 os.remove(help_arg)
                 help_arg = False
+                photo = '../static/img/None_logo.png'
             user.photo = photo
             session.commit()
             if user.email == form.email.data:

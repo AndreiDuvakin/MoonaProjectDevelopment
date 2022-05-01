@@ -52,7 +52,7 @@
                 </div>
                 {% endfor %}
         </div>
-        {% if ph_f %}
+        {% if ph_f == 1 %}
         {{ form.del_photo(type="submit", class="btn btn-primary") }}
         {% for error in form.del_photo.errors %}
         <div class="alert alert-danger" role="alert">
