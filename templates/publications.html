@@ -2,20 +2,20 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% if current_user.is_authenticated %}
 <table class="but">
     <tr>
         <td style="width: 110%;">
             <h1 class="upp_zag">Публикации</h1>
         </td>
+        {% if current_user.is_authenticated %}
         <td>
             <a href="/add_post" id="add_post" class="btn btn-primary"
                style="background-color:#1daff0;border-radius: 15px;"><strong>Добавить
                 запись</strong></a>
         </td>
+        {% endif %}
     </tr>
 </table>
-{% endif %}
 <table>
     <td id="row1">
         <div id="row1_div">
@@ -109,6 +109,13 @@
                         <strong style="color: #ffffff">{{ emotion_pop[loop.index0]['author'].name }}</strong>
                     </div>
                     <strong style="color:#ffffff">{{item.date}}</strong>
+                    {% if current_user.is_authenticated %}
+                    {% if current_user.role == 'admin' %}
+                    <a style="border-radius: 15px;" href="/post_deleted/{{ item.id }}" class="btn btn-danger">
+                        Удалить
+                    </a>
+                    {% endif %}
+                    {% endif %}
                 </div>
                 {% endfor %}
             </div>
@@ -211,6 +218,13 @@
                         <strong style="color: #ffffff">{{ emotion_fresh[loop.index0]['author'].name }}</strong>
                     </div>
                     <strong style="color:#ffffff">{{item.date}}</strong>
+                    {% if current_user.is_authenticated %}
+                    {% if current_user.role == 'admin' %}
+                    <a style="border-radius: 15px;" href="/post_deleted/{{ item.id }}" class="btn btn-danger">
+                        Удалить
+                    </a>
+                    {% endif %}
+                    {% endif %}
                 </div>
                 {% endfor %}
             </div>
@@ -312,6 +326,14 @@
                     <strong style="color: #ffffff">{{ emotion_for_you[loop.index0]['author'].name }}</strong>
                 </div>
                 <strong style="color:#ffffff">{{item.date}}</strong>
+
+                {% if current_user.is_authenticated %}
+                {% if current_user.role == 'admin' %}
+                <a style="border-radius: 15px;" href="/post_deleted/{{ item.id }}" class="btn btn-danger">
+                    Удалить
+                </a>
+                {% endif %}
+                {% endif %}
             </div>
             {% endfor %}
         </div>

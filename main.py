@@ -529,7 +529,7 @@ def post_edit(id):
                         else:
                             post_exc.photo = photo
                         check_pop = session.query(Popularity).filter(Popularity.post == post_exc.id).first()
-                        if post_ed.public.data and check_pop:
+                        if not post_ed.public.data and check_pop:
                             session.delete(check_pop)
                         session.commit()
                         return redirect('/diary')
@@ -550,7 +550,7 @@ def post_deleted(id):
         session = db_session.create_session()
         find_post = session.query(DiaryPost).filter(DiaryPost.id == id).first()
         if find_post:
-            if find_post.author == current_user.id:
+            if find_post.author == current_user.id or current_user.role == 'admin':
                 session = db_session.create_session()
                 pos = session.query(DiaryPost).filter(DiaryPost.id == id,
                                                       DiaryPost.author == current_user.id).first()
