@@ -460,19 +460,23 @@ def delete_quest(id):
 @app.route('/add_question', methods=['GET', 'POST'])
 def add_question():
     if current_user.is_authenticated:
-        que = AddQuest()
-        session = db_session.create_session()
-        if que.validate_on_submit():
-            if que.quest.data in list(map(lambda x: x.quest, session.query(Quest).all())):
-                return render_template('add_question.html', message='Такой вопрос уже есть!', title='Добавить вопрос',
-                                       form=que)
-            new_que = Quest()
-            new_que.quest = que.quest.data.strip()
-            session.add(new_que)
-            session.commit()
-            que.quest.data = ''
-        return render_template('add_question.html', message='', title='Добавить вопрос', form=que,
-                               question=session.query(Quest).all())
+        if current_user.role == 'admin':
+            que = AddQuest()
+            session = db_session.create_session()
+            if que.validate_on_submit():
+                if que.quest.data in list(map(lambda x: x.quest, session.query(Quest).all())):
+                    return render_template('add_question.html', message='Такой вопрос уже есть!',
+                                           title='Добавить вопрос',
+                                           form=que)
+                new_que = Quest()
+                new_que.quest = que.quest.data.strip()
+                session.add(new_que)
+                session.commit()
+                que.quest.data = ''
+            return render_template('add_question.html', message='', title='Добавить вопрос', form=que,
+                                   question=session.query(Quest).all())
+        else:
+            return redirect('/')
     else:
         return redirect('/')
 
@@ -552,8 +556,7 @@ def post_deleted(id):
         if find_post:
             if find_post.author == current_user.id or current_user.role == 'admin':
                 session = db_session.create_session()
-                pos = session.query(DiaryPost).filter(DiaryPost.id == id,
-                                                      DiaryPost.author == current_user.id).first()
+                pos = session.query(DiaryPost).filter(DiaryPost.id == id).first()
                 if pos:
                     if pos.photo:
                         os.remove(pos.photo[3:])
@@ -752,7 +755,7 @@ def confirmation():
                             about=form.about.data,
                             email=form.email.data,
                             role='user',
-                            photo='../static/img/Икона.png'
+                            photo='../static/img/None_logo.png'
                         )
                     user.set_password(form.password.data)
                     session.add(user)
