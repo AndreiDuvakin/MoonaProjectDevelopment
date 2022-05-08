@@ -859,6 +859,7 @@ def main():
     except Exception as error:
         logging.warning(f'{datetime.datetime.now()}:{error}')
         print(error)
+    # после запуска переходите по ссылке http://127.0.0.1:5000/ в вашем браузере
 
 
 if __name__ == '__main__':
