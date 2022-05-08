@@ -133,27 +133,30 @@ def main_page():
                     emotion['is_like'] = 1
             emotion_you_like_that.append(emotion)
         quest = session.query(Answer).filter(Answer.user == current_user.id).all()
-        days_reg = current_user.data_reg - datetime.date.today()
-        days_reg = abs(days_reg.days) + 1
-        if quest:
-            post_quest = session.query(Quest).filter(Quest.id.in_([i.id_question for i in quest])).all()
-        else:
-            post_quest = []
-        while len(post_quest) < days_reg:
-            post_quest.append(
-                session.query(Quest).filter(Quest.id.notin_([i.id for i in post_quest])).first())
-        ans = []
-        for i in post_quest:
-            if i is not None:
-                ans_id = session.query(Answer).filter(
-                    Answer.id_question == i.id and Answer.user.id == current_user.id).first()
-                if ans_id is not None:
-                    ans.append(ans_id)
-        post_quest = post_quest[::-1]
-        ans = ans[::-1]
-        ans2 = {}
-        for i in ans:
-            ans2[i.id_question] = i
+        try:
+            days_reg = current_user.data_reg - datetime.date.today()
+            days_reg = abs(days_reg.days) + 1
+            if quest:
+                post_quest = session.query(Quest).filter(Quest.id.in_([i.id_question for i in quest])).all()
+            else:
+                post_quest = []
+            while len(post_quest) < days_reg:
+                post_quest.append(
+                    session.query(Quest).filter(Quest.id.notin_([i.id for i in post_quest])).first())
+            ans = []
+            for i in post_quest:
+                if i is not None:
+                    ans_id = session.query(Answer).filter(
+                        Answer.id_question == i.id and Answer.user.id == current_user.id).first()
+                    if ans_id is not None:
+                        ans.append(ans_id)
+            post_quest = post_quest[::-1]
+            ans = ans[::-1]
+            ans2 = {}
+            for i in ans:
+                ans2[i.id_question] = i
+        except Exception:
+            ans2 = []
     else:
         you_like_that = []
         emotion_you_like_that = None
@@ -663,27 +666,30 @@ def diary():
                 emotion['link'] = None
             lis_emotion.append(emotion)
         quest = db_sess.query(Answer).filter(Answer.user == current_user.id).all()
-        days_reg = current_user.data_reg - datetime.date.today()
-        days_reg = abs(days_reg.days) + 1
-        if quest:
-            post_quest = db_sess.query(Quest).filter(Quest.id.in_([i.id_question for i in quest])).all()
-        else:
-            post_quest = []
-        while len(post_quest) < days_reg:
-            post_quest.append(
-                db_sess.query(Quest).filter(Quest.id.notin_([i.id for i in post_quest])).first())
-        ans = []
-        for i in post_quest:
-            if i is not None:
-                ans_id = db_sess.query(Answer).filter(
-                    Answer.id_question == i.id and Answer.user.id == current_user.id).first()
-                if ans_id is not None:
-                    ans.append(ans_id)
-        post_quest = post_quest[::-1]
-        ans = ans[::-1]
-        ans2 = {}
-        for i in ans:
-            ans2[i.id_question] = i
+        try:
+            days_reg = current_user.data_reg - datetime.date.today()
+            days_reg = abs(days_reg.days) + 1
+            if quest:
+                post_quest = db_sess.query(Quest).filter(Quest.id.in_([i.id_question for i in quest])).all()
+            else:
+                post_quest = []
+            while len(post_quest) < days_reg:
+                post_quest.append(
+                    db_sess.query(Quest).filter(Quest.id.notin_([i.id for i in post_quest])).first())
+            ans = []
+            for i in post_quest:
+                if i is not None:
+                    ans_id = db_sess.query(Answer).filter(
+                        Answer.id_question == i.id and Answer.user.id == current_user.id).first()
+                    if ans_id is not None:
+                        ans.append(ans_id)
+            post_quest = post_quest[::-1]
+            ans = ans[::-1]
+            ans2 = {}
+            for i in ans:
+                ans2[i.id_question] = i
+        except Exception:
+            ans2 = []
     else:
         posts = None
         post_quest = None
