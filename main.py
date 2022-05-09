@@ -26,7 +26,7 @@ from post import mail
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'moona_secret_key'
-logging.basicConfig(filename='main.log', encoding='utf-8')
+logging.basicConfig(filename='main.log')
 login_manager = LoginManager()
 login_manager.init_app(app)
 help_arg = False
@@ -147,7 +147,7 @@ def main_page():
             for i in post_quest:
                 if i is not None:
                     ans_id = session.query(Answer).filter(
-                        Answer.id_question == i.id and Answer.user.id == current_user.id).first()
+                        Answer.id_question == i.id, Answer.user == current_user.id).first()
                     if ans_id is not None:
                         ans.append(ans_id)
             post_quest = post_quest[::-1]
@@ -680,7 +680,7 @@ def diary():
             for i in post_quest:
                 if i is not None:
                     ans_id = db_sess.query(Answer).filter(
-                        Answer.id_question == i.id and Answer.user.id == current_user.id).first()
+                        Answer.id_question == i.id, Answer.user == current_user.id).first()
                     if ans_id is not None:
                         ans.append(ans_id)
             post_quest = post_quest[::-1]
