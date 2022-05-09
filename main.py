@@ -26,7 +26,7 @@ from post import mail
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'moona_secret_key'
-logging.basicConfig(filename='main.log')
+logging.basicConfig(filename='main.log', encoding='utf-8')
 login_manager = LoginManager()
 login_manager.init_app(app)
 help_arg = False

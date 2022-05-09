@@ -139,7 +139,7 @@
                             <summary class="emot_block">
                                 <strong class="emot_block">Позитивные эмоции</strong>
                             </summary>
-                            {% for item2 in emotion_pub[loop.index0]['pos_emot'] %}
+                            {% for item2 in emotion[loop.index0]['pos_emot'] %}
                             <p class="alert alert-success" role="alert"
                                     style="border-radius: 22px;">{{item2}}</p>
                             {% endfor %}
@@ -152,7 +152,7 @@
                             <summary class="emot_block">
                                 <strong class="emot_block">Негативные эмоции</strong>
                             </summary>
-                            {% for item2 in emotion_pub[loop.index0]['nig_emot'] %}
+                            {% for item2 in emotion[loop.index0]['nig_emot'] %}
                             <p class="alert alert-danger" role="alert"
                                     style="border-radius: 22px;">{{item2}}</p>
                             {% endfor %}
