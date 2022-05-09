@@ -33,8 +33,8 @@
                                 <strong class="emot_block">Позитивные эмоции</strong>
                             </summary>
                             {% for item2 in emotion_pub[loop.index0]['pos_emot'] %}
-                            <strong class="alert alert-success" role="alert"
-                                    style="border-radius: 22px;">{{item2}}</strong>
+                            <p class="alert alert-success" role="alert"
+                                    style="border-radius: 22px;">{{item2}}</p>
                             {% endfor %}
                         </details>
                     </div>
@@ -47,8 +47,8 @@
                             </summary>
                             <p></p>
                             {% for item2 in emotion_pub[loop.index0]['nig_emot'] %}
-                            <strong class="alert alert-danger" role="alert"
-                                    style="border-radius: 22px;">{{item2}}</strong>
+                            <p class="alert alert-danger" role="alert"
+                                    style="border-radius: 22px;">{{item2}}</p>
                             {% endfor %}
                         </details>
                     </div>
@@ -66,8 +66,8 @@
                         </summary>
                         {% for item2 in emotion_pub[loop.index0]['link'] %}
                         <div class="link">
-                            <a class="alert alert-light" role="alert" href="{{ item2 }}" style="border-radius: 22px;">Ссылка
-                                {{ loop.index }}</a>
+                            <p><a class="alert alert-light" role="alert" href="{{ item2 }}" style="border-radius: 22px;">Ссылка
+                                {{ loop.index }}</a></p>
                         </div>
                         {% endfor %}
                     </details>
@@ -139,14 +139,10 @@
                             <summary class="emot_block">
                                 <strong class="emot_block">Позитивные эмоции</strong>
                             </summary>
-                            <ul style="list-style-type: none">
-                                {% for item2 in emotion[loop.index0]['pos_emot'] %}
-                                <li>
-                                    <div class="emot"><strong class="alert alert-success" role="alert"
-                                                              style="border-radius: 22px;">{{item2}}</strong></div>
-                                </li>
-                                {% endfor %}
-                            </ul>
+                            {% for item2 in emotion_pub[loop.index0]['pos_emot'] %}
+                            <p class="alert alert-success" role="alert"
+                                    style="border-radius: 22px;">{{item2}}</p>
+                            {% endfor %}
                         </details>
                     </div>
                     {% endif %}
@@ -156,14 +152,10 @@
                             <summary class="emot_block">
                                 <strong class="emot_block">Негативные эмоции</strong>
                             </summary>
-                            <ul style="list-style-type: none">
-                                {% for item2 in emotion[loop.index0]['nig_emot'] %}
-                                <li>
-                                    <div class="emot"><strong class="alert alert-danger" role="alert"
-                                                              style="border-radius: 22px;">{{item2}}</strong></div>
-                                </li>
-                                {% endfor %}
-                            </ul>
+                            {% for item2 in emotion_pub[loop.index0]['nig_emot'] %}
+                            <p class="alert alert-danger" role="alert"
+                                    style="border-radius: 22px;">{{item2}}</p>
+                            {% endfor %}
                         </details>
                     </div>
                     {% endif %}
@@ -180,8 +172,8 @@
                         </summary>
                         {% for item2 in emotion[loop.index0]['link'] %}
                         <div class="link">
-                            <a class="alert alert-light" role="alert" href="{{ item2 }}" style="border-radius: 22px;">Ссылка
-                                {{ loop.index }}</a>
+                            <p><a class="alert alert-light" role="alert" href="{{ item2 }}" style="border-radius: 22px;">Ссылка
+                                {{ loop.index }}</a></p>
                         </div>
                         {% endfor %}
                     </details>

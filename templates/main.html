@@ -66,8 +66,8 @@
                         </summary>
                         <p></p>
                         {% for item2 in emotion_for_you[loop.index0]['pos_emot'] %}
-                        <strong class="alert alert-success" role="alert"
-                                style="border-radius: 22px;">{{item2}}</strong>
+                        <p class="alert alert-success" role="alert"
+                                style="border-radius: 22px;">{{item2}}</p>
                         {% endfor %}
                     </details>
                 </div>
@@ -81,8 +81,8 @@
                         </summary>
                         <p></p>
                         {% for item2 in emotion_for_you[loop.index0]['nig_emot'] %}
-                        <strong class="alert alert-danger" role="alert"
-                                style="border-radius: 22px;">{{item2}}</strong>
+                        <p class="alert alert-danger" role="alert"
+                                style="border-radius: 22px;">{{item2}}</p>
                         {% endfor %}
                     </details>
                 </div>
@@ -119,8 +119,8 @@
                     <p></p>
                     {% for item2 in emotion_for_you[loop.index0]['link'] %}
                     <div class="link">
-                        <a class="alert alert-light" role="alert" href="{{ item2 }}" style="border-radius: 22px;">Ссылка
-                            {{ loop.index }}</a>
+                        <p><a class="alert alert-light" role="alert" href="{{ item2 }}" style="border-radius: 22px;">Ссылка
+                            {{ loop.index }}</a></p>
                     </div>
                     <p></p>
                     {% endfor %}
@@ -173,8 +173,8 @@
                         </summary>
                         <p></p>
                         {% for item2 in emotion_you_like_that[loop.index0]['pos_emot'] %}
-                        <strong class="alert alert-success" role="alert"
-                                style="border-radius: 22px;">{{item2}}</strong>
+                        <p class="alert alert-success" role="alert"
+                                style="border-radius: 22px;">{{item2}}</p>
                         {% endfor %}
                     </details>
                 </div>
@@ -188,8 +188,8 @@
                         </summary>
                         <p></p>
                         {% for item2 in emotion_you_like_that[loop.index0]['nig_emot'] %}
-                        <strong class="alert alert-danger" role="alert"
-                                style="border-radius: 22px;">{{item2}}</strong>
+                        <p class="alert alert-danger" role="alert"
+                                style="border-radius: 22px;">{{item2}}</p>
                         {% endfor %}
                     </details>
                 </div>
@@ -226,8 +226,8 @@
                     <p></p>
                     {% for item2 in emotion_you_like_that[loop.index0]['link'] %}
                     <div class="link">
-                        <a class="alert alert-light" role="alert" href="{{ item2 }}" style="border-radius: 22px;">Ссылка
-                            {{ loop.index }}</a>
+                        <p><a class="alert alert-light" role="alert" href="{{ item2 }}" style="border-radius: 22px;">Ссылка
+                            {{ loop.index }}</a></p>
                     </div>
                     <p></p>
                     {% endfor %}
