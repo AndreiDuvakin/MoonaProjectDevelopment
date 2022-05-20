@@ -104,11 +104,15 @@ def main_page():
                 emotion['is_like'] = 1
         emotion_for_you.append(emotion)
     if current_user.is_authenticated:
-        you_like_that = sorted(list(map(lambda x: session.query(DiaryPost).filter(DiaryPost.id == x).first(),
-                                        map(lambda x: x.post,
-                                            session.query(Like).filter(Like.user == current_user.id).all()))),
-                               key=lambda x: (
-                                   len(x.text), 1 if x.photo else 0, -(x.date - datetime.datetime.now()).days))
+        try:
+            you_like_that = sorted(
+                list(map(lambda x: session.query(DiaryPost).filter(DiaryPost.id == x, DiaryPost.public == 1).first(),
+                         map(lambda x: x.post,
+                             session.query(Like).filter(Like.user == current_user.id).all()))),
+                key=lambda x: (
+                    len(x.text), 1 if x.photo else 0, -(x.date - datetime.datetime.now()).days))
+        except Exception:
+            you_like_that = []
         emotion_you_like_that = []
         for i in you_like_that:
             emotion = {id: i.id, 'pos_emot': [], 'nig_emot': [], 'link': [],
@@ -420,11 +424,12 @@ def answer_quest(id):
         answer = AnswerQuest()
         quest = session.query(Quest).filter(Quest.id == id).first()
         if request.method == 'GET':
-            if session.query(Answer).filter(Answer.id_question == id).first():
-                ans_quest = session.query(Answer).filter(Answer.id_question == id).first()
+            if session.query(Answer).filter(Answer.id_question == id, Answer.user == current_user.id).first():
+                ans_quest = session.query(Answer).filter(Answer.id_question == id,
+                                                         Answer.user == current_user.id).first()
                 answer.answer.data = ans_quest.answer
         if answer.validate_on_submit():
-            if not session.query(Answer).filter(Answer.id_question == id).first():
+            if not session.query(Answer).filter(Answer.id_question == id, Answer.user == current_user.id).first():
                 answer_user = Answer(id_question=id,
                                      answer=answer.answer.data,
                                      user=current_user.id,
@@ -563,6 +568,13 @@ def post_deleted(id):
                 if pos:
                     if pos.photo:
                         os.remove(pos.photo[3:])
+                    if pos.public == 1:
+                        likes = session.query(Like).filter(Like.post == pos.id).all()
+                        if likes:
+                            map(lambda i: session.delete(i), likes)
+                        pop = session.query(Popularity).filter(Popularity.post == pos.id).first()
+                        if pop:
+                            session.delete(pop)
                     session.delete(pos)
                     session.commit()
                 else:
