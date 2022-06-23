@@ -570,7 +570,7 @@ def post_deleted(id):
                         os.remove(pos.photo[3:])
                     likes = session.query(Like).filter(Like.post == pos.id).all()
                     if likes:
-                        map(lambda i: session.delete(i), likes)
+                        list(map(lambda i: session.delete(i), likes))
                     pop = session.query(Popularity).filter(Popularity.post == pos.id).first()
                     if pop:
                         session.delete(pop)
