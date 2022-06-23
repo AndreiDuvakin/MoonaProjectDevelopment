@@ -568,13 +568,12 @@ def post_deleted(id):
                 if pos:
                     if pos.photo:
                         os.remove(pos.photo[3:])
-                    if pos.public == 1:
-                        likes = session.query(Like).filter(Like.post == pos.id).all()
-                        if likes:
-                            map(lambda i: session.delete(i), likes)
-                        pop = session.query(Popularity).filter(Popularity.post == pos.id).first()
-                        if pop:
-                            session.delete(pop)
+                    likes = session.query(Like).filter(Like.post == pos.id).all()
+                    if likes:
+                        map(lambda i: session.delete(i), likes)
+                    pop = session.query(Popularity).filter(Popularity.post == pos.id).first()
+                    if pop:
+                        session.delete(pop)
                     session.delete(pos)
                     session.commit()
                 else:
