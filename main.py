@@ -144,7 +144,8 @@ def main_page():
                 post_quest = session.query(Quest).filter(Quest.id.in_([i.id_question for i in quest])).all()
             else:
                 post_quest = []
-            while len(post_quest) < days_reg:
+            max_quests = len(session.query(Quest).all())
+            while len(post_quest) < days_reg and max_quests > len(post_quest):
                 post_quest.append(
                     session.query(Quest).filter(Quest.id.notin_([i.id for i in post_quest])).first())
             ans = []
@@ -684,7 +685,8 @@ def diary():
                 post_quest = db_sess.query(Quest).filter(Quest.id.in_([i.id_question for i in quest])).all()
             else:
                 post_quest = []
-            while len(post_quest) < days_reg:
+            max_quests = len(db_sess.query(Quest).all())
+            while len(post_quest) < days_reg and max_quests > len(post_quest):
                 post_quest.append(
                     db_sess.query(Quest).filter(Quest.id.notin_([i.id for i in post_quest])).first())
             ans = []
@@ -699,7 +701,7 @@ def diary():
             ans2 = {}
             for i in ans:
                 ans2[i.id_question] = i
-        except Exception:
+        except Exception as e:
             ans2 = []
     else:
         posts = None
@@ -872,7 +874,8 @@ def about():
 def main():
     db_session.global_init("db/moona_data.db")
     try:
-        serve(app, host='0.0.0.0', port=5000)
+        app.run(host='0.0.0.0', port=5000)
+        # serve(app, host='0.0.0.0', port=5000)
     except Exception as error:
         logging.warning(f'{datetime.datetime.now()}:{error}')
         print(error)
