@@ -56,8 +56,8 @@
                     <strong class="emot_block">Позитивные эмоции</strong>
                 </summary>
                 {% for item2 in emotion_pub[loop.index0]['pos_emot'] %}
-                <strong class="alert alert-success" role="alert"
-                        style="border-radius: 22px;">{{item2}}</strong>
+                <p class="alert alert-success" role="alert"
+                                    style="border-radius: 22px;">{{item2}}</p>
                 {% endfor %}
             </details>
         </div>
@@ -70,8 +70,8 @@
                 </summary>
                 <p></p>
                 {% for item2 in emotion_pub[loop.index0]['nig_emot'] %}
-                <strong class="alert alert-danger" role="alert"
-                        style="border-radius: 22px;">{{item2}}</strong>
+                <p class="alert alert-danger" role="alert"
+                                    style="border-radius: 22px;">{{item2}}</p>
                 {% endfor %}
             </details>
         </div>
