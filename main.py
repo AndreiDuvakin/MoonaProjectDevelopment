@@ -8,7 +8,6 @@ from flask import Flask, render_template, request
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_restful import abort
 from werkzeug.utils import redirect
-
 from data import db_session
 from data.answer_quest import Answer
 from data.diary_post import DiaryPost
@@ -195,6 +194,8 @@ def edit_profile(logins):
             user = session.query(User).filter(User.login == logins).first()
             if user.email != form.email.data:
                 if session.query(User).filter(User.email == form.email.data).first():
+                    if not form.photo.data and help_arg:
+                        help_arg = False
                     return render_template('edit_profile.html', title='Редактирование профиля', form=form,
                                            ph_f=ph_f,
                                            message="Такая почта уже есть")
@@ -214,7 +215,7 @@ def edit_profile(logins):
                 return redirect('/profile')
             else:
                 help_arg_2 = form.email.data
-                help_arg = True
+                help_arg = False
                 return redirect('/confirmation')
         if request.method == "GET":
             if current_user.login == logins:
@@ -226,6 +227,8 @@ def edit_profile(logins):
                 form.about.data = current_user.about
                 form.password.data = None
                 form.password2.data = None
+        if not form.photo.data and help_arg:
+            help_arg = False
         return render_template('edit_profile.html', title='Редактирование профиля', form=form, message='', ph_f=ph_f)
     else:
         return redirect('/login')
