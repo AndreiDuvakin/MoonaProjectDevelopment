@@ -877,11 +877,9 @@ def about():
 def main():
     db_session.global_init("db/moona_data.db")
     try:
-        app.run(host='0.0.0.0', port=5000)
-        # serve(app, host='0.0.0.0', port=5000)
+        serve(app, host='0.0.0.0', port=5000)
     except Exception as error:
         logging.warning(f'{datetime.datetime.now()}:{error}')
-        print(error)
     # после запуска переходите по ссылке http://127.0.0.1:5000/ в вашем браузере
 
 
