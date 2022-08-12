@@ -199,6 +199,10 @@ def edit_profile(logins):
                     return render_template('edit_profile.html', title='Редактирование профиля', form=form,
                                            ph_f=ph_f,
                                            message="Такая почта уже есть")
+                else:
+                    help_arg = True
+                    help_arg_2 = form.email.data
+                    return redirect('/confirmation')
             user.name = form.name.data
             user.surname = form.surname.data
             user.age = form.age.data
