@@ -268,6 +268,8 @@ def profile():
                 emotion['is_like'] = 1
             emotion_pub.append(emotion)
         message = 'Ваша почта успешно изменена!' if help_arg_2 == 'EditEmail' else ''
+        if help_arg_2:
+            help_arg_2 = False
         return render_template('profile.html', title='Профиль', pub_post=pub_post, emotion_pub=emotion_pub,
                                message=message)
     else:
