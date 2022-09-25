@@ -3,6 +3,10 @@
 }
 body {
     font-family: 'Comfortaa', cursive;
+    background-color: #f0ffff;
+}
+.user_img {
+    border-radius: 50%;
 }
 .upp_zag {
     margin-left: auto;
