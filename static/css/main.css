@@ -1,49 +1,50 @@
-#add_post {
-    margin-top: 20px;
-    margin-left: 83%;
+body {
+    background-image: url('../img/back_moona.png');
 }
-.row1, .row2, .row3 {
-    width: 33%;
-    display:inline-block;
-    vertical-align: top;
-    margin-top: 39px;
-}
-.rowdiv1, .rowdiv2, .rowdiv3 {
-    width: 95%;
-}
-.post_zag, .card-text, .card-body, .post_zag, .author {
-    width: 90%;
+.header, .body {
+    width: 80%;
     margin-left: auto;
     margin-right: auto;
+}
+.body {
+    margin-top: 5%;
+}
+.header_logo {
+    width: 60%;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+.header_title {
     text-align: center;
+    color: white;
+    margin-left: 27%;
+    margin-right: 27%;
+    width: 46%;
+    height: auto;
+    margin-top: 15px;
 }
-.post {
-    background-color: #7fc3ff;
-    border-radius: 50px;
-    width: 90%;
-    height: 95%;
-    margin-bottom: 20px;
+.article_one {
+    width: 100%;
+    height: 27%;
+    max-height: 27%;
+    display: flex;
+    justify-content: space-around;
 }
-details {
-    color: #ffffff;
-}
-#main_table {
-    margin-left: 10%;
-    margin-right: auto;
-    width: 90%;
-}
-.question {
-    background-color:#7fc3ff;
+.article_one_text_back {
+    width: 50%;
+    background: linear-gradient(45deg, #d1c3fc, #9bc4fc);
     border-radius: 22px;
-    width: 90%;
-    margin-left: 10px;
+    height: 94%;
 }
-.is_ans {
-    background-color:#ddefff;
-    border:2px solid #ffffff;
-    border-radius: 25px;
-    width: 95%;
+.article_one_text {
+    width: 94%;
+    height: 94%;
+    margin-top: 3%;
+    margin-left: 3%;
+    overflow: auto;
+    color: white;
+    text-align: justify;
 }
-.but {
-    width: 80%;
+.article_one_image {
+    height: 100%;
 }

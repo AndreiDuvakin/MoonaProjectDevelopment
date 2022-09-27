@@ -1,8 +1,9 @@
 .navbar-brand {
     font-family: 'Montserrat Alternates', sans-serif;
+    background-color: #f0ffff;
 }
 body {
-    font-family: 'Comfortaa', cursive;
+    font-family: 'Comfortaa', cursive, sans-serif;
     background-color: #f0ffff;
 }
 .user_img {
