@@ -14,7 +14,7 @@ body {
     margin-left: 20%;
     margin-right: 20%;
 }
-.header_title {
+.header_title, .join_us_header {
     text-align: center;
     color: white;
     margin-left: 27%;
@@ -23,20 +23,26 @@ body {
     height: auto;
     margin-top: 15px;
 }
-.article_one {
+.article_one, .article_two, .article_three {
+    margin-top: 5%;
     width: 100%;
-    height: 27%;
-    max-height: 27%;
+    max-height: 60%;
     display: flex;
     justify-content: space-around;
 }
-.article_one_text_back {
+.article_one_text_back, .article_two_text_back, .article_three_text_back {
     width: 50%;
     background: linear-gradient(45deg, #d1c3fc, #9bc4fc);
-    border-radius: 22px;
+    border-radius: 20px;
     height: 94%;
+    align-self: center;
+    transition: border-radius 0.5s ease-in, box-shadow 1s ease-in;
 }
-.article_one_text {
+.article_one_text_back:hover, .article_two_text_back:hover, .article_three_text_back:hover {
+    border-radius: 30px;
+    box-shadow: 0px 0px 50px #fff;
+}
+.article_one_text, .article_two_text, .article_three_text {
     width: 94%;
     height: 94%;
     margin-top: 3%;
@@ -44,7 +50,67 @@ body {
     overflow: auto;
     color: white;
     text-align: justify;
+    font-size: 20px;
 }
-.article_one_image {
-    height: 100%;
+.article_one_image, .article_two_image {
+    width: 250px;
+    height: 250px;
+    background: linear-gradient(45deg, #fffeff, #d7fffe);
+    border-radius: 16px;
+    transition: border-radius 0.5s ease-in, box-shadow 1s ease-in;
+    align-self: center;
+}
+.article_three_image {
+    width: 280px;
+    height: 240px;
+    background: linear-gradient(45deg, #fffeff, #d7fffe);
+    border-radius: 16px;
+    transition: border-radius 0.5s ease-in, box-shadow 1s ease-in;
+    align-self: center;
+}
+.article_one_image:hover, .article_two_image:hover, .article_three_image:hover {
+    border-radius: 22px;
+    box-shadow: 0px 0px 30px #ffffff;
+}
+.join_us {
+    margin-top: 10%;
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+    max-height: 60%;
+    display: flex;
+    flex-direction: column;
+}
+.join_us_header {
+    transition: font-size 0.5s ease-in, text-shadow 1s ease-in;
+}
+.join_us_header:hover {
+    font-size: 34;
+    text-shadow: 0px 0px 20px #ffffff; 
+}
+.join_us_login_block {
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 10%;
+    display: flex;
+    justify-content: space-evenly;
+}
+.button {
+    background: linear-gradient(45deg, #d1c3fc, #9bc4fc);
+    width: 300px;
+    height: 80px;
+    margin-bottom: 30%;
+    border-radius: 15px;
+    transition: border-radius 0.5s ease-in, box-shadow 1s ease-in;
+}
+.button:hover {
+    border-radius: 22px;   
+    box-shadow: 0px 0px 30px #ffffff; 
+}
+.btn_text {
+    margin-top: 7%;
+    text-align: center;
+    color: #ffffff;
+    font-size: 25px;
 }
