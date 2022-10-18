@@ -742,7 +742,7 @@ def check_auth():
     session = db_session.create_session()
     user = session.query(User).filter(User.email == email).first()
     if user:
-        if user.check_password(password):
+        if user.check_password(password) or user.check_hash_password(password):
             return make_response(jsonify({
                 'key': '',
                 'name': user.name,
