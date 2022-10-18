@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          crossorigin="anonymous">
+    <link rel="icon" href="../static/img/MoonCcircl.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Montserrat+Alternates:wght@600&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/base.css">
+    <link rel="stylesheet" href="../static/css/register.css">
+    <title>{{title}}</title>
+</head>
+<div class="divlog">
+    <h1 class="title">Регистрация</h1>
+    <form class="row g-3" action="" method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        {{ form.csrf_token }}
+        <div class="col-md-6">
+            <label class="form-label">{{ form.name.label }}</label>
+            {{ form.name(class="form-control", type="text") }}
+                  {% for error in form.name.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">{{ form.surname.label }}</label>
+            {{ form.surname(class="form-control", type="text") }}
+                  {% for error in form.surname.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">{{ form.email.label }}</label>
+            {{ form.email(class="form-control", type="email") }}
+                  {% for error in form.email.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">{{ form.password.label }}</label>
+            {{ form.password(class="form-control", type="password") }}
+                  {% for error in form.password.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">{{ form.password2.label }}</label>
+            {{ form.password2(class="form-control", type="password") }}
+                  {% for error in form.password2.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">{{ form.login.label }}</label>
+            {{ form.login(class="form-control", type="text") }}
+            {% for error in form.login.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+                {% endfor %}
+        </div>
+        <div class="but">
+            <p>{{ form.submit(type="submit", class="btn btn-primary", style="background-color:#38aaff") }}</p>
+            {% if message != '' %}
+            <div class="alert alert-danger" role="alert">{{ message }}</div>
+            {% endif %}
+        </div>
+    </form>
+</div>

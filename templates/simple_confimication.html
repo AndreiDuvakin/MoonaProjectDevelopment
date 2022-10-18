@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          crossorigin="anonymous">
+    <link rel="icon" href="../static/img/MoonCcircl.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Montserrat+Alternates:wght@600&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/base.css">
+    <link rel="stylesheet" href="../static/css/register.css">
+    <title>{{title}}</title>
+</head>
+<body>
+<div class="divlog">
+    <h1 class="title">Подтверждение почты</h1>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        {{ form.csrf_token }}
+        <h3>Мы отправили секретный код вам на почту</h3>
+        <p>
+            {{ form.code_key.label }}<br>
+            {{ form.code_key(class="form-control") }}<br>
+            {% for error in form.code_key.errors %}
+        <div class="alert alert-danger" role="alert">
+            {{ error }}
+        </div>
+        {% endfor %}
+        </p>
+        <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+        {% if message != '' %}
+        <div class="alert alert-danger" role="alert">{{ message }}</div>
+        {% endif %}
+    </form>
+</div>
+</body>
+</html>

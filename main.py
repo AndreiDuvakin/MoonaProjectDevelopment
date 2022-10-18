@@ -4,7 +4,7 @@ from random import randint, choices
 from waitress import serve
 import logging
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify, make_response
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_restful import abort
 from werkzeug.utils import redirect
@@ -693,11 +693,22 @@ def confirmation():
                     session.commit()
                     send_msg = False
                     help_arg = False
-                    return redirect('/login')
+                    if form.simple:
+                        return redirect('/simple/can_close')
+                    else:
+                        return redirect('/login')
                 else:
-                    return render_template('confirmation_reg.html', title='Подтверждение', form=conf,
-                                           message='Коды не совпадают')
-            return render_template('confirmation_reg.html', title='Подтверждение', form=conf, message='')
+                    if form.simple:
+                        return render_template('simple_confimication.html', title='Подтверждение', form=conf,
+                                               message='Коды не совпадают')
+                    else:
+                        return render_template('confirmation_reg.html', title='Подтверждение', form=conf,
+                                               message='Коды не совпадают')
+            if form.simple:
+                return render_template('simple_confimication.html', title='Подтверждение', form=conf,
+                                       message='Коды не совпадают')
+            else:
+                return render_template('confirmation_reg.html', title='Подтверждение', form=conf, message='')
         else:
             conf = Confirmation()
             if not send_msg:
@@ -713,9 +724,35 @@ def confirmation():
                     send_msg = False
                     help_arg = False
                     return redirect('/profile')
-            return render_template('confirmation_reg.html', title='Подтверждение', form=conf, message='')
+
+            if form.simple:
+                return render_template('simple_confimication.html', title='Подтверждение', form=conf,
+                                       message='Коды не совпадают')
+            else:
+                return render_template('confirmation_reg.html', title='Подтверждение', form=conf, message='')
     else:
         return redirect('/')
+
+
+@app.route('/school_app_check_auth', methods=['POST'])
+def check_auth():
+    req = request.json
+    email = req['login']
+    password = req['password']
+    session = db_session.create_session()
+    user = session.query(User).filter(User.email == email).first()
+    if user:
+        if user.check_password(password):
+            return make_response(jsonify({'key': ''}), 200)
+        else:
+            return abort(403)
+    else:
+        return abort(404)
+
+
+@app.route('/simple/can_close')
+def can_close():
+    return render_template('simple_can_close.html', title='Можете закрыть страницу')
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -742,6 +779,33 @@ def register():
             photo = save_photo(form.photo.data, form.login.data)
         return redirect('/confirmation')
     return render_template('register.html', title='Регистрация', form=form, message='')
+
+
+@app.route('/simple/register', methods=['GET', 'POST'])
+def school_reg():
+    global help_arg
+    global photo
+    form = RegisterForm()
+    form.simple = True
+    if form.validate_on_submit():
+        if form.password.data != form.password2.data:
+            return render_template('simple_register.html', title='Регистрация',
+                                   form=form,
+                                   message="Пароли не совпадают")
+        session = db_session.create_session()
+        if session.query(User).filter(User.login == form.login.data).first():
+            return render_template('simple_register.html', title='Регистрация',
+                                   form=form,
+                                   message="Такой пользователь уже есть")
+        if session.query(User).filter(User.email == form.email.data).first():
+            return render_template('simple_register.html', title='Регистрация',
+                                   form=form,
+                                   message="Такая почта уже есть")
+        help_arg = form
+        if form.photo.data:
+            photo = save_photo(form.photo.data, form.login.data)
+        return redirect('/confirmation')
+    return render_template('simple_register.html', title='Регистрация', form=form, message='')
 
 
 @app.route('/recovery', methods=['GET', 'POST'])
