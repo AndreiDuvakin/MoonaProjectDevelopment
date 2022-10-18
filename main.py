@@ -743,7 +743,12 @@ def check_auth():
     user = session.query(User).filter(User.email == email).first()
     if user:
         if user.check_password(password):
-            return make_response(jsonify({'key': ''}), 200)
+            return make_response(jsonify({
+                'key': '',
+                'name': user.name,
+                'surname': user.surname,
+                'login': user.login
+            }), 200)
         else:
             return abort(403)
     else:
