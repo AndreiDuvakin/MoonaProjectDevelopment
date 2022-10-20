@@ -29,8 +29,8 @@ class User(SqlAlchemyBase, UserMixin):
     def check_password(self, password):
         return check_password_hash(self.password, password)
 
-    def check_hash_password(self, hash_password):
-        return True if self.password == hash_password else False
+    def check_hash_password(self, password):
+        return True if password == self.password else False
 
     def set_password(self, password):
         self.password = generate_password_hash(password)

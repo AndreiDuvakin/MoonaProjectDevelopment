@@ -742,12 +742,13 @@ def check_auth():
     session = db_session.create_session()
     user = session.query(User).filter(User.email == email).first()
     if user:
-        if user.check_password(password) or user.check_hash_password(password):
+        if user.check_password(password)  or user.check_hash_password(password):
             return make_response(jsonify({
-                'key': '',
+                'key': open('key.txt', 'r', encoding='utf-8').read(),
                 'name': user.name,
                 'surname': user.surname,
-                'login': user.login
+                'login': user.login,
+                'hash': user.password
             }), 200)
         else:
             return abort(403)
