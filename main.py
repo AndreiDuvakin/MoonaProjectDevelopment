@@ -57,7 +57,7 @@ def save_photo(photo, login, post=False, id_post=None):
     elif post and id_post is not None:
         with open(f'static/app_image/post_photo/{login}_post_{id_post}.png', 'wb') as f:
             photo.save(f)
-        return f'../static/app_image/post_photo/{login}_post_{id_post}.png'
+        return f'static/app_image/post_photo/{login}_post_{id_post}.png'
 
 
 def secret_key():
@@ -69,13 +69,36 @@ def load_user(user_id):
     db_sess = db_session.create_session()
     return db_sess.query(User).get(user_id)
 
-
 @app.route('/')
 def main_page():
-    return render_template('main.html', title='moona')
+    return render_template('/main/main.html')
+
+@app.route('/safeappschool/login')
+def safe_app_school_login():
+    pass
 
 
-@app.route('/edit_profile/<string:logins>', methods=['GET', 'POST'])
+@app.route('/safeappschool/main')
+def safe_app_school_main():
+    pass
+
+
+@app.route('/safeappschool/about')
+def safe_app_school_about():
+    pass
+
+
+@app.route('/safeappschool/go')
+def safe_app_school_go():
+    pass
+
+
+@app.route('/diary/')
+def main_diary_page():
+    return render_template('diary/main.html', title='moona')
+
+
+@app.route('/diary/edit_profile/<string:logins>', methods=['GET', 'POST'])
 def edit_profile(logins):
     if current_user.is_authenticated:
         global photo
@@ -84,7 +107,7 @@ def edit_profile(logins):
         form = RegisterForm()
         session = db_session.create_session()
         ph_f = False
-        if current_user.photo != '../static/img/None_logo.png':
+        if current_user.photo != '../../static/img/None_logo.png':
             photo = current_user.photo
             ph_f = True
         else:
@@ -92,20 +115,20 @@ def edit_profile(logins):
         if form.del_photo.data:
             help_arg = photo
             ph_f = False
-            photo = '../static/img/None_logo.png'
+            photo = '../../static/img/None_logo.png'
         if form.submit2.data:
             user = session.query(User).filter(User.login == logins).first()
             if user.email != form.email.data:
                 if session.query(User).filter(User.email == form.email.data).first():
                     if not form.photo.data and help_arg:
                         help_arg = False
-                    return render_template('edit_profile.html', title='Редактирование профиля', form=form,
+                    return render_template('diary/edit_profile.html', title='Редактирование профиля', form=form,
                                            ph_f=ph_f,
                                            message="Такая почта уже есть")
                 else:
                     help_arg = True
                     help_arg_2 = form.email.data
-                    return redirect('/confirmation')
+                    return redirect('/diary/confirmation')
             user.name = form.name.data
             user.surname = form.surname.data
             user.age = form.age.data
@@ -115,15 +138,15 @@ def edit_profile(logins):
             if help_arg:
                 os.remove(help_arg)
                 help_arg = False
-                photo = '../static/img/None_logo.png'
+                photo = '../../static/img/None_logo.png'
             user.photo = photo
             session.commit()
             if user.email == form.email.data:
-                return redirect('/profile')
+                return redirect('/diary/profile')
             else:
                 help_arg_2 = form.email.data
                 help_arg = False
-                return redirect('/confirmation')
+                return redirect('/diary/confirmation')
         if request.method == "GET":
             if current_user.login == logins:
                 form.email.data = current_user.email
@@ -136,12 +159,13 @@ def edit_profile(logins):
                 form.password2.data = None
         if not form.photo.data and help_arg:
             help_arg = False
-        return render_template('edit_profile.html', title='Редактирование профиля', form=form, message='', ph_f=ph_f)
+        return render_template('diary/edit_profile.html', title='Редактирование профиля', form=form, message='',
+                               ph_f=ph_f)
     else:
-        return redirect('/login')
+        return redirect('/diary/login')
 
 
-@app.route('/profile')
+@app.route('/diary/profile')
 def profile():
     if current_user.is_authenticated:
         global help_arg_2
@@ -173,13 +197,13 @@ def profile():
         message = 'Ваша почта успешно изменена!' if help_arg_2 == 'EditEmail' else ''
         if help_arg_2:
             help_arg_2 = False
-        return render_template('profile.html', title='Профиль', pub_post=pub_post, emotion_pub=emotion_pub,
+        return render_template('diary/profile.html', title='Профиль', pub_post=pub_post, emotion_pub=emotion_pub,
                                message=message)
     else:
-        return redirect('/login')
+        return redirect('/diary/login')
 
 
-@app.route('/new_like/<int:user_id>/<int:post_id>/<string:ret_href>')
+@app.route('/diary/new_like/<int:user_id>/<int:post_id>/<string:ret_href>')
 def new_like(user_id, post_id, ret_href):
     if current_user.is_authenticated:
         session = db_session.create_session()
@@ -194,9 +218,9 @@ def new_like(user_id, post_id, ret_href):
             session.delete(find)
             session.commit()
             if ret_href != 'main':
-                return redirect(f"/{ret_href}")
+                return redirect(f"/diary/{ret_href}")
             else:
-                return redirect('/')
+                return redirect('/diary/')
         else:
             popular = session.query(Popularity).filter(Popularity.post == post_id).first()
             if not popular:
@@ -214,14 +238,14 @@ def new_like(user_id, post_id, ret_href):
             session.add(like)
             session.commit()
             if ret_href != 'main':
-                return redirect(f"/{ret_href}")
+                return redirect(f"/diary/{ret_href}")
             else:
-                return redirect('/')
+                return redirect('/diary/')
     else:
-        return redirect('/')
+        return redirect('/diary/')
 
 
-@app.route('/publications', methods=['GET', 'POST'])
+@app.route('/diary/publications', methods=['GET', 'POST'])
 def publications():
     session = db_session.create_session()
     fresh_posts_betta = session.query(DiaryPost).filter(DiaryPost.public == 1).all()[::-1]
@@ -325,12 +349,13 @@ def publications():
             if session.query(Like).filter(Like.post == i.id, Like.user == current_user.id).first():
                 emotion['is_like'] = 1
         emotion_for_you.append(emotion)
-    return render_template('publications.html', fresh_post=fresh_posts, emotion_fresh=emotion_fresh, title='Публикации',
+    return render_template('diary/publications.html', fresh_post=fresh_posts, emotion_fresh=emotion_fresh,
+                           title='Публикации',
                            pop_post=pop_post, emotion_pop=emotion_pop, for_you_post=for_you_post,
                            emotion_for_you=emotion_for_you)
 
 
-@app.route('/answer_quest/<int:id>', methods=['GET', 'POST'])
+@app.route('/diary/answer_quest/<int:id>', methods=['GET', 'POST'])
 def answer_quest(id):
     if current_user.is_authenticated:
         session = db_session.create_session()
@@ -352,18 +377,18 @@ def answer_quest(id):
                     quest.all_used = True
                 session.add(answer_user)
                 session.commit()
-                return redirect('/diary')
+                return redirect('/diary/diary')
             else:
                 ans_quest = session.query(Answer).filter(Answer.id_question == id).first()
                 ans_quest.answer = answer.answer.data
                 session.commit()
-                return redirect('/diary')
-        return render_template('answer_quest.html', tetle='Ответ на вопрос', form=answer, message='', quest=quest)
+                return redirect('/diary/diary')
+        return render_template('diary/answer_quest.html', tetle='Ответ на вопрос', form=answer, message='', quest=quest)
     else:
-        return redirect('/')
+        return redirect('/diary/')
 
 
-@app.route('/delete_quest/<int:id>', methods=['GET', 'POST'])
+@app.route('/diary/delete_quest/<int:id>', methods=['GET', 'POST'])
 def delete_quest(id):
     if current_user.is_authenticated:
         session = db_session.create_session()
@@ -373,12 +398,12 @@ def delete_quest(id):
             session.commit()
         else:
             abort(404)
-        return redirect('/add_question')
+        return redirect('/diary/add_question')
     else:
-        return redirect('/')
+        return redirect('/diary/')
 
 
-@app.route('/add_question', methods=['GET', 'POST'])
+@app.route('/diary/add_question', methods=['GET', 'POST'])
 def add_question():
     if current_user.is_authenticated:
         if current_user.role == 'admin':
@@ -386,7 +411,7 @@ def add_question():
             session = db_session.create_session()
             if que.validate_on_submit():
                 if que.quest.data in list(map(lambda x: x.quest, session.query(Quest).all())):
-                    return render_template('add_question.html', message='Такой вопрос уже есть!',
+                    return render_template('diary/add_question.html', message='Такой вопрос уже есть!',
                                            title='Добавить вопрос',
                                            form=que)
                 new_que = Quest()
@@ -394,15 +419,15 @@ def add_question():
                 session.add(new_que)
                 session.commit()
                 que.quest.data = ''
-            return render_template('add_question.html', message='', title='Добавить вопрос', form=que,
+            return render_template('diary/add_question.html', message='', title='Добавить вопрос', form=que,
                                    question=session.query(Quest).all())
         else:
-            return redirect('/')
+            return redirect('/diary/')
     else:
-        return redirect('/')
+        return redirect('/diary/')
 
 
-@app.route('/post/<int:id>', methods=['GET', 'POST'])
+@app.route('/diary/post/<int:id>', methods=['GET', 'POST'])
 def post_edit(id):
     if current_user.is_authenticated:
         session = db_session.create_session()
@@ -457,19 +482,19 @@ def post_edit(id):
                         if not post_ed.public.data and check_pop:
                             session.delete(check_pop)
                         session.commit()
-                        return redirect('/diary')
+                        return redirect('/diary/diary')
                     else:
                         abort(404)
-                return render_template('post.html', form=post_ed, message='', title='Изменить запись', pht=ph_f)
+                return render_template('diary/post.html', form=post_ed, message='', title='Изменить запись', pht=ph_f)
             else:
-                return redirect('/diary')
+                return redirect('/diary/diary')
         else:
-            return redirect('/diary')
+            return redirect('/diary/diary')
     else:
-        return redirect('/login')
+        return redirect('/diary/login')
 
 
-@app.route('/post_deleted/<int:id>', methods=['GET', 'POST'])
+@app.route('/diary/post_deleted/<int:id>', methods=['GET', 'POST'])
 def post_deleted(id):
     if current_user.is_authenticated:
         session = db_session.create_session()
@@ -491,16 +516,16 @@ def post_deleted(id):
                     session.commit()
                 else:
                     abort(404)
-                return redirect('/diary')
+                return redirect('/diary/diary')
             else:
-                return redirect('/diary')
+                return redirect('/diary/diary')
         else:
-            return redirect('/diary')
+            return redirect('/diary/diary')
     else:
-        return redirect('/login')
+        return redirect('/diary/login')
 
 
-@app.route('/add_post', methods=['GET', 'POST'])
+@app.route('/diary/add_post', methods=['GET', 'POST'])
 def add_post():
     if current_user.is_authenticated:
         pos = AddPost()
@@ -526,7 +551,7 @@ def add_post():
                                       link=pos.link.data)
                 session.add(diart_pos)
                 session.commit()
-                return redirect("/diary")
+                return redirect("/diary/diary")
             else:
                 diart_pos = DiaryPost(name=pos.name.data,
                                       text=pos.text.data,
@@ -538,13 +563,13 @@ def add_post():
                                       link=pos.link.data)
                 session.add(diart_pos)
                 session.commit()
-                return redirect("/diary")
-        return render_template('post.html', form=pos, title='Новый пост', message='')
+                return redirect("/diary/diary")
+        return render_template('diary/post.html', form=pos, title='Новый пост', message='')
     else:
-        return redirect('/login')
+        return redirect('/diary/login')
 
 
-@app.route('/diary', methods=['GET', 'POST'])
+@app.route('/diary/diary', methods=['GET', 'POST'])
 def diary():
     db_sess = db_session.create_session()
     if current_user.is_authenticated:
@@ -622,18 +647,18 @@ def diary():
         lis_emotion = None
         emotion_pub = None
         pub_post = None
-    return render_template('diary.html', title='Дневник', my_post=posts, message='', question=post_quest,
+    return render_template('diary/diary.html', title='Дневник', my_post=posts, message='', question=post_quest,
                            ans=ans2, emotion=lis_emotion, emotion_pub=emotion_pub, pub_post=pub_post)
 
 
-@app.route('/logout')
+@app.route('/diary/logout')
 @login_required
 def logout():
     logout_user()
-    return redirect("/")
+    return redirect("/diary/")
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/diary/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
@@ -641,14 +666,14 @@ def login():
         user = db_sess.query(User).filter(User.email == form.email.data).first()
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
-            return redirect("/")
-        return render_template('login.html',
+            return redirect("/diary/")
+        return render_template('diary/login.html',
                                message="Неправильный логин или пароль",
                                form=form)
-    return render_template('login.html', title='Авторизация', form=form, message='')
+    return render_template('diary/login.html', title='Авторизация', form=form, message='')
 
 
-@app.route('/confirmation', methods=['GET', 'POST'])
+@app.route('/diary/confirmation', methods=['GET', 'POST'])
 def confirmation():
     global help_arg
     if help_arg:
@@ -686,7 +711,7 @@ def confirmation():
                             about=form.about.data,
                             email=form.email.data,
                             role='user',
-                            photo='../static/img/None_logo.png'
+                            photo='../../static/img/None_logo.png'
                         )
                     user.set_password(form.password.data)
                     session.add(user)
@@ -694,21 +719,21 @@ def confirmation():
                     send_msg = False
                     help_arg = False
                     if form.simple:
-                        return redirect('/simple/can_close')
+                        return redirect('/diary/simple/can_close')
                     else:
-                        return redirect('/login')
+                        return redirect('/diary/login')
                 else:
                     if form.simple:
                         return render_template('simple_confimication.html', title='Подтверждение', form=conf,
                                                message='Коды не совпадают')
                     else:
-                        return render_template('confirmation_reg.html', title='Подтверждение', form=conf,
+                        return render_template('diary/confirmation_reg.html', title='Подтверждение', form=conf,
                                                message='Коды не совпадают')
             if form.simple:
                 return render_template('simple_confimication.html', title='Подтверждение', form=conf,
                                        message='Коды не совпадают')
             else:
-                return render_template('confirmation_reg.html', title='Подтверждение', form=conf, message='')
+                return render_template('diary/confirmation_reg.html', title='Подтверждение', form=conf, message='')
         else:
             conf = Confirmation()
             if not send_msg:
@@ -723,98 +748,49 @@ def confirmation():
                     session.commit()
                     send_msg = False
                     help_arg = False
-                    return redirect('/profile')
+                    return redirect('/diary/profile')
 
             if form.simple:
                 return render_template('simple_confimication.html', title='Подтверждение', form=conf,
                                        message='Коды не совпадают')
             else:
-                return render_template('confirmation_reg.html', title='Подтверждение', form=conf, message='')
+                return render_template('diary/confirmation_reg.html', title='Подтверждение', form=conf, message='')
     else:
-        return redirect('/')
+        return redirect('/diary/')
 
 
-@app.route('/school_app_check_auth', methods=['POST'])
-def check_auth():
-    req = request.json
-    email = req['login']
-    password = req['password']
-    session = db_session.create_session()
-    user = session.query(User).filter(User.email == email).first()
-    if user:
-        if user.check_password(password)  or user.check_hash_password(password):
-            return make_response(jsonify({
-                'key': open('key.txt', 'r', encoding='utf-8').read(),
-                'name': user.name,
-                'surname': user.surname,
-                'login': user.login,
-                'hash': user.password
-            }), 200)
-        else:
-            return abort(403)
-    else:
-        return abort(404)
-
-
-@app.route('/simple/can_close')
-def can_close():
-    return render_template('simple_can_close.html', title='Можете закрыть страницу')
-
-
-@app.route('/register', methods=['GET', 'POST'])
+@app.route('/diary/register', methods=['GET', 'POST'])
 def register():
     global help_arg
     global photo
     form = RegisterForm()
     if form.validate_on_submit():
         if form.password.data != form.password2.data:
-            return render_template('register.html', title='Регистрация',
+            return render_template('diary/register.html', title='Регистрация',
                                    form=form,
                                    message="Пароли не совпадают")
         session = db_session.create_session()
         if session.query(User).filter(User.login == form.login.data).first():
-            return render_template('register.html', title='Регистрация',
+            return render_template('diary/register.html', title='Регистрация',
                                    form=form,
                                    message="Такой пользователь уже есть")
         if session.query(User).filter(User.email == form.email.data).first():
-            return render_template('register.html', title='Регистрация',
+            return render_template('diary/register.html', title='Регистрация',
                                    form=form,
                                    message="Такая почта уже есть")
         help_arg = form
         if form.photo.data:
             photo = save_photo(form.photo.data, form.login.data)
-        return redirect('/confirmation')
-    return render_template('register.html', title='Регистрация', form=form, message='')
+        return redirect('/diary/confirmation')
+    return render_template('diary/register.html', title='Регистрация', form=form, message='')
 
 
-@app.route('/simple/register', methods=['GET', 'POST'])
-def school_reg():
-    global help_arg
-    global photo
-    form = RegisterForm()
-    form.simple = True
-    if form.validate_on_submit():
-        if form.password.data != form.password2.data:
-            return render_template('simple_register.html', title='Регистрация',
-                                   form=form,
-                                   message="Пароли не совпадают")
-        session = db_session.create_session()
-        if session.query(User).filter(User.login == form.login.data).first():
-            return render_template('simple_register.html', title='Регистрация',
-                                   form=form,
-                                   message="Такой пользователь уже есть")
-        if session.query(User).filter(User.email == form.email.data).first():
-            return render_template('simple_register.html', title='Регистрация',
-                                   form=form,
-                                   message="Такая почта уже есть")
-        help_arg = form
-        if form.photo.data:
-            photo = save_photo(form.photo.data, form.login.data)
-        return redirect('/confirmation')
-    return render_template('simple_register.html', title='Регистрация', form=form, message='')
+@app.route('/diary/about_us')
+def about():
+    return render_template('diary/about.html', title='О нас')
 
 
-@app.route('/recovery', methods=['GET', 'POST'])
+@app.route('/diary/recovery', methods=['GET', 'POST'])
 def recovery():
     global send_msg
     global secret_code
@@ -830,11 +806,11 @@ def recovery():
             secret_code = secret_key()
             mail(f'Ваш секретный код: {secret_code}', form.email.data, 'Восстановление пароля')
             send_msg = True
-            return render_template('recovery.html', title='Восстановление пароля', form=conf, message='', s='2')
+            return render_template('diary/recovery.html', title='Восстановление пароля', form=conf, message='', s='2')
     if conf.validate_on_submit():
         if str(conf.code_key.data).strip() == str(secret_code).strip():
             help_arg = True
-            return render_template('recovery.html', title='Восстановление пароля', form=finish, message='', s='3')
+            return render_template('diary/recovery.html', title='Восстановление пароля', form=finish, message='', s='3')
     if help_arg:
         if finish.validate_on_submit():
             db_sess = db_session.create_session()
@@ -844,13 +820,62 @@ def recovery():
             session.add(user2)
             session.commit()
             send_msg = False
-            return redirect('/login')
-    return render_template('recovery.html', title='Восстановление пароля', form=form, message='', s='1')
+            return redirect('/diary/login')
+    return render_template('diary/recovery.html', title='Восстановление пароля', form=form, message='', s='1')
 
 
-@app.route('/about_us')
-def about():
-    return render_template('about.html', title='О нас')
+@app.route('/school_app_check_auth', methods=['POST'])
+def check_auth():
+    req = request.json
+    email = req['login']
+    password = req['password']
+    session = db_session.create_session()
+    user = session.query(User).filter(User.email == email).first()
+    if user:
+        if user.check_password(password) or user.check_hash_password(password):
+            return make_response(jsonify({
+                'key': open('key.txt', 'r', encoding='utf-8').read(),
+                'name': user.name,
+                'surname': user.surname,
+                'login': user.login,
+                'hash': user.password
+            }), 200)
+        else:
+            return abort(403)
+    else:
+        return abort(404)
+
+
+@app.route('/simple/can_close')
+def can_close():
+    return render_template('simple/simple_can_close.html', title='Можете закрыть страницу')
+
+
+@app.route('/simple/register', methods=['GET', 'POST'])
+def school_reg():
+    global help_arg
+    global photo
+    form = RegisterForm()
+    form.simple = True
+    if form.validate_on_submit():
+        if form.password.data != form.password2.data:
+            return render_template('simple/simple_register.html', title='Регистрация',
+                                   form=form,
+                                   message="Пароли не совпадают")
+        session = db_session.create_session()
+        if session.query(User).filter(User.login == form.login.data).first():
+            return render_template('simple/simple_register.html', title='Регистрация',
+                                   form=form,
+                                   message="Такой пользователь уже есть")
+        if session.query(User).filter(User.email == form.email.data).first():
+            return render_template('simple/simple_register.html', title='Регистрация',
+                                   form=form,
+                                   message="Такая почта уже есть")
+        help_arg = form
+        if form.photo.data:
+            photo = save_photo(form.photo.data, form.login.data)
+        return redirect('/diary/confirmation')
+    return render_template('simple/simple_register.html', title='Регистрация', form=form, message='')
 
 
 def main():

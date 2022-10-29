@@ -9,7 +9,7 @@
     <link rel="icon" href="../static/img/MoonCcircl.ico" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Montserrat+Alternates:wght@600&display=swap"
           rel="stylesheet">
-    <link rel="stylesheet" href="../static/css/base.css">
+    <link rel="stylesheet" href="../../static/css/diary/base.css">
     <title>{{title}}</title>
 </head>
 <body>
@@ -47,15 +47,15 @@
     </symbol>
 </svg>
 <div class="d-flex flex-column flex-shrink-0 bg-light" style="width: 5rem; height: 0px;">
-    <a href="/" class="d-block p-3 link-dark text-decoration-none" title="Icon-only" data-bs-toggle="tooltip"
+    <a href="/diary/" class="d-block p-3 link-dark text-decoration-none" title="Icon-only" data-bs-toggle="tooltip"
        data-bs-placement="right">
-        <object type="image/svg+xml" data="../static/img/Логотим Moona.svg" width="54" height="54">
+        <object type="image/svg+xml" data="../../static/img/Логотим Moona.svg" width="54" height="54">
             Your browser does not support SVG
         </object>
     </a>
     <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
         <li class="nav-item">
-            <a href="/" class="nav-link py-3 border-bottom" title="Главная"
+            <a href="/diary/" class="nav-link py-3 border-bottom" title="Главная"
                data-bs-toggle="tooltip" data-bs-placement="right">
                 <svg class="bi" width="24" height="24" role="img" aria-label="Главная">
                     <use xlink:href="#home"/>
@@ -63,7 +63,7 @@
             </a>
         </li>
         <li>
-            <a href="/diary" class="nav-link py-3 border-bottom" title="Дневник" data-bs-toggle="tooltip"
+            <a href="/diary/diary" class="nav-link py-3 border-bottom" title="Дневник" data-bs-toggle="tooltip"
                data-bs-placement="right">
                 <svg class="bi" width="24" height="24" role="img" aria-label="Дневник">
                     <use xlink:href="#diary"/>
@@ -71,7 +71,7 @@
             </a>
         </li>
         <li>
-            <a href="/publications" class="nav-link py-3 border-bottom" title="Публикации" data-bs-toggle="tooltip"
+            <a href="/diary/publications" class="nav-link py-3 border-bottom" title="Публикации" data-bs-toggle="tooltip"
                data-bs-placement="right">
                 <svg class="bi" width="24" height="24" role="img" aria-label="Публикации">
                     <use xlink:href="#posts"/>
@@ -79,7 +79,7 @@
             </a>
         </li>
         <li>
-            <a href="/about_us" class="nav-link py-3 border-bottom" title="О нас" data-bs-toggle="tooltip"
+            <a href="/diary/about_us" class="nav-link py-3 border-bottom" title="О нас" data-bs-toggle="tooltip"
                data-bs-placement="right">
                 <svg class="bi" width="24" height="24" role="img" aria-label="О нас">
                     <use xlink:href="#about"/>
@@ -88,12 +88,12 @@
         </li>
         <li>
             {% if current_user.is_authenticated %}
-            <a href="/profile" class="nav-link py-3 border-bottom" title="Профиль" data-bs-toggle="tooltip"
+            <a href="/diary/profile" class="nav-link py-3 border-bottom" title="Профиль" data-bs-toggle="tooltip"
                data-bs-placement="right">
-                <img class="user_img" src="../{{ current_user.photo }}" width="40" height="40">
+                <img class="user_img" src="../../{{ current_user.photo }}" width="40" height="40">
             </a>
             {% else %}
-            <a href="/login" class="nav-link py-3 border-bottom" title="Профиль" data-bs-toggle="tooltip"
+            <a href="/diary/login" class="nav-link py-3 border-bottom" title="Профиль" data-bs-toggle="tooltip"
                data-bs-placement="right">
                 <svg class="bi" width="24" height="24" role="img" aria-label="Профиль">
                     <use xlink:href="#profil"/>

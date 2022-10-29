@@ -1,5 +1,5 @@
-<link rel="stylesheet" href="../static/css/diary.css">
-{% extends "base.html" %}
+<link rel="stylesheet" href="../../static/css/diary/diary.css">
+{% extends "diary/base.html" %}
 
 {% block content %}
 {% if current_user.is_authenticated %}
@@ -88,10 +88,10 @@
     <div class="bad_centre">
         <h1 id="hz1">Вы не авторизованы в системе</h1>
         <h2 id="hz2">Поэтому вам не доступна эта страница</h2><strong id="sz1">Но вы можете посмотреть
-        публикации других пользователей в разделе <a href="/" style="color:#a9e4ff">Главная</a> или <a
-                href="/publications" style="color:#a9e4ff">Публикации</a></strong>
+        публикации других пользователей в разделе <a href="/diary/" style="color:#a9e4ff">Главная</a> или <a
+                href="/diary/publications" style="color:#a9e4ff">Публикации</a></strong>
         <p></p>
-        <img id="image" src="../static/img/Надпись Moona без фона.png"></div>
+        <img id="image" src="../../static/img/Надпись Moona без фона.png"></div>
 </div>
 {% endif %}
 {% endblock %}

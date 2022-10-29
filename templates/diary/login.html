@@ -1,5 +1,5 @@
-<link rel="stylesheet" href="../static/css/register.css">
-{% extends "base.html" %}
+<link rel="stylesheet" href="../../static/css/diary/register.css">
+{% extends "diary/base.html" %}
 
 {% block content %}
 <div class="divlog" id="divlog">
@@ -34,8 +34,8 @@
         </div>
         <div class="col-sm-10" id="buttons">{{ form.submit(type="submit", class="btn btn-primary", id="but_log1") }}
             <a class="btn btn-primary" id="but_log3" type="submit"
-               href="/register"><strong>Регистрация</strong></a>
-            <a class="btn btn-primary" type="submit" id="but_log2" href="/recovery"><strong>Забыли
+               href="/diary/register"><strong>Регистрация</strong></a>
+            <a class="btn btn-primary" type="submit" id="but_log2" href="/diary/recovery"><strong>Забыли
                 пароль</strong></a>
         </div>
         {% if message != '' %}

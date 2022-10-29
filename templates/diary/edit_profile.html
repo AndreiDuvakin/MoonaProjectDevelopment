@@ -1,8 +1,9 @@
-<link rel="stylesheet" href="../static/css/register.css">
-{% extends "base.html" %}
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../static/css/diary/register.css">
+{% extends "diary/base.html" %}
 {% block content %}
 <div class="divlog">
-    <h1 class="title">Регистрация</h1>
+    <h1 class="title">Изменение профиля</h1>
     <form class="row g-3" action="" method="POST" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
         {{ form.csrf_token }}
@@ -33,33 +34,6 @@
                     </div>
                     {% endfor %}
         </div>
-        <div class="col-md-4">
-            <label class="form-label">{{ form.password.label }}</label>
-            {{ form.password(class="form-control", type="password") }}
-                  {% for error in form.password.errors %}
-                    <div class="alert alert-danger" role="alert">
-                        {{ error }}
-                    </div>
-                    {% endfor %}
-        </div>
-        <div class="col-md-4">
-            <label class="form-label">{{ form.password2.label }}</label>
-            {{ form.password2(class="form-control", type="password") }}
-                  {% for error in form.password2.errors %}
-                    <div class="alert alert-danger" role="alert">
-                        {{ error }}
-                    </div>
-                    {% endfor %}
-        </div>
-        <div class="col-md-6">
-            <label class="form-label">{{ form.login.label }}</label>
-            {{ form.login(class="form-control", type="text") }}
-            {% for error in form.login.errors %}
-                <div class="alert alert-danger" role="alert">
-                    {{ error }}
-                </div>
-                {% endfor %}
-        </div>
         <div class="col-md-6">
             <label class="form-label">{{ form.age.label }}</label>
             {{ form.age(class="form-control", type="number") }}
@@ -78,17 +52,26 @@
                 </div>
                 {% endfor %}
         </div>
-        <div class="col-md-6">
-            <label class="form-label">{{ form.photo.label }}</label>
-            {{ form.photo(class="form-control", type="file") }}
-            {% for error in form.photo.errors %}
-                <div class="alert alert-danger" role="alert">
-                    {{ error }}
-                </div>
-                {% endfor %}
+        {% if ph_f == 1 %}
+        {{ form.del_photo(type="submit", class="btn btn-primary") }}
+        {% for error in form.del_photo.errors %}
+        <div class="alert alert-danger" role="alert">
+            {{ error }}
         </div>
+        {% endfor %}
+        {% else %}
+        <p>
+            {{ form.photo.label }}<br>
+            {{ form.photo(class="form-control") }}<br>
+            {% for error in form.photo.errors %}
+        <div class="alert alert-danger" role="alert">
+            {{ error }}
+        </div>
+        {% endfor %}
+        </p>
+        {% endif %}
         <div class="but">
-            <p>{{ form.submit(type="submit", class="btn btn-primary", style="background-color:#38aaff") }}</p>
+            <p>{{ form.submit2(type="submit", class="btn btn-primary", style="background-color:#38aaff") }}</p>
             {% if message != '' %}
             <div class="alert alert-danger" role="alert">{{ message }}</div>
             {% endif %}

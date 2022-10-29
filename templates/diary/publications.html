@@ -1,5 +1,5 @@
-<link rel="stylesheet" href="../static/css/publications.css">
-{% extends "base.html" %}
+<link rel="stylesheet" href="../../static/css/diary/publications.css">
+{% extends "diary/base.html" %}
 
 {% block content %}
 <table class="but">
@@ -9,7 +9,7 @@
         </td>
         {% if current_user.is_authenticated %}
         <td>
-            <a href="/add_post" id="add_post" class="btn btn-primary"
+            <a href="/diary/add_post" id="add_post" class="btn btn-primary"
                style="background-color:#1daff0;border-radius: 15px;"><strong>Добавить
                 запись</strong></a>
         </td>
@@ -67,7 +67,7 @@
                     {% if item.photo != None %}
                     <p></p>
                     <div class="photo">
-                        <img width="90%" src="{{ item.photo }}"
+                        <img width="90%" src="../../{{ item.photo }}"
                              style="border-radius: 22px;">
                     </div>
                     <p></p>
@@ -75,11 +75,11 @@
                     {% if current_user.is_authenticated %}
                     <div class="like">
                         <a type="button"
-                           href="/new_like/{{current_user.id}}/{{item.id}}/publications">
+                           href="/diary/new_like/{{current_user.id}}/{{item.id}}/publications">
                             {% if emotion_pop[loop.index0]['is_like'] %}
-                            <img src="../static/img/like_add.png" width="117" height="100">
+                            <img src="../../static/img/like_add.png" width="117" height="100">
                             {% else %}
-                            <img src="../static/img/like.png" width="94" height="80">
+                            <img src="../../static/img/like.png" width="94" height="80">
                             {% endif %}
                         </a>
                         {% if emotion_pop[loop.index0]['like'] != None %}
@@ -104,14 +104,14 @@
                     {% endif %}
                     <div class="author" style="style=position:absolute; width:148px; height:44px; left:255px; -webkit-border-radius:
              22px;-moz-border-radius: 22px;border-radius: 22px; border:2px solid #FFFFFF; background-color:#1daff0; top:
-             98px;"><img src="../{{ emotion_pop[loop.index0]['author'].photo }}" width="40" height="40"
+             98px;"><img src="../../{{ emotion_pop[loop.index0]['author'].photo }}" width="40" height="40"
                          style="border-radius: 22px">
                         <strong style="color: #ffffff">{{ emotion_pop[loop.index0]['author'].name }}</strong>
                     </div>
                     <strong style="color:#ffffff">{{item.date}}</strong>
                     {% if current_user.is_authenticated %}
                     {% if current_user.role == 'admin' %}
-                    <a style="border-radius: 15px;" href="/post_deleted/{{ item.id }}" class="btn btn-danger">
+                    <a style="border-radius: 15px;" href="/diary/post_deleted/{{ item.id }}" class="btn btn-danger">
                         Удалить
                     </a>
                     {% endif %}
@@ -176,7 +176,7 @@
                     {% if item.photo != None %}
                     <p></p>
                     <div class="photo">
-                        <img width="90%" src="{{ item.photo }}"
+                        <img width="90%" src="../../{{ item.photo }}"
                              style="border-radius: 22px;">
                     </div>
                     <p></p>
@@ -184,11 +184,11 @@
                     {% if current_user.is_authenticated %}
                     <div class="like">
                         <a type="button"
-                           href="/new_like/{{current_user.id}}/{{item.id}}/publications">
+                           href="/diary/new_like/{{current_user.id}}/{{item.id}}/publications">
                             {% if emotion_fresh[loop.index0]['is_like'] %}
-                            <img src="../static/img/like_add.png" width="117" height="100">
+                            <img src="../../static/img/like_add.png" width="117" height="100">
                             {% else %}
-                            <img src="../static/img/like.png" width="94" height="80">
+                            <img src="../../static/img/like.png" width="94" height="80">
                             {% endif %}
                         </a>
                         {% if emotion_fresh[loop.index0]['like'] != None %}
@@ -213,14 +213,14 @@
                     {% endif %}
                     <div class="author" style="style=position:absolute; width:148px; height:44px; left:255px; -webkit-border-radius:
              22px;-moz-border-radius: 22px;border-radius: 22px; border:2px solid #FFFFFF; background-color:#1daff0; top:
-             98px;"><img src="../{{ emotion_fresh[loop.index0]['author'].photo }}" width="40" height="40"
+             98px;"><img src="../../{{ emotion_fresh[loop.index0]['author'].photo }}" width="40" height="40"
                          style="border-radius: 22px">
                         <strong style="color: #ffffff">{{ emotion_fresh[loop.index0]['author'].name }}</strong>
                     </div>
                     <strong style="color:#ffffff">{{item.date}}</strong>
                     {% if current_user.is_authenticated %}
                     {% if current_user.role == 'admin' %}
-                    <a style="border-radius: 15px;" href="/post_deleted/{{ item.id }}" class="btn btn-danger">
+                    <a style="border-radius: 15px;" href="/diary/post_deleted/{{ item.id }}" class="btn btn-danger">
                         Удалить
                     </a>
                     {% endif %}
@@ -284,7 +284,7 @@
                 {% if item.photo != None %}
                 <p></p>
                 <div class="photo">
-                    <img width="90%" src="{{ item.photo }}"
+                    <img width="90%" src="../../{{ item.photo }}"
                          style="border-radius: 22px;">
                 </div>
                 <p></p>
@@ -292,11 +292,11 @@
                 {% if current_user.is_authenticated %}
                 <div class="like">
                     <a type="button"
-                       href="/new_like/{{current_user.id}}/{{item.id}}/publications">
+                       href="/diary/new_like/{{current_user.id}}/{{item.id}}/publications">
                         {% if emotion_for_you[loop.index0]['is_like'] %}
-                        <img src="../static/img/like_add.png" width="117" height="100">
+                        <img src="../../static/img/like_add.png" width="117" height="100">
                         {% else %}
-                        <img src="../static/img/like.png" width="94" height="80">
+                        <img src="../../static/img/like.png" width="94" height="80">
                         {% endif %}
                     </a>
                     {% if emotion_for_you[loop.index0]['like'] != None %}
@@ -321,7 +321,7 @@
                 {% endif %}
                 <div class="author" style="style=position:absolute; width:148px; height:44px; left:255px; -webkit-border-radius:
              22px;-moz-border-radius: 22px;border-radius: 22px; border:2px solid #FFFFFF; background-color:#1daff0; top:
-             98px;"><img src="../{{ emotion_for_you[loop.index0]['author'].photo }}" width="40" height="40"
+             98px;"><img src="../../{{ emotion_for_you[loop.index0]['author'].photo }}" width="40" height="40"
                          style="border-radius: 22px">
                     <strong style="color: #ffffff">{{ emotion_for_you[loop.index0]['author'].name }}</strong>
                 </div>
@@ -329,7 +329,7 @@
 
                 {% if current_user.is_authenticated %}
                 {% if current_user.role == 'admin' %}
-                <a style="border-radius: 15px;" href="/post_deleted/{{ item.id }}" class="btn btn-danger">
+                <a style="border-radius: 15px;" href="/diary/post_deleted/{{ item.id }}" class="btn btn-danger">
                     Удалить
                 </a>
                 {% endif %}
