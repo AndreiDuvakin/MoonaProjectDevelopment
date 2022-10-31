@@ -1,15 +1,7 @@
-body {
-    background-image: url('../../img/big_back_moona.png');
-    font-family: 'Comfortaa', sans-serif;
-    background-color: #f0ffff;
-}
 .header, .body {
     width: 70%;
     margin-left: auto;
     margin-right: auto;
-}
-.body {
-    margin-top: 5%;
 }
 .header_logo {
     width: 60%;
@@ -58,7 +50,6 @@ body {
     margin-left: 3%;
     overflow: auto;
     color: white;
-    text-align: justify;
     font-size: 20px;
 }
 .article_one_image, .article_two_image {
@@ -72,4 +63,36 @@ body {
 .article_one_image:hover, .article_two_image:hover {
     border-radius: 22px;
     box-shadow: 0px 0px 30px #ffffff;
+}
+.auth {
+    width: 28%;
+    margin-left: 12px;
+    height: 60px;
+}
+.user {
+    background: linear-gradient(45deg, #d1c3fc, #9bc4fc);
+    border-radius: 19px;
+    border: 2px solid #ffffff;
+}
+.button {
+    width: 160px;
+    height: 50px;
+    margin-bottom: 30%;
+    border-radius: 15px;
+    background: linear-gradient(45deg, #d1c3fc, #9bc4fc);
+    transition: border-radius 0.5s ease-in, box-shadow 1s ease-in;
+}
+.button:hover {
+    border-radius: 22px;
+    box-shadow: 0px 0px 30px #ffffff;
+}
+.btn_text {
+    margin-top: 7%;
+    text-align: center;
+    color: #ffffff;
+    font-size: 20px;
+}
+.login {
+    display: flex;
+    justify-content: space-evenly;
 }

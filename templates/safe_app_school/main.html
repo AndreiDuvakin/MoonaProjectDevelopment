@@ -1,0 +1,25 @@
+<link rel="stylesheet" href="../../static/css/safe_app_school/main.css">
+{% extends "safe_app_school/base.html" %}
+
+{% block content %}
+<div class="page">
+    <div class="header">
+        <img class="header_logo" src="../../static/img/maps.png" width="200">
+        <h2 class="header_title">Здравствуйте, {{ current_user.name }}!</h2>
+    </div>
+    <div class="navigation">
+        <div class="button_block">
+            <a href="/safeappschool/go/school"><img class="button" src="../../static/img/school.png"></a>
+        </div>
+        <div class="button_block">
+            <a href="/safeappschool/go/home"><img class="button" src="../../static/img/home.png"></a>
+        </div>
+        <div class="button_block">
+            <a href="/safeappschool/setting"><img class="button" src="../../static/img/setting.png"></a>
+        </div>
+        <div class="button_block">
+            <a href="/safeappschool/about"><img class="button" src="../../static/img/info.png"></a>
+        </div>
+    </div>
+</div>
+{% endblock %}

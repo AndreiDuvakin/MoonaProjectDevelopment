@@ -1,0 +1,43 @@
+.page {
+    width: 70%;
+    margin-left: 15%;
+    margin-right: 15%;
+}
+.header_title {
+    font-size: 2.5vw;
+    text-align: center;
+    color: white;
+    width: auto;
+    height: auto;
+    margin-top: 15px;
+    transition: font-size 0.5s ease-in, text-shadow 1s ease-in;
+}
+.header_title:hover {
+    font-size: 3vw;
+    text-shadow: 0px 0px 20px #ffffff;
+}
+form {
+    width: 80%;
+    margin-left: 20%;
+}
+.button_form {
+    margin-top: 10px;
+}
+.form_label {
+    color: #ffffff;
+    font-size: 2vw;
+}
+.back {
+    margin-top: 5%;
+    background: linear-gradient(45deg, #d1c3fc, #9bc4fc);
+    border-radius: 22px;
+    border: 2px solid #ffffff;
+    width: 20%;
+    margin-left: 40%;
+    height: 8%;
+    font-size: 1.5vw;
+}
+.back_text {
+    margin-top: 4%;
+    text-align: center;
+}

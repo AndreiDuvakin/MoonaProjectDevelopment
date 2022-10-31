@@ -6,7 +6,7 @@
   margin-top: 35px;
 }
 .title {
-text-align: center;
+    text-align: center;
 }
 input[type=text], input[type=email], input[type=password], input[type=file], input[type=number]{
   padding:10px;

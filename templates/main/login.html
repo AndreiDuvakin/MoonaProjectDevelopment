@@ -1,0 +1,52 @@
+<link rel="stylesheet" href="../../static/css/main/login.css">
+{% extends "main/base.html" %}
+
+{% block content %}
+<div class="back">
+    <a href="/"><p class="back_text" style="color: #ffffff">Назад</p></a>
+</div>
+<div class="login">
+    <h1 class="header_title">Авторизация</h1>
+    <form action="" method="post">
+        <div class="login_form">
+            {{ form.hidden_tag() }}
+            <div>
+                <label class="form-label">{{ form.email.label }}</label>
+                {{ form.email(class="form-control", type="email") }}
+                {% for error in form.email.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+                {% endfor %}
+            </div>
+            <div>
+                <label class="form-label">{{ form.password.label }}</label>
+                {{ form.password(class="form-control", type="password") }}
+                {% for error in form.password.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+                {% endfor %}
+            </div>
+            <div>
+                <div class="box">{{ form.remember_me(class="form-check-input")}} {{ form.remember_me.label }}<br></div>
+                {% for error in form.remember_me.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+                {% endfor %}
+            </div>
+            <div class="form_buttons">
+                {{ form.submit(type="submit", class="btn btn-primary button_form") }}
+                <a class="btn btn-primary button_form" type="submit"
+                   href="/register"><strong>Регистрация</strong></a>
+                <a class="btn btn-primary button_form" type="submit" href="/recovery"><strong>Забыли
+                    пароль</strong></a>
+            </div>
+            {% if message != '' %}
+            <div class="alert alert-danger" role="alert">{{ message }}</div>
+            {% endif %}
+        </div>
+    </form>
+</div>
+{% endblock %}

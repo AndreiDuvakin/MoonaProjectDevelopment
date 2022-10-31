@@ -18,6 +18,7 @@ class RegisterForm(FlaskForm):
     del_photo = SubmitField('Удалить фотографию')
     submit2 = SubmitField('Сохранить')
     simple = False
+    back = False
 
 
 class Confirmation(FlaskForm):

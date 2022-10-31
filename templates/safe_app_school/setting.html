@@ -1,0 +1,42 @@
+<link rel="stylesheet" href="../../static/css/safe_app_school/setting.css">
+{% extends "safe_app_school/base.html" %}
+
+{% block content %}
+<div class="back">
+    <a href="/safeappschool/main"><p class="back_text" style="color: #ffffff">Назад</p></a>
+</div>
+<div class="page">
+    <div class="header">
+        <h2 class="header_title">Настройки</h2>
+    </div>
+    <form action="" method="post">
+        <div class="point_form">
+            {{ form.hidden_tag() }}
+            <div>
+                <label class="form_label">{{ form.home_address.label }}</label>
+                {{ form.home_address(class="form-control size_class") }}
+                {% for error in form.home_address.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+                {% endfor %}
+            </div>
+            <div>
+                <label class="form_label">{{ form.school_address.label }}</label>
+                {{ form.school_address(class="form-control") }}
+                {% for error in form.school_address.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+                {% endfor %}
+            </div>
+            <div class="form_buttons">
+                {{ form.submit(type="submit", class="btn btn-primary button_form") }}
+            </div>
+            {% if message != '' %}
+            <div class="alert alert-danger" role="alert">{{ message }}</div>
+            {% endif %}
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+.confirmation {
+    margin-top: 5%;
+}
+.confirmation {
+    width: 60%;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+.confirmation_form {
+    display: flex;
+    flex-flow: column wrap;
+}
+.form_buttons {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-evenly;
+}
+.header_title {
+    text-align: center;
+    color: white;
+    margin-left: 27%;
+    margin-right: 27%;
+    width: 46%;
+    height: auto;
+    margin-top: 15px;
+    transition: font-size 0.5s ease-in, text-shadow 1s ease-in;
+}
+.header_title:hover {
+    font-size: 43;
+    text-shadow: 0px 0px 20px #ffffff;
+}
+.back {
+    background: linear-gradient(45deg, #d1c3fc, #9bc4fc);
+    border-radius: 19px;
+    border: 2px solid #ffffff;
+    width: 10%;
+    margin-left: 12px;
+    height: 42px;
+}
+.back_text {
+    margin-top: 7%;
+    text-align: center;
+}

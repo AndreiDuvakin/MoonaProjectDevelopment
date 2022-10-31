@@ -1,0 +1,37 @@
+body {
+    font-family: 'Comfortaa', sans-serif;
+    background-color: #f0ffff;
+}
+.header_title {
+    text-align: center;
+    margin-left: 27%;
+    margin-right: 27%;
+    width: 46%;
+    height: auto;
+    margin-top: 15px;
+    transition: font-size 0.5s ease-in, text-shadow 1s ease-in;
+}
+.header_title:hover {
+    font-size: 53;
+    text-shadow: 0px 0px 20px #ffffff;
+}
+.login {
+    width: 60%;
+    margin-left: 30%;
+    margin-right: 20%;
+    display: flex;
+    flex-flow: row nowrap;
+}
+form {
+    width: 80%;
+    margin-left: 20%;
+}
+.buttons_from {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.button {
+    margin-left: 5px;
+    margin-top: 5px;
+}

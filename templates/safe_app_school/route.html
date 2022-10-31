@@ -1,0 +1,22 @@
+<link rel="stylesheet" href="../../static/css/safe_app_school/route.css">
+{% extends "safe_app_school/base.html" %}
+
+{% block content %}
+<div class="back">
+    <a href="/safeappschool/main"><p class="back_text" style="color: #ffffff">Назад</p></a>
+</div>
+<div class="page">
+    {% if route %}
+    <div class="header">
+        <h2 class="header_title">Пора {{ route }}</h2>
+    </div>
+    <div id="map" style="width: 70%; height: 100%; margin-left: 15%; margin-right: 15%;"></div>
+    {% else %}
+    <div class="header">
+        <h2 class="header_title">Вы не указали точки маршрута в настройках!</h2>
+        <div class="header_button"><a href="/safeappschool/setting"><h3 class="header_button_text">Перейти в
+            настройки</h3></a></div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

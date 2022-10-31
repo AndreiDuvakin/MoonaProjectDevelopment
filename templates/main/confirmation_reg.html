@@ -1,0 +1,31 @@
+<link rel="stylesheet" href="../../static/css/main/confirmation_reg.css">
+{% extends "main/base.html" %}
+
+{% block content %}
+<div class="back">
+    <a href="/"><p class="back_text" style="color: #ffffff">Назад</p></a>
+</div>
+<div class="confirmation">
+    <h1 class="header_title">Подтверждение почты</h1>
+    <form action="" method="post">
+        <div class="confirmation_form">
+            {{ form.hidden_tag() }}
+            {{ form.csrf_token }}
+            <h3>Мы отправили секретный код вам на почту</h3>
+            <p>
+                {{ form.code_key.label }}<br>
+                {{ form.code_key(class="form-control") }}<br>
+                {% for error in form.code_key.errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+            {% endfor %}
+            </p>
+            <p>{{ form.submit(type="submit", class="btn btn-primary form_buttons") }}</p>
+            {% if message != '' %}
+            <div class="alert alert-danger" role="alert">{{ message }}</div>
+            {% endif %}
+        </div>
+    </form>
+</div>
+{% endblock %}
