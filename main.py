@@ -315,25 +315,29 @@ def safe_app_school_go(point):
     if current_user.is_authenticated:
         data_session = db_session.create_session()
         address = data_session.query(UserPoint).filter(UserPoint.user == current_user.id).first()
-        if address.school_address and address.home_address:
-            with open('static/js/safe_app_school/mapbasics_templates.js', 'r', encoding='utf-8') as file:
-                new_file = file.read().split('<point1>')
-                new_file = new_file[0] + f'\'{address.home_address if point == "home" else address.school_address}\'' \
-                           + new_file[1]
-                new_file = new_file.split('<point2>')
-                new_file = new_file[
-                               0] + f'\'{address.school_address if point == "home" else address.home_address}\'' + \
-                           new_file[1]
-                with open('static/js/safe_app_school/mapbasics.js', 'w', encoding='utf-8') as new_js:
-                    new_js.write(new_file)
-            t = Timer(1, remove_java, args=None, kwargs=None)
-            t.start()
-            if point == 'home':
-                return render_template('safe_app_school/route.html', title='Маршрут домой', route='домой')
-            elif point == 'school':
-                return render_template('safe_app_school/route.html', title='Маршрут в школу', route='в школу')
+        if address:
+            if address.school_address and address.home_address:
+                with open('static/js/safe_app_school/mapbasics_templates.js', 'r', encoding='utf-8') as file:
+                    new_file = file.read().split('<point1>')
+                    new_file = new_file[
+                                   0] + f'\'{address.home_address if point == "home" else address.school_address}\'' \
+                               + new_file[1]
+                    new_file = new_file.split('<point2>')
+                    new_file = new_file[
+                                   0] + f'\'{address.school_address if point == "home" else address.home_address}\'' + \
+                               new_file[1]
+                    with open('static/js/safe_app_school/mapbasics.js', 'w', encoding='utf-8') as new_js:
+                        new_js.write(new_file)
+                t = Timer(1, remove_java, args=None, kwargs=None)
+                t.start()
+                if point == 'home':
+                    return render_template('safe_app_school/route.html', title='Маршрут домой', route='домой')
+                elif point == 'school':
+                    return render_template('safe_app_school/route.html', title='Маршрут в школу', route='в школу')
+                else:
+                    return redirect('/safe_app_school/main')
             else:
-                return redirect('/safe_app_school/main')
+                return render_template('safe_app_school/route.html', title='Маршрут не указан', route=False)
         else:
             return render_template('safe_app_school/route.html', title='Маршрут не указан', route=False)
     else:
