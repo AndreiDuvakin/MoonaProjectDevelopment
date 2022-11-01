@@ -41,7 +41,8 @@ user_email = ""
 
 
 def remove_java():
-    os.remove('static/js/safe_app_school/mapbasics.js')
+    global help_arg
+    os.remove(help_arg)
 
 
 def norm_data(datatime, date_or_time, r=False):
@@ -312,6 +313,7 @@ def safe_app_school_setting():
 
 @app.route('/safeappschool/go/<string:point>')
 def safe_app_school_go(point):
+    global help_arg
     if current_user.is_authenticated:
         data_session = db_session.create_session()
         address = data_session.query(UserPoint).filter(UserPoint.user == current_user.id).first()
@@ -320,20 +322,24 @@ def safe_app_school_go(point):
                 with open('static/js/safe_app_school/mapbasics_templates.js', 'r', encoding='utf-8') as file:
                     new_file = file.read().split('<point1>')
                     new_file = new_file[
-                                   0] + f'\'{address.home_address if point == "home" else address.school_address}\'' \
+                                   0] + f'\'{str(address.home_address).strip() if point == "home" else str(address.school_address).strip()}\'' \
                                + new_file[1]
                     new_file = new_file.split('<point2>')
                     new_file = new_file[
-                                   0] + f'\'{address.school_address if point == "home" else address.home_address}\'' + \
+                                   0] + f'\'{str(address.school_address).strip() if point == "home" else str(address.home_address).strip()}\'' + \
                                new_file[1]
-                    with open('static/js/safe_app_school/mapbasics.js', 'w', encoding='utf-8') as new_js:
+                    with open(f'static/js/safe_app_school/{str(current_user.id)}mapbasics.js', 'w',
+                              encoding='utf-8') as new_js:
                         new_js.write(new_file)
-                t = Timer(1, remove_java, args=None, kwargs=None)
+                help_arg = f'static/js/safe_app_school/{str(current_user.id)}mapbasics.js'
+                t = Timer(15, remove_java, args=None, kwargs=None)
                 t.start()
                 if point == 'home':
-                    return render_template('safe_app_school/route.html', title='Маршрут домой', route='домой')
+                    return render_template('safe_app_school/route.html', title='Маршрут домой', route='домой',
+                                           path=help_arg)
                 elif point == 'school':
-                    return render_template('safe_app_school/route.html', title='Маршрут в школу', route='в школу')
+                    return render_template('safe_app_school/route.html', title='Маршрут в школу', route='в школу',
+                                           path=help_arg)
                 else:
                     return redirect('/safe_app_school/main')
             else:
