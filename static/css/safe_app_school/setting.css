@@ -41,3 +41,6 @@ form {
     margin-top: 4%;
     text-align: center;
 }
+.logout_btn {
+    width: 40%;
+}

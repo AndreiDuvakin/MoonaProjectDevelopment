@@ -1,0 +1,70 @@
+.divlog {
+  margin-left: 10%;
+  margin-right: auto;
+  width: 80%;
+  height: 50%;
+  margin-top: 35px;
+}
+.title {
+    font-size: 3.5vw;
+    text-align: center;
+    color: white;
+    width: auto;
+    height: auto;
+    margin-top: 15px;
+    transition: font-size 0.5s ease-in, text-shadow 1s ease-in;
+}
+.title:hover {
+    font-size: 4vw;
+    text-shadow: 0px 0px 20px #ffffff;
+}
+input[type=text], input[type=email], input[type=password], input[type=file], input[type=number]{
+  padding:10px;
+  border:10;
+  box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+  border-radius:10px;
+}
+textarea {
+  width:100%;
+  resize: vertical;
+  padding:10px;
+  border-radius:10px;
+  border:10;
+  box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+  height:150px;
+}
+.but {
+  margin: 40px;
+}
+.box {
+    margin-left: 20px;
+}
+.zag_auth {
+margin-left: 20%;
+}
+#but_log1, #but_log2, #but_log3 {
+width: 24%;
+}
+#but_log2 {
+background-color: #16b8f5;
+}
+#but_log2, #but_log3 {
+margin-left: 3%;
+}
+#divlog {
+margin-left: 20%;
+}
+.back {
+    margin-top: 5%;
+    background: linear-gradient(45deg, #d1c3fc, #9bc4fc);
+    border-radius: 22px;
+    border: 2px solid #ffffff;
+    width: 20%;
+    margin-left: 40%;
+    height: 8%;
+    font-size: 1.5vw;
+}
+.back_text {
+    margin-top: 4%;
+    text-align: center;
+}

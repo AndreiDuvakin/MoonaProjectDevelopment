@@ -1,0 +1,48 @@
+<link rel="stylesheet" href="../../static/css/safe_app_school/login.css">
+{% extends "safe_app_school/base.html" %}
+
+{% block content %}
+<h1 class="header_title">Авторизация</h1>
+<div class="page">
+    <form class="row g-2" action="" method="post">
+        {{ form.hidden_tag() }}
+        <div class="login_form">
+            <div>
+                <label class="form-label">{{ form.email.label }}</label>
+                {{ form.email(class="form-control", type="email") }}
+                {% for error in form.email.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+                {% endfor %}
+            </div>
+            <div>
+                <label class="form-label">{{ form.password.label }}</label>
+                {{ form.password(class="form-control", type="password") }}
+                {% for error in form.password.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+                {% endfor %}
+            </div>
+            <div>
+                <div class="box">{{ form.remember_me(class="form-check-input")}} {{ form.remember_me.label }}<br></div>
+                {% for error in form.remember_me.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+                {% endfor %}
+            </div>
+            <div class="buttons_from">{{ form.submit(type="submit", class="btn btn-primary button") }}
+                <a class="btn btn-primary button" type="submit"
+                   href="/safeappschool/register"><strong class="text_button">Регистрация</strong></a>
+                <a class="btn btn-primary button" type="submit" href="/recovery"><strong class="text_button">Забыли
+                    пароль</strong></a>
+            </div>
+            {% if message != '' %}
+            <div class="alert alert-danger" role="alert">{{ message }}</div>
+            {% endif %}
+        </div>
+    </form>
+</div>
+{% endblock %}

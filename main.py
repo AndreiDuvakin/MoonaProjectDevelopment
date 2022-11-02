@@ -196,14 +196,14 @@ def confirmation():
             else:
                 session['no_code'] = True
                 if app_school:
-                    return render_template('simple/simple_confirmation.html', title='Подтверждение', form=conf,
+                    return render_template('safe_app_school/confirmation.html', title='Подтверждение', form=conf,
                                            message='Коды не совпадают')
                 else:
                     return render_template('main/confirmation_reg.html', title='Подтверждение', form=conf,
                                            message='Коды не совпадают')
         else:
             if app_school:
-                return render_template('simple/simple_confirmation.html', title='Подтверждение', form=conf, message='')
+                return render_template('safe_app_school/confirmation.html', title='Подтверждение', form=conf, message='')
             else:
                 return render_template('main/confirmation_reg.html', title='Подтверждение', form=conf, message='')
     else:
@@ -213,8 +213,12 @@ def confirmation():
 @app.route('/logout')
 @login_required
 def logout():
+    path = request.args.get('path')
     logout_user()
-    return redirect("/")
+    if not path:
+        return redirect("/")
+    else:
+        return redirect(f'/{path}')
 
 
 @app.route('/safeappschool')
@@ -232,47 +236,53 @@ def safe_app_school_main():
 
 @app.route('/safeappschool/login', methods=['GET', 'POST'])
 def safe_app_school_login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        db_sess = db_session.create_session()
-        user = db_sess.query(User).filter(User.email == form.email.data).first()
-        if user and user.check_password(form.password.data):
-            login_user(user, remember=form.remember_me.data)
-            return redirect('/safeappschool/main')
-        return render_template('/simple/simple_login.html',
-                               message="Неправильный логин или пароль",
-                               form=form)
-    return render_template('/simple/simple_login.html', title='Вход', form=form, message='')
+    if current_user.is_authenticated:
+        return redirect('/safeappschool/main')
+    else:
+        form = LoginForm()
+        if form.validate_on_submit():
+            db_sess = db_session.create_session()
+            user = db_sess.query(User).filter(User.email == form.email.data).first()
+            if user and user.check_password(form.password.data):
+                login_user(user, remember=form.remember_me.data)
+                return redirect('/safeappschool/main')
+            return render_template('/safe_app_school/login.html',
+                                   message="Неправильный логин или пароль",
+                                   form=form)
+        return render_template('/safe_app_school/login.html', title='Вход', form=form, message='')
 
 
 @app.route('/safeappschool/register', methods=['GET', 'POST'])
 def safe_app_school_register():
-    form = RegisterForm()
-    form.simple = True
-    if form.validate_on_submit():
-        if form.password.data != form.password2.data:
-            return render_template('simple/simple_register.html', title='Регистрация',
-                                   form=form,
-                                   message="Пароли не совпадают")
-        data_session = db_session.create_session()
-        if data_session.query(User).filter(User.login == form.login.data).first():
-            return render_template('simple/simple_register.html', title='Регистрация',
-                                   form=form,
-                                   message="Такой пользователь уже есть")
-        if data_session.query(User).filter(User.email == form.email.data).first():
-            return render_template('simple/simple_register.html', title='Регистрация',
-                                   form=form,
-                                   message="Такая почта уже есть")
-        if form.photo.data:
-            photo = save_photo(form.photo.data, form.login.data)
-        else:
-            photo = False
-        session['ps'] = form.password.data
-        return redirect(
-            url_for('confirmation', photo=photo, name=form.name.data, surname=form.surname.data,
-                    login=form.login.data,
-                    age=form.age.data, about=form.about.data, email=form.email.data, form=True, app_school=True))
-    return render_template('simple/simple_register.html', title='Регистрация', form=form, message='')
+    if current_user.is_authenticated:
+        return redirect('/safeappschool/main')
+    else:
+        form = RegisterForm()
+        form.simple = True
+        if form.validate_on_submit():
+            if form.password.data != form.password2.data:
+                return render_template('simple/simple_register.html', title='Регистрация',
+                                       form=form,
+                                       message="Пароли не совпадают")
+            data_session = db_session.create_session()
+            if data_session.query(User).filter(User.login == form.login.data).first():
+                return render_template('safe_app_school/register.html', title='Регистрация',
+                                       form=form,
+                                       message="Такой пользователь уже есть")
+            if data_session.query(User).filter(User.email == form.email.data).first():
+                return render_template('safe_app_school/register.html', title='Регистрация',
+                                       form=form,
+                                       message="Такая почта уже есть")
+            if form.photo.data:
+                photo = save_photo(form.photo.data, form.login.data)
+            else:
+                photo = False
+            session['ps'] = form.password.data
+            return redirect(
+                url_for('confirmation', photo=photo, name=form.name.data, surname=form.surname.data,
+                        login=form.login.data,
+                        age=form.age.data, about=form.about.data, email=form.email.data, form=True, app_school=True))
+        return render_template('safe_app_school/register.html', title='Регистрация', form=form, message='')
 
 
 @app.route('/safeappschool/about')
@@ -322,11 +332,11 @@ def safe_app_school_go(point):
                 with open('static/js/safe_app_school/mapbasics_templates.js', 'r', encoding='utf-8') as file:
                     new_file = file.read().split('<point1>')
                     new_file = new_file[
-                                   0] + f'\'{str(address.home_address).strip() if point == "home" else str(address.school_address).strip()}\'' \
+                                   0] + f'\'{str(address.home_address).strip() if point == "school" else str(address.school_address).strip()}\'' \
                                + new_file[1]
                     new_file = new_file.split('<point2>')
                     new_file = new_file[
-                                   0] + f'\'{str(address.school_address).strip() if point == "home" else str(address.home_address).strip()}\'' + \
+                                   0] + f'\'{str(address.school_address).strip() if point == "school" else str(address.home_address).strip()}\'' + \
                                new_file[1]
                     with open(f'static/js/safe_app_school/{str(current_user.id)}mapbasics.js', 'w',
                               encoding='utf-8') as new_js:
