@@ -124,7 +124,7 @@ def register():
         session['ps'] = form.password.data
         return redirect(
             url_for('confirmation', photo=photo, name=form.name.data, surname=form.surname.data, login=form.login.data,
-                    age=form.age.data, about=form.about.data, email=form.email.data, form=True))
+                    birthday=form.birthday.data, about=form.about.data, email=form.email.data, form=True))
     return render_template('main/register.html', title='Регистрация', form=form, message='')
 
 
@@ -137,7 +137,7 @@ def confirmation():
             name=request.args.get('name'),
             surname=request.args.get('surname'),
             login=request.args.get('login'),
-            age=request.args.get('age'),
+            birthday=request.args.get('age'),
             about=request.args.get('about'),
             email=request.args.get('email'),
             password=session['ps']
@@ -168,7 +168,7 @@ def confirmation():
                         name=form.name.data,
                         surname=form.surname.data,
                         login=form.login.data,
-                        age=form.age.data,
+                        birthday=form.birthday.data,
                         about=form.about.data,
                         email=form.email.data,
                         photo=session['photo'],
@@ -179,7 +179,7 @@ def confirmation():
                         name=form.name.data,
                         surname=form.surname.data,
                         login=form.login.data,
-                        age=form.age.data,
+                        birthday=form.birthday.data,
                         about=form.about.data,
                         email=form.email.data,
                         role='user',
@@ -281,7 +281,7 @@ def safe_app_school_register():
             return redirect(
                 url_for('confirmation', photo=photo, name=form.name.data, surname=form.surname.data,
                         login=form.login.data,
-                        age=form.age.data, about=form.about.data, email=form.email.data, form=True, app_school=True))
+                        birthday=form.birthday.data, about=form.about.data, email=form.email.data, form=True, app_school=True))
         return render_template('safe_app_school/register.html', title='Регистрация', form=form, message='')
 
 
@@ -398,7 +398,7 @@ def edit_profile(logins):
                     return redirect('/diary/confirmation')
             user.name = form.name.data
             user.surname = form.surname.data
-            user.age = form.age.data
+            user.birthday = form.birthday.data
             user.about = form.about.data
             if not ph_f and form.photo.data:
                 photo = save_photo(form.photo.data, logins)
@@ -420,7 +420,7 @@ def edit_profile(logins):
                 form.name.data = current_user.name
                 form.surname.data = current_user.surname
                 form.login.data = logins
-                form.age.data = current_user.age
+                form.birthday.data = current_user.birthday
                 form.about.data = current_user.about
                 form.password.data = None
                 form.password2.data = None
@@ -963,7 +963,7 @@ def diary_onfirmation():
                             name=form.name.data,
                             surname=form.surname.data,
                             login=form.login.data,
-                            age=form.age.data,
+                            birthday=form.birthday.data,
                             about=form.about.data,
                             email=form.email.data,
                             photo=photo,
@@ -974,7 +974,7 @@ def diary_onfirmation():
                             name=form.name.data,
                             surname=form.surname.data,
                             login=form.login.data,
-                            age=form.age.data,
+                            birthday=form.birthday.data,
                             about=form.about.data,
                             email=form.email.data,
                             role='user',

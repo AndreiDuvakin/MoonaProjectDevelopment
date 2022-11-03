@@ -21,56 +21,65 @@
         <div class="col-md-6">
             <label class="form-label">{{ form.name.label }}</label>
             {{ form.name(class="form-control", type="text") }}
-                  {% for error in form.name.errors %}
-                    <div class="alert alert-danger" role="alert">
-                        {{ error }}
-                    </div>
-                    {% endfor %}
+            {% for error in form.name.errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+            {% endfor %}
         </div>
         <div class="col-md-6">
             <label class="form-label">{{ form.surname.label }}</label>
             {{ form.surname(class="form-control", type="text") }}
-                  {% for error in form.surname.errors %}
-                    <div class="alert alert-danger" role="alert">
-                        {{ error }}
-                    </div>
-                    {% endfor %}
+            {% for error in form.surname.errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+            {% endfor %}
         </div>
         <div class="col-md-4">
             <label class="form-label">{{ form.email.label }}</label>
             {{ form.email(class="form-control", type="email") }}
-                  {% for error in form.email.errors %}
-                    <div class="alert alert-danger" role="alert">
-                        {{ error }}
-                    </div>
-                    {% endfor %}
+            {% for error in form.email.errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">{{ form.birthday.label }}</label>
+            {{ form.birthday(class="form-control", type="date") }}
+            {% for error in form.birthday.errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+            {% endfor %}
         </div>
         <div class="col-md-4">
             <label class="form-label">{{ form.password.label }}</label>
             {{ form.password(class="form-control", type="password") }}
-                  {% for error in form.password.errors %}
-                    <div class="alert alert-danger" role="alert">
-                        {{ error }}
-                    </div>
-                    {% endfor %}
+            {% for error in form.password.errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+            {% endfor %}
         </div>
         <div class="col-md-4">
             <label class="form-label">{{ form.password2.label }}</label>
             {{ form.password2(class="form-control", type="password") }}
-                  {% for error in form.password2.errors %}
-                    <div class="alert alert-danger" role="alert">
-                        {{ error }}
-                    </div>
-                    {% endfor %}
+            {% for error in form.password2.errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+            {% endfor %}
         </div>
         <div class="col-md-6">
             <label class="form-label">{{ form.login.label }}</label>
             {{ form.login(class="form-control", type="text") }}
             {% for error in form.login.errors %}
-                <div class="alert alert-danger" role="alert">
-                    {{ error }}
-                </div>
-                {% endfor %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+            {% endfor %}
         </div>
         <div class="but">
             <p>{{ form.submit(type="submit", class="btn btn-primary", style="background-color:#38aaff") }}</p>
