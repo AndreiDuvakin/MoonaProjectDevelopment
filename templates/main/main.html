@@ -12,6 +12,7 @@
             <strong style="color: #ffffff">{{ current_user.name }}</strong>
         </button>
         <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/user/{{current_user.login}}">Профиль</a></li>
             <li><a class="dropdown-item" href="/diary">Дневник</a></li>
             <li><a class="dropdown-item" href="/safeappschool" aria-current="true">SafeAppSchool</a></li>
             <li><a class="dropdown-item btn btn-danger active" href="/logout">Выйти</a></li>
