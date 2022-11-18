@@ -51,3 +51,11 @@ form {
     height: 90%;
     font-size: 1.2vw;
 }
+.apk {
+    width: 40%;
+    margin-left: 25%;
+    margin-right: 30%;
+}
+.text_apk {
+    text-align: center;
+}

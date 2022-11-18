@@ -71,7 +71,8 @@
             </a>
         </li>
         <li>
-            <a href="/diary/publications" class="nav-link py-3 border-bottom" title="Публикации" data-bs-toggle="tooltip"
+            <a href="/diary/publications" class="nav-link py-3 border-bottom" title="Публикации"
+               data-bs-toggle="tooltip"
                data-bs-placement="right">
                 <svg class="bi" width="24" height="24" role="img" aria-label="Публикации">
                     <use xlink:href="#posts"/>
@@ -88,12 +89,21 @@
         </li>
         <li>
             {% if current_user.is_authenticated %}
-            <a href="/diary/profile" class="nav-link py-3 border-bottom" title="Профиль" data-bs-toggle="tooltip"
-               data-bs-placement="right">
-                <img class="user_img" src="../../{{ current_user.photo }}" width="40" height="40">
+            <div class="btn-group dropend">
+                <button type="button" class="btn btn-secondary dropdown-toggle user" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="../../{{ current_user.photo }}" width="40" height="40"
+                         style="border-radius: 22px">
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/">Главная</a></li>
+                    <li><a class="dropdown-item" href="/user/{{current_user.login}}">Профиль</a></li>
+                    <li><a class="dropdown-item" href="/safeappschool" aria-current="true">SafeAppSchool</a></li>
+                    <li><a class="dropdown-item btn btn-danger active" href="/logout">Выйти</a></li>
+                </ul>
+            </div>
             </a>
             {% else %}
-            <a href="/diary/login" class="nav-link py-3 border-bottom" title="Профиль" data-bs-toggle="tooltip"
+            <a href="/login?redir=diary" class="nav-link py-3 border-bottom" title="Профиль" data-bs-toggle="tooltip"
                data-bs-placement="right">
                 <svg class="bi" width="24" height="24" role="img" aria-label="Профиль">
                     <use xlink:href="#profil"/>

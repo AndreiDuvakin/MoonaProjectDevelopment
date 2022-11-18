@@ -70,9 +70,9 @@
     height: 60px;
 }
 .user {
-    background: linear-gradient(45deg, #d1c3fc, #9bc4fc);
     border-radius: 19px;
     border: 2px solid #ffffff;
+    background: linear-gradient(45deg, #d1c3fc, #9bc4fc);
 }
 .button {
     width: 160px;

@@ -15,3 +15,8 @@ body {
     text-align: center;
     margin-top: 50px;
 }
+.user {
+    background: linear-gradient(45deg, #d1c3fc, #9bc4fc);
+    border-radius: 19px;
+    border: 2px solid #ffffff;
+}
