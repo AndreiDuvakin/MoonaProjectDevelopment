@@ -28,7 +28,7 @@ from forms.register import RegisterForm, Confirmation
 from post import mail
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'moona_secret_key'
+app.config['SECRET_KEY'] = open('protect.moona', 'r', encoding='utf-8').read().split()[2]
 logging.basicConfig(filename='main.log')
 login_manager = LoginManager()
 login_manager.init_app(app)

@@ -15,7 +15,9 @@ def mail(msg, to, topic='No temes'):
     mailServer.ehlo()
     mailServer.starttls()
     mailServer.ehlo()
-    mailServer.login('moonadiary', 'fiX-2Vb-6a2-kCi')
+    auth = open('protect.moona', 'r', encoding='utf-8').read().split()
+    login, password = auth[0], auth[1]
+    mailServer.login(login, password)
     mailServer.ehlo()
     mailServer.send_message(em)
     mailServer.quit()
