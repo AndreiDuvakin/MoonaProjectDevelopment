@@ -15,7 +15,7 @@ def mail(msg, to, topic='No temes'):
     mailServer.ehlo()
     mailServer.starttls()
     mailServer.ehlo()
-    auth = open('protect.moona', 'r', encoding='utf-8').read().split()
+    auth = open('../protect.moona', 'r', encoding='utf-8').read().split()
     login, password = auth[0], auth[1]
     mailServer.login(login, password)
     mailServer.ehlo()

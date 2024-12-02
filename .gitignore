@@ -1,4 +1,5 @@
-/documents/voucher_moonadiary.ru.pdf
-/db/moona_data.db
-/main.log
+/moona/documents/voucher_moonadiary.ru.pdf
+/moona/db/moona_data.db
+/moona/main.log
 /.gitignore
+__pycache__
