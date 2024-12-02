@@ -13,39 +13,30 @@ function init() {
             ],
             params: {
                 //Тип маршрутизации - пешеходная маршрутизация.
-                routingMode: 'pedestrian'
+//                routingMode: 'pedestrian'
             }
         }, {
             // Автоматически устанавливать границы карты так, чтобы маршрут был виден целиком.
             boundsAutoApply: true
         });
 
-    // Создаем кнопку.
-    var changePointsButton = new ymaps.control.Button({
-        data: {content: "Поменять местами точки А и В"},
-        options: {selectOnClick: false}
-    });
-
-    // Объявляем обработчики для кнопки.
-    changePointsButton.events.add('select', function () {
-        multiRoute.model.setReferencePoints([pointB, pointA]);
-    });
-
-    changePointsButton.events.add('deselect', function () {
-        multiRoute.model.setReferencePoints([pointA, pointB]);
-    });
-
     // Создаем карту с добавленной на нее кнопкой.
-    var myMap = new ymaps.Map('map', {
+    var geolocation = ymaps.geolocation, myMap = new ymaps.Map('map', {
         center: [55.739625, 37.54120],
-        zoom: 12,
-        controls: [changePointsButton]
-    }, {
-        buttonMaxWidth: 300
+        zoom: 12
+    });
+
+    geolocation.get({
+        provider: 'browser',
+        mapStateAutoApply: true
+    }).then(function (result) {
+        // Синим цветом пометим положение, полученное через браузер.
+        // Если браузер не поддерживает эту функциональность, метка не будет добавлена на карту.
+        result.geoObjects.options.set('preset', 'islands#redCircleIcon');
+        myMap.geoObjects.add(result.geoObjects);
     });
 
     // Добавляем мультимаршрут на карту.
     myMap.geoObjects.add(multiRoute);
 }
-
 ymaps.ready(init);

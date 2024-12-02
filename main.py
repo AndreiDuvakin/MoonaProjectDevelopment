@@ -84,6 +84,57 @@ def main_page():
     return render_template('/main/main.html', title='Добро пожаловать')
 
 
+@app.route('/recovery', methods=['GET', 'POST'])
+def recovery():
+    if not current_user.is_authenticated:
+        form = RecoveryForm()
+        if 'email' in session:
+            form.email.data = session['email']
+        conf = Conf()
+        finish = Finish()
+        if form.validate_on_submit() and not conf.validate_on_submit():
+            if 'send_msg' not in session:
+                session['secret_code'] = secret_key()
+                mail(f'Ваш секретный код: {session["secret_code"]}', form.email.data, 'Moona Код')
+                session['send_msg'] = True
+            else:
+                if not session['send_msg']:
+                    if 'no_code' in session:
+                        if not session['no_code']:
+                            session['secret_code'] = secret_key()
+                            mail(f'Ваш секретный код: {session["secret_code"]}', form.email.data, 'Moona Код')
+                            session['send_msg'] = True
+                        session['no_code'] = False
+                    else:
+                        session['secret_code'] = secret_key()
+                        mail(f'Ваш секретный код: {session["secret_code"]}', form.email.data, 'Moona Код')
+                        session['send_msg'] = True
+                session['send_msg'] = False
+                session['email'] = form.email.data
+                return render_template('main/recovery.html', title='Восстановление пароля', form=conf, message='',
+                                       s='2')
+        if conf.validate_on_submit() and not finish.validate_on_submit():
+            if str(conf.code_key.data).strip() == str(secret_code).strip():
+                session['good_key'] = True
+                return render_template('main/recovery.html', title='Восстановление пароля', form=finish, message='',
+                                       s='3')
+            else:
+                return render_template('main/recovery.html', title='Восстановление пароля', form=finish,
+                                       message='Коды не совпадают',
+                                       s='3')
+        if finish.validate_on_submit() and session['good_key']:
+            data_session = db_session.create_session()
+            user = data_session.query(User).filter(User.email == user_email).first()
+            user.set_password(finish.password.data)
+            user2 = data_session.merge(user)
+            data_session.add(user2)
+            data_session.commit()
+            return redirect('/login')
+        return render_template('main/recovery.html', title='Восстановление пароля', form=form, s="1", message='')
+    else:
+        return redirect('/')
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if not current_user.is_authenticated:
@@ -438,111 +489,6 @@ def safe_app_school_go(point):
 @app.route('/diary/')
 def main_diary_page():
     return render_template('diary/main.html', title='moona')
-
-
-@app.route('/diary/edit_profile/<string:logins>', methods=['GET', 'POST'])
-def edit_profile(logins):
-    if current_user.is_authenticated:
-        global photo
-        global help_arg
-        global help_arg_2
-        form = RegisterForm()
-        session = db_session.create_session()
-        ph_f = False
-        if 'None_logo' not in current_user.photo:
-            photo = current_user.photo
-            ph_f = True
-        else:
-            photo = None
-        if form.del_photo.data:
-            help_arg = photo
-            ph_f = False
-        if form.submit2.data:
-            user = session.query(User).filter(User.login == logins).first()
-            if user.email != form.email.data:
-                if session.query(User).filter(User.email == form.email.data).first():
-                    if not form.photo.data and help_arg:
-                        help_arg = False
-                    return render_template('diary/edit_profile.html', title='Редактирование профиля', form=form,
-                                           ph_f=ph_f,
-                                           message="Такая почта уже есть")
-                else:
-                    help_arg = True
-                    help_arg_2 = form.email.data
-                    return redirect('/diary/confirmation')
-            user.name = form.name.data
-            user.surname = form.surname.data
-            user.birthday = form.birthday.data
-            user.about = form.about.data
-            photo = '../../static/img/None_logo.png'
-            if not ph_f and form.photo.data:
-                photo = save_photo(form.photo.data, logins)
-            if help_arg == photo:
-                os.remove(help_arg)
-                help_arg = False
-                photo = '../../static/img/None_logo.png'
-            user.photo = photo
-            session.commit()
-            if user.email == form.email.data:
-                return redirect('/diary/profile')
-            else:
-                help_arg_2 = form.email.data
-                help_arg = False
-                return redirect('/diary/confirmation')
-        if request.method == "GET":
-            if current_user.login == logins:
-                form.email.data = current_user.email
-                form.name.data = current_user.name
-                form.surname.data = current_user.surname
-                form.login.data = logins
-                form.birthday.data = current_user.birthday
-                form.about.data = current_user.about
-                form.password.data = None
-                form.password2.data = None
-        if not form.photo.data and help_arg:
-            help_arg = False
-        return render_template('diary/edit_profile.html', title='Редактирование профиля', form=form, message='',
-                               ph_f=ph_f)
-    else:
-        return redirect('/diary/login')
-
-
-@app.route('/diary/profile')
-def diary_profile():
-    if current_user.is_authenticated:
-        global help_arg_2
-        db_sess = db_session.create_session()
-        pub_post = db_sess.query(DiaryPost).filter(DiaryPost.author == current_user.id, DiaryPost.public == 1).all()
-        pub_post = pub_post[::-1]
-        emotion_pub = []
-        for i in pub_post:
-            emotion = {id: i.id, 'pos_emot': [], 'nig_emot': [], 'link': [], 'like': None, 'is_like': 0,
-                       'author': current_user}
-            if i.pos_emot:
-                emotion['pos_emot'] = i.pos_emot.split()
-            else:
-                emotion['pos_emot'] = None
-            if i.nig_emot:
-                emotion['nig_emot'] = i.nig_emot.split()
-            else:
-                emotion['nig_emot'] = None
-            if i.link:
-                emotion['link'] = i.link.split()
-            else:
-                emotion['link'] = None
-            like = db_sess.query(Like).filter(Like.post == i.id).all()
-            if like:
-                emotion['like'] = len(like)
-            if db_sess.query(Like).filter(Like.post == i.id, Like.user == current_user.id).first():
-                emotion['is_like'] = 1
-            emotion_pub.append(emotion)
-        message = 'Ваша почта успешно изменена!' if help_arg_2 == 'EditEmail' else ''
-        if help_arg_2:
-            help_arg_2 = False
-        return render_template('diary/profile.html', title='Профиль', pub_post=pub_post, emotion_pub=emotion_pub,
-                               message=message)
-    else:
-        return redirect('/diary/login')
 
 
 @app.route('/diary/new_like/<int:user_id>/<int:post_id>/<string:ret_href>')
@@ -991,13 +937,6 @@ def diary():
         pub_post = None
     return render_template('diary/diary.html', title='Дневник', my_post=posts, message='', question=post_quest,
                            ans=ans2, emotion=lis_emotion, emotion_pub=emotion_pub, pub_post=pub_post)
-
-
-@app.route('/diary/logout')
-@login_required
-def diary_logout():
-    logout_user()
-    return redirect("/diary/")
 
 
 @app.route('/diary/about_us')
