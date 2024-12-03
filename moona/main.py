@@ -2,28 +2,27 @@ import datetime
 import logging
 import os
 from random import randint, choices
+from threading import Timer
 
 from flask import Flask, render_template, request, jsonify, make_response, session, url_for
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_restful import abort
 from waitress import serve
 from werkzeug.utils import redirect
-from threading import Timer
 
 from data import db_session
-from data.app_school_user_point import UserPoint
 from data.answer_quest import Answer
+from data.app_school_user_point import UserPoint
 from data.diary_post import DiaryPost
 from data.like import Like
 from data.popularity import Popularity
 from data.questions import Quest
 from data.users import User
-from forms.point_user import PointForm
 from forms.add_question import AddQuest
 from forms.answer_quest import AnswerQuest
 from forms.login import LoginForm
+from forms.point_user import PointForm
 from forms.post import AddPost
-from forms.recovery import RecoveryForm, Conf, Finish
 from forms.register import RegisterForm, Confirmation
 from post import mail
 
