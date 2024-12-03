@@ -10,3 +10,13 @@ services:
     environment:
       - SECRET_KEY=your-secret-key
     restart: always
+    ports:
+      - "5000:5000"
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "0.5"
+        reservations:
+          memory: 128M
+          cpus: "0.2"
