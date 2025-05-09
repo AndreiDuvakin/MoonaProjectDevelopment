@@ -1,0 +1,31 @@
+replicaCount: 1
+
+image:
+  repository: andreiduvakin/moona-diary-project
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 5000
+
+resources:
+  limits:
+    memory: 512Mi
+    cpu: 500m
+
+persistence:
+  static:
+    enabled: true
+    size: 2Gi
+  db:
+    enabled: true
+    size: 2Gi
+
+ingress:
+  secretTLSName: moona-tls-secret
+
+  domain: moona.numerum.team
+
+  path: /
+  pathType: Prefix

@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: moona-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: lets-encrypt
+spec:
+  tls:
+    - hosts:
+        - {{ .Values.ingress.domain }}
+      secretName: {{ .Values.ingress.secretTLSName }}
+  ingressClassName: public
+  rules:
+  - host: {{ .Values.ingress.domain }}
+    http:
+      paths:
+      - path: {{ .Values.ingress.path }}
+        pathType: {{ .Values.ingress.pathType }}
+        backend:
+          service:
+            name: {{ .Chart.Name }}-service
+            port:
+              number: {{ .Values.service.port }}
