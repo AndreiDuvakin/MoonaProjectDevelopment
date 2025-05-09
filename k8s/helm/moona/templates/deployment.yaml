@@ -26,9 +26,9 @@ spec:
                   key: SECRET_KEY
           volumeMounts:
             - name: static-volume
-              mountPath: /home/moona/app/static
+              mountPath: {{ .Values.persistence.path }}/static
             - name: db-volume
-              mountPath: /home/moona/app/db
+              mountPath: {{ .Values.persistence.path }}/db
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:

@@ -15,6 +15,7 @@ resources:
     cpu: 500m
 
 persistence:
+  path: /mnt/k8s_storage/moona
   static:
     enabled: true
     size: 2Gi

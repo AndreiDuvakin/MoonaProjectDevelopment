@@ -8,3 +8,5 @@ __pycache__
 /main.log
 .idea
 .idea/
+.venv
+.venv/

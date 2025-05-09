@@ -107,35 +107,54 @@ def login():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    if not current_user.is_authenticated:
-        form = RegisterForm()
-        form.simple = True
-        if form.validate_on_submit():
-            if form.password.data != form.password2.data:
-                return render_template('main/register.html', title='Регистрация',
-                                       form=form,
-                                       message="Пароли не совпадают")
-            data_session = db_session.create_session()
-            if data_session.query(User).filter(User.login == form.login.data).first():
-                return render_template('main/register.html', title='Регистрация',
-                                       form=form,
-                                       message="Такой пользователь уже есть")
-            if data_session.query(User).filter(User.email == form.email.data).first():
-                return render_template('main/register.html', title='Регистрация',
-                                       form=form,
-                                       message="Такая почта уже есть")
-            if form.photo.data:
-                photo = save_photo(form.photo.data, form.login.data)
-            else:
-                photo = False
-            session['ps'] = form.password.data
-            return redirect(
-                url_for('confirmation', photo=photo, name=form.name.data, surname=form.surname.data,
-                        login=form.login.data,
-                        birthday=form.birthday.data, about=form.about.data, email=form.email.data, form=True))
-        return render_template('main/register.html', title='Регистрация', form=form, message='')
-    else:
+    if current_user.is_authenticated:
         return redirect('/')
+
+    form = RegisterForm()
+    form.simple = True
+
+    if form.validate_on_submit():
+        if form.password.data != form.password2.data:
+            return render_template('main/register.html', title='Регистрация',
+                                   form=form,
+                                   message="Пароли не совпадают")
+
+        data_session = db_session.create_session()
+
+        if data_session.query(User).filter(User.login == form.login.data).first():
+            return render_template('main/register.html', title='Регистрация',
+                                   form=form,
+                                   message="Такой пользователь уже есть")
+
+        if data_session.query(User).filter(User.email == form.email.data).first():
+            return render_template('main/register.html', title='Регистрация',
+                                   form=form,
+                                   message="Такая почта уже есть")
+
+        if form.photo.data:
+            photo = save_photo(form.photo.data, form.login.data)
+        else:
+            photo = '/static/img/None_logo.png'
+
+        user = User(
+            name=form.name.data,
+            surname=form.surname.data,
+            login=form.login.data,
+            birthday=datetime.datetime.strptime(form.birthday.data, "%Y-%m-%d").date(),
+            about=form.about.data,
+            email=form.email.data,
+            photo=photo,
+            role='user'
+        )
+        user.set_password(form.password.data)
+        data_session.add(user)
+        data_session.commit()
+        data_session.close()
+
+        return redirect('/login')
+
+    return render_template('main/register.html', title='Регистрация', form=form, message='')
+
 
 
 @app.route('/user/<string:login>', methods=['GET', 'POST'])
@@ -186,102 +205,6 @@ def profile(login):
         pass
     else:
         return redirect('/login')
-
-
-@app.route('/confirmation', methods=['GET', 'POST'])
-def confirmation():
-    if request.args.get('form'):
-        app_school = request.args.get('app_school') if request.args.get('app_school') else False
-        email_conf = request.args.get('email_conf') if request.args.get('email_conf') else False
-        data_session = db_session.create_session()
-        form = RegisterForm(
-            name=request.args.get('name'),
-            surname=request.args.get('surname'),
-            login=request.args.get('login'),
-            birthday=request.args.get('birthday'),
-            about=request.args.get('about'),
-            email=request.args.get('email'),
-            password=session['ps']
-        )
-        session['photo'] = request.args.get('photo')
-        if 'send_msg' not in session:
-            session['secret_code'] = secret_key()
-            mail(f'Ваш секретный код: {session["secret_code"]}', form.email.data, 'Moona Код')
-            session['send_msg'] = True
-        else:
-            if not session['send_msg']:
-                if 'no_code' in session:
-                    if not session['no_code']:
-                        session['secret_code'] = secret_key()
-                        mail(f'Ваш секретный код: {session["secret_code"]}', form.email.data, 'Moona Код')
-                        session['send_msg'] = True
-                    session['no_code'] = False
-                else:
-                    session['secret_code'] = secret_key()
-                    mail(f'Ваш секретный код: {session["secret_code"]}', form.email.data, 'Moona Код')
-                    session['send_msg'] = True
-            session['send_msg'] = False
-        conf = Confirmation()
-        if conf.validate_on_submit():
-            if str(conf.code_key.data).strip() == str(session['secret_code']).strip():
-                if not email_conf:
-                    if form.photo.data:
-                        user = User(
-                            name=form.name.data,
-                            surname=form.surname.data,
-                            login=form.login.data,
-                            birthday=datetime.datetime.strptime(form.birthday.data, "%Y-%m-%d").date(),
-                            about=form.about.data,
-                            email=form.email.data,
-                            photo=save_photo(session['photo'], form.login.data),
-                            role='user'
-                        )
-                    else:
-                        user = User(
-                            name=form.name.data,
-                            surname=form.surname.data,
-                            login=form.login.data,
-                            birthday=datetime.datetime.strptime(form.birthday.data, "%Y-%m-%d").date(),
-                            about=form.about.data,
-                            email=form.email.data,
-                            role='user',
-                            photo='/static/img/None_logo.png'
-                        )
-                    user.set_password(form.password.data)
-                    data_session.add(user)
-                    data_session.commit()
-                    data_session.close()
-                    session['send_msg'] = False
-                    if app_school:
-                        return redirect('/safeappschool/login')
-                    else:
-                        return redirect('/login')
-                else:
-                    user = data_session.query(User).filter(User.id == current_user.id).first()
-                    if user:
-                        user.email = form.email.data
-                        data_session.commit()
-                        data_session.close()
-                        return redirect(f'/user/{current_user.login}')
-                    else:
-                        abort(404)
-            else:
-                session['no_code'] = True
-                if app_school:
-                    return render_template('safe_app_school/confirmation.html', title='Подтверждение', form=conf,
-                                           message='Коды не совпадают')
-                else:
-                    return render_template('main/confirmation_reg.html', title='Подтверждение', form=conf,
-                                           message='Коды не совпадают')
-        else:
-            if app_school:
-                return render_template('safe_app_school/confirmation.html', title='Подтверждение', form=conf,
-                                       message='')
-            else:
-                return render_template('main/confirmation_reg.html', title='Подтверждение', form=conf, message='')
-    else:
-        return redirect('/')
-
 
 @app.route('/logout')
 @login_required
