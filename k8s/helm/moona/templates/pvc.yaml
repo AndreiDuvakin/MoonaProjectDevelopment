@@ -1,25 +1,59 @@
 {{- if .Values.persistence.static.enabled }}
 apiVersion: v1
-kind: PersistentVolumeClaim
+kind: PersistentVolume
 metadata:
-  name: {{ .Chart.Name }}-static
+  name: {{ .Chart.Name }}-static-pv
 spec:
+  capacity:
+    storage: {{ .Values.persistence.static.size }}
   accessModes:
     - ReadWriteOnce
-  resources:
-    requests:
-      storage: {{ .Values.persistence.static.size }}
-{{- end }}
-
-{{- if .Values.persistence.db.enabled }}
+  storageClassName: microk8s-hostpath
+  hostPath:
+    path: {{ .Values.persistence.path }}/static
+    type: DirectoryOrCreate
+  persistentVolumeReclaimPolicy: Retain
+---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ .Chart.Name }}-db
+  name: {{ .Chart.Name }}-static-pvc
 spec:
   accessModes:
     - ReadWriteOnce
+  storageClassName: microk8s-hostpath
+  resources:
+    requests:
+      storage: {{ .Values.persistence.static.size }}
+  volumeName: {{ .Chart.Name }}-static-pv
+{{- end }}
+---
+{{- if .Values.persistence.db.enabled }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Chart.Name }}-db-pv
+spec:
+  capacity:
+    storage: {{ .Values.persistence.db.size }}
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: microk8s-hostpath
+  hostPath:
+    path: {{ .Values.persistence.path }}/db
+    type: DirectoryOrCreate
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Chart.Name }}-db-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: microk8s-hostpath
   resources:
     requests:
       storage: {{ .Values.persistence.db.size }}
+  volumeName: {{ .Chart.Name }}-db-pv
 {{- end }}

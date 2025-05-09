@@ -26,15 +26,15 @@ spec:
                   key: SECRET_KEY
           volumeMounts:
             - name: static-volume
-              mountPath: {{ .Values.persistence.path }}/static
+              mountPath: {{ .Values.persistence.static.containerPath }}
             - name: db-volume
-              mountPath: {{ .Values.persistence.path }}/db
+              mountPath: {{ .Values.persistence.db.containerPath }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
         - name: static-volume
           persistentVolumeClaim:
-            claimName: "{{ .Chart.Name }}-static"
+            claimName: "{{ .Release.Name }}-static-pvc"
         - name: db-volume
           persistentVolumeClaim:
-            claimName: "{{ .Chart.Name }}-db"
+            claimName: "{{ .Release.Name }}-db-pvc"

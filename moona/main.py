@@ -140,7 +140,7 @@ def register():
             name=form.name.data,
             surname=form.surname.data,
             login=form.login.data,
-            birthday=datetime.datetime.strptime(form.birthday.data, "%Y-%m-%d").date(),
+            birthday=datetime.datetime.strptime(str(form.birthday.data), "%Y-%m-%d").date(),
             about=form.about.data,
             email=form.email.data,
             photo=photo,
@@ -983,10 +983,8 @@ def school_reg():
 
 def main():
     db_session.global_init("db/moona_data.db")
-    try:
-        serve(app, host='0.0.0.0', port=5000)
-    except Exception as error:
-        logging.warning(f'{datetime.datetime.now()}:{error}')
+    serve(app, host='0.0.0.0', port=5000)
+
     # после запуска переходите по ссылке http://127.0.0.1:5000/ в вашем браузере
 
 

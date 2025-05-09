@@ -3,7 +3,7 @@ replicaCount: 1
 image:
   repository: andreiduvakin/moona-diary-project
   tag: latest
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 service:
   type: ClusterIP
@@ -19,9 +19,11 @@ persistence:
   static:
     enabled: true
     size: 2Gi
+    containerPath: /app/static
   db:
     enabled: true
     size: 2Gi
+    containerPath: /app/db
 
 ingress:
   secretTLSName: moona-tls-secret
