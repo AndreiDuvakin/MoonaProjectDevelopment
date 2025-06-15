@@ -11,8 +11,8 @@ service:
 
 resources:
   limits:
-    memory: 512Mi
-    cpu: 500m
+    memory: 128Mi
+    cpu: 100m
 
 persistence:
   path: /mnt/k8s_storage/moona
