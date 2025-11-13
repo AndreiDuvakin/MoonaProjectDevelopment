@@ -56,6 +56,8 @@ def norm_data(datatime, date_or_time, r=False):
         datatimes = datetime
         return datatimes
 
+    return None
+
 
 def save_photo(photo, login, post=False, id_post=None):
     if not post:
@@ -66,6 +68,8 @@ def save_photo(photo, login, post=False, id_post=None):
         with open(f'static/app_image/post_photo/{login}_post_{id_post}.png', 'wb') as f:
             photo.save(f)
         return f'static/app_image/post_photo/{login}_post_{id_post}.png'
+
+    return None
 
 
 def secret_key():
